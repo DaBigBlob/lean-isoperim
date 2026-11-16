@@ -225,22 +225,22 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 12:02:09 ET — [DIR] 5_Auxiliary_Estimates/5_2_Two_Point_Inequalities: `lemma_5_2`
 - complete — 2026-11-16 12:02:09 ET — [DIR] 5_Auxiliary_Estimates/5_2_Two_Point_Inequalities: `G₁_diag`
 - complete — 2026-11-16 12:12:17 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_G₁_L`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_I`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_reduction`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_y_ge`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_neardiag_bound`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_second_difference`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_g_Q_1_eq`
+- complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_I`
+- complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_reduction`
+- complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_y_ge`
+- complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_neardiag_bound`
+- complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_second_difference`
+- complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_g_Q_1_eq`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_7`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_β₀`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_g_Q_1_half_eq`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_g_Q_1_half_deriv2`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_g_Q_1_half_concave`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_claim_1_limit`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_claim_1_iff`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_claim_1_subst`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_claim_1_mono`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_claim_1`
+- complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_g_Q_1_half_eq`
+- complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_g_Q_1_half_deriv2`
+- complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_g_Q_1_half_concave`
+- complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_claim_1_limit`
+- complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_claim_1_iff`
+- complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_claim_1_subst`
+- complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_claim_1_mono`
+- complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_claim_1`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_8`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_claim_2`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II`

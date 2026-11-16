@@ -52,7 +52,15 @@ $0\le x\le y\le\frac12$, $\frac{x+y}2\le\frac14$. -/
 theorem caseQ_I (β : ℝ) (hβ : β = 2⁻¹ ∨ β = β₀) (x y : ℝ) (hx : 0 ≤ x) (hxy : x ≤ y)
     (hy : y ≤ 2⁻¹) (hxy' : (x + y) / 2 ≤ 4⁻¹) :
     G₁ β (fun t ↦ max (L β t) (Q β t)) x y ≥ 0 := by
-  sorry
+  have hβr := mem_Ico_of_caseQ hβ
+  have hβ1 := mem_Icc_one_of_caseQ hβ
+  have hβ0 : 0 < β := by linarith [hβr.1]
+  have hLy : 0 ≤ L β y := L_nonneg ⟨by linarith, by linarith⟩
+  obtain ⟨c₁, c₂, c₃⟩ := lemma_5_2_chain (𝓛G₁ β) 0 2⁻¹ (𝓛G₁_mono hβ0) (L β) (Q β) x y hx hxy hy
+    ((G₁_nonneg_iff hLy).1 (caseQ_G₁_L β hβ1 x y hx hxy hy))
+    ((lemma_5_9 β ⟨hβr.1, hβr.2.le⟩).1 _ ⟨by linarith, hxy'⟩)
+  refine (G₁_nonneg_iff (B := fun t ↦ max (L β t) (Q β t)) (le_max_of_le_left hLy)).2 ?_
+  rw [← c₃]; exact c₂.trans c₁
 
 /-- [DIR], §6.2: it suffices to show (6.6), i.e. if $G^1_\beta[Q_\beta](x,y)\ge0$ for all
 $0\le x\le y\le\frac12$ with $\frac{x+y}2\ge\frac14$, then Proposition 6.2 holds for $\beta$. -/
@@ -60,16 +68,27 @@ theorem caseQ_reduction (β : ℝ) (hβ : β = 2⁻¹ ∨ β = β₀)
     (h : ∀ x y : ℝ, 0 ≤ x → x ≤ y → y ≤ 2⁻¹ → (x + y) / 2 ≥ 4⁻¹ → G₁ β (Q β) x y ≥ 0)
     (x y : ℝ) (hx : 0 ≤ x) (hxy : x ≤ y) (hy : y ≤ 2⁻¹) :
     G₁ β (fun t ↦ max (L β t) (Q β t)) x y ≥ 0 := by
-  sorry
+  rcases le_total ((x + y) / 2) 4⁻¹ with hm | hm
+  · exact caseQ_I β hβ x y hx hxy hy hm
+  have hβr := mem_Ico_of_caseQ hβ
+  have hβ0 : 0 < β := by linarith [hβr.1]
+  have hQy : 0 ≤ Q β y := (lemma_5_8 y ⟨by linarith, hy⟩ β hβr).1.1
+  obtain ⟨c₁, c₂, c₃⟩ := lemma_5_2_chain (𝓛G₁ β) 0 2⁻¹ (𝓛G₁_mono hβ0) (Q β) (L β) x y hx hxy hy
+    ((G₁_nonneg_iff hQy).1 (h x y hx hxy hy hm))
+    ((lemma_5_9 β ⟨hβr.1, hβr.2.le⟩).2 _ ⟨hm, by linarith⟩)
+  refine (G₁_nonneg_iff (B := fun t ↦ max (L β t) (Q β t)) (le_max_of_le_right hQy)).2 ?_
+  rw [max_comm (L β x), max_comm (L β y), max_comm (L β _), ← c₃]; exact c₂.trans c₁
 
 section Case_Q_II
 /-! ### §6.2.1 Near diagonal: $0\le y-x\le\frac14$, $\frac{x+y}2\ge\frac14$ -/
 
 /-- [DIR], §6.2.1: in the region II ($0\le y-x\le\frac14$, $\frac{x+y}2\ge\frac14$) we have
-$y\ge\frac14$. -/
-theorem caseQ_II_y_ge (x y : ℝ) (hxy : 0 ≤ y - x) (hxy' : y - x ≤ 4⁻¹)
-    (hm : (x + y) / 2 ≥ 4⁻¹) : y ≥ 4⁻¹ := by
-  sorry
+$y\ge\frac14$.
+
+**Unused hypothesis.** The paper assumes $y-x\le\frac14$; this is not needed for the claim and is
+omitted in the Lean statement. -/
+theorem caseQ_II_y_ge (x y : ℝ) (hxy : 0 ≤ y - x) (hm : (x + y) / 2 ≥ 4⁻¹) : y ≥ 4⁻¹ := by
+  linarith
 
 /-- The function ([DIR], §6.2.1)
 $$g_{Q,1,\beta}(h,y)=\beta Q_\beta(y)^{1-\frac1\beta}
@@ -85,7 +104,29 @@ $$G^1_\beta[Q_\beta](x,y)\ge h^{\frac1\beta}g_{Q,1,\beta}(h,y).$$ -/
 theorem caseQ_II_neardiag_bound (β : ℝ) (hβ : β = 2⁻¹ ∨ β = β₀) (h y : ℝ)
     (hh : h ∈ Icc (0 : ℝ) 4⁻¹) (hy : y ∈ Icc (4⁻¹ : ℝ) 2⁻¹) :
     G₁ β (Q β) (y - h) y ≥ h ^ β⁻¹ * g_Q_1 β h y := by
-  sorry
+  have hβ1 := mem_Icc_one_of_caseQ hβ
+  have hβ0 : 0 < β := by linarith [hβ1.1]
+  have hβlt : β < 1 := by rcases hβ with rfl | rfl <;> norm_num [β₀]
+  have hQy := Q_pos (y := y) hβ1 ⟨by linarith [hy.1], by linarith [hy.2]⟩
+  rcases eq_or_lt_of_le hh.1 with h0 | hpos
+  · rw [← h0, sub_zero, zero_rpow (inv_ne_zero hβ0.ne'), zero_mul, G₁_diag β hβ0 _ _ hQy.le]
+  obtain ⟨E₁, hG, -, hE1⟩ := lemma_5_4 (Q β) β ⟨hβ0, hβlt⟩ (y - h) h hh.1
+    (by rwa [sub_add_cancel])
+  rw [sub_add_cancel] at hG hE1
+  rw [hG, show y - h + 2⁻¹ * h = y - h / 2 by ring]
+  unfold g_Q_1
+  have ht : 0 < h ^ β⁻¹ := rpow_pos_of_pos hpos _
+  rw [rpow_neg hpos.le]
+  have h2 : h ^ (2 / β) = (h ^ β⁻¹) ^ 2 := by
+    rw [← rpow_natCast, ← rpow_mul hpos.le]; congr 1; push_cast; ring
+  rw [h2] at hE1
+  set t := h ^ β⁻¹
+  have : t * (β * Q β y ^ (1 - β⁻¹) - (2 * Q β (y - h / 2) - Q β (y - h) - Q β y) * t⁻¹ -
+      2⁻¹ * β * (1 - β) * Q β y ^ (1 - 2 / β) * t) = β * Q β y ^ (1 - β⁻¹) * t -
+      (2 * Q β (y - h / 2) - Q β (y - h) - Q β y) - 2⁻¹ * β * (1 - β) * Q β y ^ (1 - 2 / β) *
+      t ^ 2 := by
+    field_simp
+  linarith
 
 /-- [DIR], §6.2.1:
 $2Q_\beta(y-\frac h2)-Q_\beta(y-h)-Q_\beta(y)=h^2(\alpha_0-2\alpha_1h+4\alpha_1y)$, and this is
@@ -94,7 +135,18 @@ theorem caseQ_II_second_difference (β h y : ℝ) :
     2 * Q β (y - h / 2) - Q β (y - h) - Q β y = h ^ 2 * (α₀ β - 2 * α₁ β * h + 4 * α₁ β * y) ∧
       ((β = 2⁻¹ ∨ β = β₀) → h ∈ Icc (0 : ℝ) 4⁻¹ → y ∈ Icc (4⁻¹ : ℝ) 2⁻¹ →
         h ^ 2 * (α₀ β - 2 * α₁ β * h + 4 * α₁ β * y) ≥ 0) := by
-  sorry
+  refine ⟨?_, fun hβ hh hy ↦ ?_⟩
+  · rw [Q_eq_affine, Q_eq_affine, Q_eq_affine, α₀, α₁, two_rpow_two_add, two_rpow_one_add]
+    ring
+  have hβ' : β = 2⁻¹ ∨ β = β₀ := hβ
+  have hs := two_rpow_gt_of_half_le (mem_Icc_one_of_caseQ hβ').1
+  have hα1 : 0 ≤ α₁ β := by
+    rw [α₁, two_rpow_one_add]
+    linarith [two_rpow_le_three_halves (mem_Ico_of_caseQ hβ').2.le]
+  have hα0 : 0 ≤ α₀ β := by rw [α₀, two_rpow_two_add]; linarith
+  have : 0 ≤ α₀ β - 2 * α₁ β * h + 4 * α₁ β * y := by
+    nlinarith [mul_nonneg hα1 (show (0 : ℝ) ≤ 4 * y - 2 * h by linarith [hh.2, hy.1])]
+  exact mul_nonneg (sq_nonneg h) this
 
 /-- [DIR], §6.2.1: for $h>0$,
 $$g_{Q,1,\beta}(h,y)=\beta Q_\beta(y)^{1-\frac1\beta}-(\alpha_0-2\alpha_1h+4\alpha_1y)
@@ -102,7 +154,9 @@ h^{2-\frac1\beta}-\tfrac12\beta(1-\beta)Q_\beta(y)^{1-\frac2\beta}h^{\frac1\beta
 theorem caseQ_II_g_Q_1_eq (β h y : ℝ) (hh : 0 < h) :
     g_Q_1 β h y = β * Q β y ^ (1 - β⁻¹) - (α₀ β - 2 * α₁ β * h + 4 * α₁ β * y) * h ^ (2 - β⁻¹)
       - 2⁻¹ * β * (1 - β) * Q β y ^ (1 - 2 / β) * h ^ β⁻¹ := by
-  sorry
+  unfold g_Q_1
+  rw [(caseQ_II_second_difference β h y).1, rpow_sub hh, rpow_two, rpow_neg hh.le]
+  ring
 
 /-- The lower bound ([DIR], §6.2.1)
 $$\underline{g_{Q,1,\beta}}(\underline h,\overline h,\underline y,\overline y)
@@ -131,7 +185,14 @@ $$g_{Q,1,\frac12}(h,y)=\tfrac12Q_{\frac12}(y)^{-1}-(\alpha_0+4\alpha_1y)+2\alpha
 theorem caseQ_II_g_Q_1_half_eq (h y : ℝ) (hh : 0 < h) :
     g_Q_1 2⁻¹ h y = 2⁻¹ * Q 2⁻¹ y ^ (-1 : ℤ) - (α₀ 2⁻¹ + 4 * α₁ 2⁻¹ * y)
       + 2 * α₁ 2⁻¹ * h - 8⁻¹ * Q 2⁻¹ y ^ (-3 : ℤ) * h ^ 2 := by
-  sorry
+  unfold g_Q_1
+  rw [(caseQ_II_second_difference 2⁻¹ h y).1, inv_inv,
+    show (1 : ℝ) - 2 = ((-1 : ℤ) : ℝ) by norm_num, show (-2 : ℝ) = ((-2 : ℤ) : ℝ) by norm_num,
+    show (1 : ℝ) - 2 / 2⁻¹ = ((-3 : ℤ) : ℝ) by norm_num, rpow_intCast, rpow_intCast,
+    rpow_intCast, rpow_two]
+  simp only [zpow_neg, zpow_ofNat]
+  have hh2 : h ^ 2 * (h ^ 2)⁻¹ = 1 := mul_inv_cancel₀ (by positivity)
+  linear_combination (-(α₀ 2⁻¹ - 2 * α₁ 2⁻¹ * h + 4 * α₁ 2⁻¹ * y)) * hh2
 
 /-- [DIR], §6.2.1: $\partial_h^2g_{Q,1,\frac12}(h,y)=-\frac14Q_{\frac12}(y)^{-3}<0$ for $h>0$ and
 $y\in[\frac14,\frac12]$. -/
@@ -139,7 +200,22 @@ theorem caseQ_II_g_Q_1_half_deriv2 (h y : ℝ) (hh : 0 < h)
     (hy : y ∈ Icc (4⁻¹ : ℝ) 2⁻¹) :
     deriv (deriv (fun h ↦ g_Q_1 2⁻¹ h y)) h = -4⁻¹ * Q 2⁻¹ y ^ (-3 : ℤ) ∧
       -4⁻¹ * Q 2⁻¹ y ^ (-3 : ℤ) < 0 := by
-  sorry
+  have hQ := Q_pos (y := y) ⟨le_rfl, by norm_num⟩ ⟨by linarith [hy.1], by linarith [hy.2]⟩
+  set C := Q 2⁻¹ y ^ (-3 : ℤ) with hC
+  set q : ℝ → ℝ := fun u ↦ 2⁻¹ * Q 2⁻¹ y ^ (-1 : ℤ) - (α₀ 2⁻¹ + 4 * α₁ 2⁻¹ * y) +
+    2 * α₁ 2⁻¹ * u - 8⁻¹ * C * u ^ 2 with hq
+  have hev : (fun h ↦ g_Q_1 2⁻¹ h y) =ᶠ[𝓝 h] q := by
+    filter_upwards [lt_mem_nhds hh] with u hu using caseQ_II_g_Q_1_half_eq u y hu
+  have hq1 : ∀ u, HasDerivAt q (2 * α₁ 2⁻¹ - 4⁻¹ * C * u) u := fun u ↦
+    ((((hasDerivAt_id' u).const_mul (2 * α₁ 2⁻¹)).const_add _).sub
+      ((hasDerivAt_pow 2 u).const_mul (8⁻¹ * C))).congr_deriv (by push_cast; ring)
+  have hq2 : deriv q = fun u ↦ 2 * α₁ 2⁻¹ - 4⁻¹ * C * u := funext fun u ↦ (hq1 u).deriv
+  have hq3 : HasDerivAt (fun u ↦ 2 * α₁ 2⁻¹ - 4⁻¹ * C * u) (-4⁻¹ * C) h :=
+    ((hasDerivAt_id' h).const_mul (4⁻¹ * C)).const_sub _ |>.congr_deriv (by ring)
+  refine ⟨?_, ?_⟩
+  · rw [hev.deriv.deriv_eq, hq2, hq3.deriv]
+  · have : 0 < C := by rw [hC]; positivity
+    linarith
 
 /-- [DIR], §6.2.1: $h\mapsto g_{Q,1,\frac12}(h,y)$ is concave (on $(0,\frac14]$), so it suffices to
 evaluate at $h=0$ (meaning the limit $h\to0^+$) and $h=\frac14$: for $y\in[\frac14,\frac12]$
@@ -149,16 +225,49 @@ theorem caseQ_II_g_Q_1_half_concave (y : ℝ) (hy : y ∈ Icc (4⁻¹ : ℝ) 2�
     ConcaveOn ℝ (Ioc 0 4⁻¹) (fun h ↦ g_Q_1 2⁻¹ h y) ∧
       ∀ g₀ : ℝ, Tendsto (fun h ↦ g_Q_1 2⁻¹ h y) (𝓝[>] 0) (𝓝 g₀) →
         ∀ h ∈ Ioc (0 : ℝ) 4⁻¹, g_Q_1 2⁻¹ h y ≥ min g₀ (g_Q_1 2⁻¹ 4⁻¹ y) := by
-  sorry
+  have hQ := Q_pos (y := y) ⟨le_rfl, by norm_num⟩ ⟨by linarith [hy.1], by linarith [hy.2]⟩
+  set a := 2⁻¹ * Q 2⁻¹ y ^ (-1 : ℤ) - (α₀ 2⁻¹ + 4 * α₁ 2⁻¹ * y)
+  set b := 2 * α₁ 2⁻¹
+  set c := 8⁻¹ * Q 2⁻¹ y ^ (-3 : ℤ) with hc
+  have hc0 : 0 ≤ c := by rw [hc]; positivity
+  have heq : ∀ h, 0 < h → g_Q_1 2⁻¹ h y = a + b * h - c * h ^ 2 := fun h hh ↦ by
+    rw [caseQ_II_g_Q_1_half_eq h y hh]
+  refine ⟨(concaveOn_quadratic (a := a) (b := b) hc0 (convex_Ioc 0 4⁻¹)).congr
+    fun h hh ↦ (heq h hh.1).symm, fun g₀ hg₀ h hh ↦ ?_⟩
+  have hcont : Continuous (fun h : ℝ ↦ a + b * h - c * h ^ 2) := by fun_prop
+  have hlim : Tendsto (fun h ↦ g_Q_1 2⁻¹ h y) (𝓝[>] 0) (𝓝 a) := by
+    have h0 : Tendsto (fun h : ℝ ↦ a + b * h - c * h ^ 2) (𝓝[>] 0) (𝓝 (a + b * 0 - c * 0 ^ 2)) :=
+      (hcont.tendsto 0).mono_left nhdsWithin_le_nhds
+    rw [show a + b * 0 - c * 0 ^ 2 = a by ring] at h0
+    refine h0.congr' ?_
+    filter_upwards [self_mem_nhdsWithin] with u hu using (heq u hu).symm
+  rw [heq h hh.1, heq 4⁻¹ (by norm_num), tendsto_nhds_unique hg₀ hlim]
+  have := (concaveOn_quadratic (a := a) (b := b) hc0 (convex_Icc 0 4⁻¹)).min_le_of_mem_Icc
+    (left_mem_Icc.2 (by norm_num)) (right_mem_Icc.2 (by norm_num)) ⟨hh.1.le, hh.2⟩
+  rw [show a + b * 0 - c * 0 ^ 2 = a by ring] at this
+  exact this
 
 section Proof_Claim_1
 /-- [DIR], §6.2.1, proof of claim (1):
 $g_{Q,1,\frac12}(0,y)=\frac12Q_{\frac12}(y)^{-1}-(\alpha_0+4\alpha_1y)$, i.e.
-$g_{Q,1,\frac12}(h,y)\to\frac12Q_{\frac12}(y)^{-1}-(\alpha_0+4\alpha_1y)$ as $h\to0^+$. -/
-theorem caseQ_II_claim_1_limit (y : ℝ) (hy : y ∈ Icc (4⁻¹ : ℝ) 2⁻¹) :
+$g_{Q,1,\frac12}(h,y)\to\frac12Q_{\frac12}(y)^{-1}-(\alpha_0+4\alpha_1y)$ as $h\to0^+$.
+
+**Unused hypothesis.** The paper assumes $y\in[\frac14,\frac12]$; this is not needed for the claim
+and is omitted in the Lean statement. -/
+theorem caseQ_II_claim_1_limit (y : ℝ) :
     Tendsto (fun h ↦ g_Q_1 2⁻¹ h y) (𝓝[>] 0)
       (𝓝 (2⁻¹ * Q 2⁻¹ y ^ (-1 : ℤ) - (α₀ 2⁻¹ + 4 * α₁ 2⁻¹ * y))) := by
-  sorry
+  set a := 2⁻¹ * Q 2⁻¹ y ^ (-1 : ℤ) - (α₀ 2⁻¹ + 4 * α₁ 2⁻¹ * y)
+  set b := 2 * α₁ 2⁻¹
+  set c := 8⁻¹ * Q 2⁻¹ y ^ (-3 : ℤ)
+  have heq : ∀ h, 0 < h → g_Q_1 2⁻¹ h y = a + b * h - c * h ^ 2 := fun h hh ↦ by
+    rw [caseQ_II_g_Q_1_half_eq h y hh]
+  have hcont : Continuous (fun h : ℝ ↦ a + b * h - c * h ^ 2) := by fun_prop
+  have h0 : Tendsto (fun h : ℝ ↦ a + b * h - c * h ^ 2) (𝓝[>] 0) (𝓝 (a + b * 0 - c * 0 ^ 2)) :=
+    (hcont.tendsto 0).mono_left nhdsWithin_le_nhds
+  rw [show a + b * 0 - c * 0 ^ 2 = a by ring] at h0
+  refine h0.congr' ?_
+  filter_upwards [self_mem_nhdsWithin] with u hu using (heq u hu).symm
 
 /-- [DIR], §6.2.1, proof of claim (1): $2Q_{\frac12}(y)>0$, and multiplying by it,
 $\frac12Q_{\frac12}(y)^{-1}-(\alpha_0+4\alpha_1y)\ge0$ is equivalent to
@@ -167,14 +276,26 @@ theorem caseQ_II_claim_1_iff (y : ℝ) (hy : y ∈ Icc (4⁻¹ : ℝ) 2⁻¹) :
     2 * Q 2⁻¹ y > 0 ∧
       (2⁻¹ * Q 2⁻¹ y ^ (-1 : ℤ) - (α₀ 2⁻¹ + 4 * α₁ 2⁻¹ * y) ≥ 0 ↔
         1 - 2 * (α₀ 2⁻¹ + 4 * α₁ 2⁻¹ * y) * Q 2⁻¹ y ≥ 0) := by
-  sorry
+  have hQ := Q_pos (y := y) ⟨le_rfl, by norm_num⟩ ⟨by linarith [hy.1], by linarith [hy.2]⟩
+  refine ⟨by positivity, ?_⟩
+  rw [zpow_neg_one]
+  set K := α₀ 2⁻¹ + 4 * α₁ 2⁻¹ * y
+  have e : 2⁻¹ * (Q 2⁻¹ y)⁻¹ - K = (1 - 2 * K * Q 2⁻¹ y) / (2 * Q 2⁻¹ y) := by
+    generalize Q 2⁻¹ y = q at hQ ⊢
+    field_simp
+  rw [e]
+  constructor
+  · intro h
+    have := mul_nonneg h (by positivity : (0 : ℝ) ≤ 2 * Q 2⁻¹ y)
+    rwa [div_mul_cancel₀ _ (by positivity)] at this
+  · intro h; exact div_nonneg h (by positivity)
 
 /-- [DIR], §6.2.1, proof of claim (1): with $t=\frac12-y$,
 $1-2(\alpha_0+4\alpha_1y)Q_{\frac12}(y)=1-\frac13(1-4t^2)(1-4\alpha_1t)(3-4\alpha_1t)$. -/
 theorem caseQ_II_claim_1_subst (t : ℝ) :
     1 - 2 * (α₀ 2⁻¹ + 4 * α₁ 2⁻¹ * (2⁻¹ - t)) * Q 2⁻¹ (2⁻¹ - t) =
       1 - 3⁻¹ * (1 - 4 * t ^ 2) * (1 - 4 * α₁ 2⁻¹ * t) * (3 - 4 * α₁ 2⁻¹ * t) := by
-  sorry
+  rw [Q_eq_affine, α₀, α₁, two_rpow_two_add, two_rpow_one_add]; ring
 
 /-- [DIR], §6.2.1, proof of claim (1): $1-\frac13(1-4t^2)(1-4\alpha_1t)(3-4\alpha_1t)$ equals zero
 at $t=0$, the three factors do not change sign (are positive) on $[0,\frac14]$, and so it is
@@ -186,7 +307,20 @@ theorem caseQ_II_claim_1_mono :
         0 < 1 - 4 * t ^ 2 ∧ 0 < 1 - 4 * α₁ 2⁻¹ * t ∧ 0 < 3 - 4 * α₁ 2⁻¹ * t) ∧
       MonotoneOn (fun t ↦ 1 - 3⁻¹ * (1 - 4 * t ^ 2) * (1 - 4 * α₁ 2⁻¹ * t) *
         (3 - 4 * α₁ 2⁻¹ * t)) (Icc 0 4⁻¹) := by
-  sorry
+  have hα : 0 < α₁ 2⁻¹ ∧ α₁ 2⁻¹ < 0.2 := by
+    rw [α_half.2]; have := sqrt_two_mem; constructor <;> linarith [this.1, this.2]
+  have hpos : ∀ t ∈ Icc (0 : ℝ) 4⁻¹,
+      0 < 1 - 4 * t ^ 2 ∧ 0 < 1 - 4 * α₁ 2⁻¹ * t ∧ 0 < 3 - 4 * α₁ 2⁻¹ * t := fun t ht ↦
+    ⟨by nlinarith [ht.1, ht.2], by nlinarith [ht.1, ht.2], by nlinarith [ht.1, ht.2]⟩
+  refine ⟨by norm_num, hpos, fun a ha b hb hab ↦ ?_⟩
+  obtain ⟨pa1, pa2, pa3⟩ := hpos a ha
+  obtain ⟨pb1, pb2, pb3⟩ := hpos b hb
+  have f1 : 1 - 4 * b ^ 2 ≤ 1 - 4 * a ^ 2 := by nlinarith [ha.1, hb.1]
+  have f2 : 1 - 4 * α₁ 2⁻¹ * b ≤ 1 - 4 * α₁ 2⁻¹ * a := by nlinarith
+  have f3 : 3 - 4 * α₁ 2⁻¹ * b ≤ 3 - 4 * α₁ 2⁻¹ * a := by nlinarith
+  have := mul_le_mul (mul_le_mul f1 f2 pb2.le pa1.le) f3 pb3.le (mul_pos pa1 pa2).le
+  simp only
+  linarith
 
 end Proof_Claim_1
 
@@ -194,7 +328,16 @@ end Proof_Claim_1
 $g_{Q,1,\frac12}(0,y)$ is the continuous extension $\lim_{h\to0^+}g_{Q,1,\frac12}(h,y)$. -/
 theorem caseQ_II_claim_1 (y : ℝ) (hy : y ∈ Icc (4⁻¹ : ℝ) 2⁻¹) :
     ∃ g₀ ≥ 0, Tendsto (fun h ↦ g_Q_1 2⁻¹ h y) (𝓝[>] 0) (𝓝 g₀) := by
-  sorry
+  refine ⟨_, (caseQ_II_claim_1_iff y hy).2.2 ?_, caseQ_II_claim_1_limit y⟩
+  have hs := caseQ_II_claim_1_subst (2⁻¹ - y)
+  rw [show (2⁻¹ : ℝ) - (2⁻¹ - y) = y by ring] at hs
+  rw [hs]
+  obtain ⟨h0, -, hmono⟩ := caseQ_II_claim_1_mono
+  have := hmono (show (0 : ℝ) ∈ Icc 0 4⁻¹ from ⟨le_rfl, by norm_num⟩)
+    (show 2⁻¹ - y ∈ Icc (0 : ℝ) 4⁻¹ from ⟨by linarith [hy.2], by linarith [hy.1]⟩)
+    (by linarith [hy.2])
+  simp only at this
+  linarith
 
 section Proof_Claim_2
 /-- **(6.8)** ([DIR], §6.2.1, proof of claim (2)) (🚗).

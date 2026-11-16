@@ -5,7 +5,10 @@ Authors: Claude
 -/
 module
 
+public import Isoperim.DIR.«1_Introduction».Definitions
 public import Isoperim.DIR.«2_Envelope_Functions».Definitions
+public import Isoperim.DIR.«5_Auxiliary_Estimates».«5_2_Two_Point_Inequalities»
+public import Isoperim.DIR.«5_Auxiliary_Estimates».«5_3_Properties_L_Q»
 
 /-!
 # [DIR] §6.2 Case Q: auxiliary lemmas
@@ -342,5 +345,76 @@ theorem G₁_L_nonneg {β : ℝ} (hβ : β ∈ Icc (2⁻¹ : ℝ) 1) {x y : ℝ}
   have hb := bim_reduced hβ ht0 ht1 ha
   rw [G₁, hfirst, hLx, hLm]
   nlinarith [mul_le_mul_of_nonneg_left hb hy0.le]
+
+/-! ### Case Q: the parameters and the two-point functional -/
+
+/-- $\log_2\frac32\ge\frac{11}{20}$. -/
+theorem logb_three_halves_ge : (11 / 20 : ℝ) ≤ log₂ (3 / 2) := by
+  have hl : 0 < log 2 := log_pos one_lt_two
+  rw [logb, le_div_iff₀ hl]
+  have : log ((2 : ℝ) ^ 11) ≤ log ((3 / 2) ^ 20) := log_le_log (by positivity) (by norm_num)
+  rw [log_pow, log_pow] at this; push_cast at this; linarith
+
+/-- The two values $\beta\in\{\frac12,\beta_0\}$ of Case $Q$ lie in $[\frac12,\log_2\frac32)$. -/
+theorem mem_Ico_of_caseQ {β : ℝ} (hβ : β = 2⁻¹ ∨ β = β₀) : β ∈ Ico (2⁻¹ : ℝ) (log₂ (3 / 2)) := by
+  have h := logb_three_halves_ge
+  rcases hβ with rfl | rfl
+  · exact ⟨le_rfl, by linarith⟩
+  · rw [β₀]; exact ⟨by norm_num, by linarith⟩
+
+/-- The two values $\beta\in\{\frac12,\beta_0\}$ of Case $Q$ lie in $[\frac12,1]$. -/
+theorem mem_Icc_one_of_caseQ {β : ℝ} (hβ : β = 2⁻¹ ∨ β = β₀) : β ∈ Icc (2⁻¹ : ℝ) 1 :=
+  ⟨(mem_Ico_of_caseQ hβ).1, (mem_Ico_of_caseQ hβ).2.le.trans
+    (logb_three_halves_mem.2.trans (by norm_num))⟩
+
+/-- The functional $\mathcal L(x,y,u,v)=\frac12(((y-x)^{1/\beta}+\max(v,0)^{1/\beta})^\beta+u)$
+of (5.1) for $G^1_\beta$ (the cut-off $\max(v,0)$ only matters for $v<0$). -/
+noncomputable def 𝓛G₁ (β x y u v : ℝ) : ℝ := (((y - x) ^ β⁻¹ + max v 0 ^ β⁻¹) ^ β + u) / 2
+
+/-- $\mathcal L$ of `𝓛G₁` is monotone increasing in $u,v$. -/
+theorem 𝓛G₁_mono {β : ℝ} (hβ : 0 < β) : IsMonotoneTwoPoint (𝓛G₁ β) 0 2⁻¹ := by
+  intro x y hx hxy hy u u' v v' hu hv
+  have h1 : max v 0 ^ β⁻¹ ≤ max v' 0 ^ β⁻¹ :=
+    rpow_le_rpow (le_max_right _ _) (max_le_max hv le_rfl) (inv_nonneg.2 hβ.le)
+  have h0 : 0 ≤ (y - x) ^ β⁻¹ + max v 0 ^ β⁻¹ :=
+    add_nonneg (rpow_nonneg (by linarith) _) (rpow_nonneg (le_max_right _ _) _)
+  have h2 := rpow_le_rpow h0 (add_le_add le_rfl h1) hβ.le
+  unfold 𝓛G₁; linarith
+
+/-- $G^1_\beta[B](x,y)\ge0$ is (5.1) for `𝓛G₁` (if $B(y)\ge0$). -/
+theorem G₁_nonneg_iff {β : ℝ} {B : ℝ → ℝ} {x y : ℝ} (hB : 0 ≤ B y) :
+    G₁ β B x y ≥ 0 ↔ 𝓛G₁ β x y (B x) (B y) ≥ B ((x + y) / 2) := by
+  unfold G₁ 𝓛G₁; rw [max_eq_left hB]
+  constructor <;> intro h <;> linarith
+
+/-- $Q_\beta(y)>0$ for $\beta\in[\frac12,1]$ and $y\in(0,1)$. -/
+theorem Q_pos {β y : ℝ} (hβ : β ∈ Icc (2⁻¹ : ℝ) 1) (hy : y ∈ Ioo (0 : ℝ) 1) : 0 < Q β y := by
+  rw [Q_eq_affine]
+  have h1 := two_rpow_gt_of_half_le hβ.1
+  have h2 := two_rpow_le_two_of_le_one hβ.2
+  have hy1 : 0 < 1 - y := by linarith [hy.2]
+  have : 0 < -3 + 12 * y + (4 - 8 * y) * 2 ^ β := by nlinarith [hy.1, hy.2]
+  have : 0 < 2 / 3 * y * (1 - y) := by have := hy.1; positivity
+  nlinarith
+
+/-- A quadratic $a+bh-ch^2$ with $c\ge0$ is concave. -/
+theorem concaveOn_quadratic {a b c : ℝ} (hc : 0 ≤ c) {s : Set ℝ} (hs : Convex ℝ s) :
+    ConcaveOn ℝ s (fun h ↦ a + b * h - c * h ^ 2) := by
+  refine ⟨hs, fun x _ y _ θ φ hθ hφ hθφ ↦ ?_⟩
+  simp only [smul_eq_mul]
+  have hφ' : φ = 1 - θ := by linarith
+  subst hφ'
+  nlinarith [mul_nonneg (mul_nonneg hθ hφ) (mul_nonneg hc (sq_nonneg (x - y)))]
+
+/-- $2^{1/2}=\sqrt2$. -/
+theorem two_rpow_half : (2 : ℝ) ^ (2⁻¹ : ℝ) = √2 := by rw [sqrt_eq_rpow]; norm_num
+
+/-- $1.41421<\sqrt2<1.41422$. -/
+theorem sqrt_two_mem : √2 ∈ Ioo (1.41421 : ℝ) 1.41422 :=
+  ⟨by rw [lt_sqrt (by norm_num)]; norm_num, by rw [sqrt_lt' (by norm_num)]; norm_num⟩
+
+/-- $\alpha_0(\frac12)=4\sqrt2-5$ and $\alpha_1(\frac12)=3-2\sqrt2$. -/
+theorem α_half : α₀ 2⁻¹ = 4 * √2 - 5 ∧ α₁ 2⁻¹ = 3 - 2 * √2 := by
+  rw [α₀, α₁, two_rpow_two_add, two_rpow_one_add, two_rpow_half]; exact ⟨rfl, rfl⟩
 
 end Auto.DIR
