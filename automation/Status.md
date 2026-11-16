@@ -310,25 +310,25 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 13:39:07 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_2_Case_Q: `caseQ`
 - complete — 2026-11-16 13:40:07 ET — [DIRX] 2_Preliminaries/2_3_Properties_L_Q: `lemma_2_3`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `eqn_3_3`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G₂_BX_eq_G_LJQ`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `eqn_3_4`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_strictConcave`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `caseLJQ_II_of_boundary`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `eqn_3_5`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv4_neg`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv2_strictConcave`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `eqn_3_6`
+- complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G₂_BX_eq_G_LJQ`
+- complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `eqn_3_4`
+- complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_strictConcave`
+- complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `caseLJQ_II_of_boundary`
+- complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv`
+- complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `eqn_3_5`
+- complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv4_neg`
+- complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv2_strictConcave`
+- complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `eqn_3_6`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv2_zero`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv_eval`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv_half_pos`
+- complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv_eval`
+- complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv_half_pos`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv_zero`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_one_half`
+- complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_one_half`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_nonneg`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `eqn_3_7`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_diag_deriv2`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_diag_concave`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_diag_eval`
+- complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_diag_eval`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_diag_nonneg`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `caseLJQ_II`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `caseLJQ`
