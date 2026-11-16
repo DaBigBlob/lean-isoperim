@@ -358,12 +358,12 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 14:11:17 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `G₁_of_g_QJ`
 - complete — 2026-11-16 14:11:17 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `g_QJ_half_iff`
 - complete — 2026-11-16 14:11:17 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `g_QJ_half`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `eqn_3_13`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `g_QJ_nonneg`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `caseQJ_near`
+- complete — 2026-11-16 15:15:36 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `eqn_3_13`
+- complete — 2026-11-16 15:15:36 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `g_QJ_nonneg`
+- complete — 2026-11-16 15:15:36 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `caseQJ_near`
 - complete — 2026-11-16 14:11:17 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `G₁_BX_eq_h_QJ₂`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `eqn_3_14`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `caseQJ`
+- complete — 2026-11-16 15:15:36 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `eqn_3_14`
+- complete — 2026-11-16 15:15:36 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `caseQJ`
 - complete — 2026-11-16 14:11:17 ET — [DIRX] 2_Preliminaries/2_1_Reduction_Two_Point_Inequality: `BX_ge_LX`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 2_Preliminaries/2_1_Reduction_Two_Point_Inequality: `eqn_2_4`
 

@@ -463,6 +463,10 @@ $w_0=0.895769$.
   tangent bound `Auto.DIRX.Qmx` of the concave cubic $Q$ on
   $[\frac{\underline x+\underline y}2,\frac{\underline x+\overline y}2]$ (equal to the paper's value
   where $Q$ is monotone). The paper's partition `h_QJQ_2` (4498 rectangles) is refined dyadically
-  where this bound is $<1.5\cdot10^{-7}$ (42 more rectangles) and on two rectangles where the
-  interval evaluation is too coarse (6 more), 4546 rectangles in all
-  (`3_5_Case_QJQ_aux_cert312*.lean`); the statement is unchanged.
+  where this bound is $<1.5\cdot10^{-7}$ (4540 rectangles, `3_5_Case_QJQ_aux_cert312*.lean`); the
+  statement is unchanged.
+- [DIRX] (3.13), (3.14): the paper's tight lower bounds and partitions (`h_QJ_1`: 1375,
+  `h_QJ_2`: 2959 rectangles) pass unchanged (`3_6_Case_QJ_aux_cert313*.lean`,
+  `..._cert314*.lean`), with the enclosures of $\mathrm J$, $|\mathrm J'|$ proved on
+  $[\frac14,1]$ (`3_6_Case_QJ_aux.lean`, item 9 above). For (3.14) (margin $\approx10^{-7}$) the
+  constant $J_{w_1}(\frac12)$ is certified to $2\cdot10^{-12}$ (`Auto.DIRX.cJhalf`).

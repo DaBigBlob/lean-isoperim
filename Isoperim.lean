@@ -51,6 +51,7 @@ public import Isoperim.DIRX.«2_Preliminaries».«2_3_Properties_L_Q»
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_3_Case_LJQ_aux»
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_3_Case_LJQ_aux_vals»
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_3_Case_LJQ_aux_cert37»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_3_Case_LJQ_aux_lo»
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_3_Case_LJQ»
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_4_Case_LJ_aux»
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_4_Case_LJ_aux_cert38»
@@ -64,6 +65,17 @@ public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux_
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux_cert312b4»
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux_cert312»
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_6_Case_QJ_aux»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_6_Case_QJ_aux_cert313a»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_6_Case_QJ_aux_cert313b1»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_6_Case_QJ_aux_cert313b2»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_6_Case_QJ_aux_cert313»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_6_Case_QJ_aux_cert314a»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_6_Case_QJ_aux_cert314b1»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_6_Case_QJ_aux_cert314b2»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_6_Case_QJ_aux_cert314b3»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_6_Case_QJ_aux_cert314b4»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_6_Case_QJ_aux_cert314»
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_6_Case_QJ»
 public import Isoperim.DIRX.«2_Preliminaries».«2_1_Reduction_Two_Point_Inequality»
 public import Isoperim.DIRX.«1_Introduction».Thm_1_1

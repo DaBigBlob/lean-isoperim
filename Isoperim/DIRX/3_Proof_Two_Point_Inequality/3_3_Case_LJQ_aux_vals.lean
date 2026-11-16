@@ -60,8 +60,12 @@ noncomputable def JwPt.cert (p : JwPt) : Cert := ⟨p.l, p.u, gJw w₁ p.y, p.h�
 
 /-- The certified constant $J_{w_1}(\frac12)$. -/
 noncomputable def cJhalf : Cert :=
-  ⟨0.50699, 0.506997, gJw w₁ 2⁻¹, by
-    have := gJw_w₁_half_fine; push_cast; exact this⟩
+  ⟨506993328774 / 10 ^ 12, 506993330775 / 10 ^ 12, gJw w₁ 2⁻¹, by
+    have := gJw_w₁_mem (y := 1 / 2) (a := 506993328774 / 10 ^ 12) (b := 506993330775 / 10 ^ 12)
+      (sl := 919370219377073 / 10 ^ 16) (su := 57460638709817 / 625000000000000)
+      (by decide +kernel)
+    push_cast at this ⊢
+    rwa [show (1 / 2 : ℝ) = 2⁻¹ by norm_num] at this⟩
 
 /-- The certified constant $\sqrt2$. -/
 noncomputable def cSqrt2 : Cert :=
