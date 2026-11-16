@@ -209,18 +209,18 @@ its state changes; no free-text entries.
 
 ## Task 3 — [DIRX] two-point inequality (with [DIR] Case Q)
 
-- not started — 2026-11-12 15:19:51 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_1_convex`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_1_endpoint`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_1_quarter_steps`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_1_quarter`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_1_unique_zero`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_1_max`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_1_endpoints`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_2_concave`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_2_half`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_2_quarter`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_2_convex`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9`
+- in progress — 2026-11-16 11:40:19 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_1_convex`
+- in progress — 2026-11-16 11:40:19 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_1_endpoint`
+- in progress — 2026-11-16 11:40:19 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_1_quarter_steps`
+- in progress — 2026-11-16 11:40:19 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_1_quarter`
+- in progress — 2026-11-16 11:40:19 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_1_unique_zero`
+- in progress — 2026-11-16 11:40:19 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_1_max`
+- in progress — 2026-11-16 11:40:19 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_1_endpoints`
+- in progress — 2026-11-16 11:40:19 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_2_concave`
+- in progress — 2026-11-16 11:40:19 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_2_half`
+- in progress — 2026-11-16 11:40:19 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_2_quarter`
+- in progress — 2026-11-16 11:40:19 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_2_convex`
+- in progress — 2026-11-16 11:40:19 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 5_Auxiliary_Estimates/5_2_Two_Point_Inequalities: `lemma_5_2_chain`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 5_Auxiliary_Estimates/5_2_Two_Point_Inequalities: `lemma_5_2`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 5_Auxiliary_Estimates/5_2_Two_Point_Inequalities: `G₁_diag`
