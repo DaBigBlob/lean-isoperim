@@ -282,11 +282,11 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 13:21:41 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_6`
 - complete — 2026-11-16 13:21:41 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `prop_6_2`
 - complete — 2026-11-16 13:22:30 ET — [DIR] 2_Envelope_Functions/2_2_Proofs_Theorems_1_1_1_5_1_7: `b_eq_Q_ge_L`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 2_Preliminaries/2_2_Properties_J: `JX_mul_deriv2`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 2_Preliminaries/2_2_Properties_J: `γX_mem`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 2_Preliminaries/2_2_Properties_J: `JX_concave`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 2_Preliminaries/2_2_Properties_J: `deriv_JX`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 2_Preliminaries/2_2_Properties_J: `JX_mono`
+- complete — 2026-11-16 13:28:20 ET — [DIRX] 2_Preliminaries/2_2_Properties_J: `JX_mul_deriv2`
+- complete — 2026-11-16 13:28:20 ET — [DIRX] 2_Preliminaries/2_2_Properties_J: `γX_mem`
+- complete — 2026-11-16 13:28:20 ET — [DIRX] 2_Preliminaries/2_2_Properties_J: `JX_concave`
+- complete — 2026-11-16 13:28:20 ET — [DIRX] 2_Preliminaries/2_2_Properties_J: `deriv_JX`
+- complete — 2026-11-16 13:28:20 ET — [DIRX] 2_Preliminaries/2_2_Properties_J: `JX_mono`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_G₁_eq`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_rhs_nonneg`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_sq_iff`
