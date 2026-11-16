@@ -287,24 +287,24 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 13:28:20 ET — [DIRX] 2_Preliminaries/2_2_Properties_J: `JX_concave`
 - complete — 2026-11-16 13:28:20 ET — [DIRX] 2_Preliminaries/2_2_Properties_J: `deriv_JX`
 - complete — 2026-11-16 13:28:20 ET — [DIRX] 2_Preliminaries/2_2_Properties_J: `JX_mono`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_G₁_eq`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_rhs_nonneg`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_sq_iff`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `FX_deriv`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `FX_deriv2`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `FX_zero`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `γX_le_two`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_I_lower`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_I_convex`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_I_sq_deriv`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_I`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_II`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_II_eval`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `eqn_3_2`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `FX_nonneg`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_cu`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `eqn_3_1`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ`
+- complete — 2026-11-16 13:37:46 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_G₁_eq`
+- complete — 2026-11-16 13:37:46 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_rhs_nonneg`
+- complete — 2026-11-16 13:37:46 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_sq_iff`
+- complete — 2026-11-16 13:37:46 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `FX_deriv`
+- complete — 2026-11-16 13:37:46 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `FX_deriv2`
+- complete — 2026-11-16 13:37:46 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `FX_zero`
+- complete — 2026-11-16 13:37:46 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `γX_le_two`
+- complete — 2026-11-16 13:37:46 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_I_lower`
+- complete — 2026-11-16 13:37:46 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_I_convex`
+- complete — 2026-11-16 13:37:46 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_I_sq_deriv`
+- complete — 2026-11-16 13:37:46 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_I`
+- complete — 2026-11-16 13:37:46 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_II`
+- complete — 2026-11-16 13:37:46 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_II_eval`
+- complete — 2026-11-16 13:37:46 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `eqn_3_2`
+- complete — 2026-11-16 13:37:46 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `FX_nonneg`
+- complete — 2026-11-16 13:37:46 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ_cu`
+- complete — 2026-11-16 13:37:46 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `eqn_3_1`
+- complete — 2026-11-16 13:37:46 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_1_Case_J: `caseJ`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_2_Case_Q: `caseQ_G₁_max`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_2_Case_Q: `BX_eq_max`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_2_Case_Q: `caseQ`

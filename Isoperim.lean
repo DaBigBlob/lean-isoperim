@@ -44,6 +44,7 @@ public import Isoperim.DIRX.«1_Introduction».Definitions
 public import Isoperim.DIRX.«2_Preliminaries».Definitions
 public import Isoperim.DIRX.«2_Preliminaries».«2_2_Properties_J_aux_gamma»
 public import Isoperim.DIRX.«2_Preliminaries».«2_2_Properties_J»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_1_Case_J_aux»
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_1_Case_J»
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_2_Case_Q»
 public import Isoperim.DIRX.«2_Preliminaries».«2_3_Properties_L_Q»
