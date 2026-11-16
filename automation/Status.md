@@ -319,17 +319,17 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv4_neg`
 - complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv2_strictConcave`
 - complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `eqn_3_6`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv2_zero`
+- complete — 2026-11-16 13:59:13 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv2_zero`
 - complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv_eval`
 - complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv_half_pos`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv_zero`
+- complete — 2026-11-16 13:59:13 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv_zero`
 - complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_one_half`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_nonneg`
+- complete — 2026-11-16 13:59:13 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_nonneg`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `eqn_3_7`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_diag_deriv2`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_diag_concave`
+- complete — 2026-11-16 13:59:13 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_diag_deriv2`
+- complete — 2026-11-16 13:59:13 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_diag_concave`
 - complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_diag_eval`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_diag_nonneg`
+- complete — 2026-11-16 13:59:13 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_diag_nonneg`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `caseLJQ_II`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `caseLJQ`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `G₂_BX_eq_h_LJ`

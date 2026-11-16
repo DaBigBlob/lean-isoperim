@@ -89,7 +89,8 @@ theorem gInv_mem_of_phi {t : ℝ} (ht : t ∈ Ioo 0 1) {sl su : ℚ} (hsl : 0 �
 local notation "γ" => γX
 
 /-- The derivatives of $\mathrm J$ on $(1-w_1,1)$: $\mathrm J''=-\gamma/\mathrm J$,
-$\mathrm J'''=\gamma\mathrm J'/\mathrm J^2$, $\mathrm J^{(4)}=-\gamma(\gamma+2(\mathrm J')^2)\mathrm J^{-3}$. -/
+$\mathrm J'''=\gamma\mathrm J'/\mathrm J^2$,
+$\mathrm J^{(4)}=-\gamma(\gamma+2(\mathrm J')^2)\mathrm J^{-3}$. -/
 theorem derivs_JX :
     EqOn (deriv (deriv J)) (fun z ↦ -γ / J z) (Ioo (1 - w₁) 1) ∧
       EqOn (deriv (deriv (deriv J))) (fun z ↦ γ * deriv J z / J z ^ 2) (Ioo (1 - w₁) 1) ∧
@@ -162,7 +163,8 @@ theorem derivs_fl :
       ((√2 - 1) * (-γ * (γ + 2 * deriv J y ^ 2) * J y ^ (-3 : ℤ))) y := fun y hy ↦ by
     have hp := (JX_pos hy).ne'
     have := ((((JX_diff hy).2.hasDerivAt.const_mul (γ * (√2 - 1))).div
-      ((JX_diff hy).1.hasDerivAt.pow 2) (pow_ne_zero 2 hp)).add_const (4 * (3 - 2 ^ (1 + (2⁻¹ : ℝ)))))
+      ((JX_diff hy).1.hasDerivAt.pow 2) (pow_ne_zero 2 hp)).add_const
+        (4 * (3 - 2 ^ (1 + (2⁻¹ : ℝ)))))
     refine this.congr_deriv ?_
     rw [deriv2_JX hy]
     simp only [zpow_neg, zpow_ofNat, Pi.pow_apply]

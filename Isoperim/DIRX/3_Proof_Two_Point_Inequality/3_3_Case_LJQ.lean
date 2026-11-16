@@ -246,7 +246,66 @@ theorem fX_deriv2_zero :
       (∀ y ∈ Ioo (2⁻¹ : ℝ) 1, deriv (deriv f) y = 0 → y = y₀) ∧
       (∀ y ∈ Ioo (2⁻¹ : ℝ) 1, y ≠ y₀ → deriv f y < deriv f y₀) ∧
       StrictMonoOn (deriv f) (Ioc 2⁻¹ y₀) ∧ StrictAntiOn (deriv f) (Ico y₀ 1) := by
-  sorry
+  have hw := one_sub_w₁_lt_half
+  have hJc : ContinuousOn J (Ioo (1 - w₁) 1) := JX_contDiff.1.continuousOn
+  have hc2 : ContinuousOn (deriv (deriv f)) (Ioo (1 - w₁) 1) :=
+    ((continuousOn_const.mul (hJc.inv₀ fun z hz ↦ (JX_pos hz).ne')).sub
+      (by unfold Q2f; fun_prop)).congr fun z hz ↦ derivs_fl.2.1 hz
+  have hd1 : ∀ z ∈ Ioo (1 - w₁) 1, DifferentiableAt ℝ (deriv f) z := fun z hz ↦ by
+    have hq0 := (hasDerivAt_Q1f 2⁻¹ (z / 2)).comp z ((hasDerivAt_id' z).div_const 2)
+    have hq : DifferentiableAt ℝ (fun y ↦ Q1f 2⁻¹ (y / 2)) z := hq0.differentiableAt
+    have h : DifferentiableAt ℝ (fun y ↦ 1 + (√2 - 1) * deriv J y - Q1f 2⁻¹ (y / 2)) z :=
+      (((JX_diff hz).2.const_mul (√2 - 1)).const_add 1).sub hq
+    refine h.congr_of_eventuallyEq ?_
+    filter_upwards [isOpen_Ioo.mem_nhds hz] with w hw' using derivs_fl.1 hw'
+  have hdf : ∀ z ∈ Ioo (1 - w₁) 1, DifferentiableAt ℝ f z := fun z hz ↦ by
+    have hq0 := (hasDerivAt_Q 2⁻¹ ((0 + z) / 2)).comp z
+      (((hasDerivAt_id' z).const_add 0).div_const 2)
+    have hq : DifferentiableAt ℝ (fun y ↦ Q ((0 + y) / 2)) z := hq0.differentiableAt
+    exact (((differentiableAt_id.sub_const 0).add ((JX_diff hz).1.const_mul (√2 - 1))).add_const
+      _).sub (hq.const_mul 2)
+  have hconc : StrictConcaveOn ℝ (Ioo (1 - w₁) 1) (deriv (deriv f)) := by
+    refine strictConcaveOn_of_deriv2_neg' (convex_Ioo _ _) hc2 fun y hy ↦ ?_
+    have h : deriv (deriv (deriv (deriv f))) y =
+        (√2 - 1) * (-γ * (γ + 2 * deriv J y ^ 2) * J y ^ (-3 : ℤ)) := derivs_fl.2.2.2 hy
+    change deriv (deriv (deriv (deriv f))) y < 0
+    rw [h]
+    have hs : 0 < √2 - 1 := by linarith [sqrt_two_mem.1]
+    have : 0 < J y ^ (-3 : ℤ) := zpow_pos (JX_pos hy) _
+    have : 0 < γ + 2 * deriv J y ^ 2 := by have := γX_pos; positivity
+    nlinarith [mul_pos (mul_pos γX_pos this) ‹0 < J y ^ (-3 : ℤ)›]
+  obtain ⟨e1, e2, e3⟩ := eqn_3_6
+  set φ := deriv (deriv f)
+  have hU : ∀ y ∈ Ioo (2⁻¹ : ℝ) 1, y ∈ Ioo (1 - w₁) 1 := fun y hy ↦ ⟨by linarith [hy.1], hy.2⟩
+  have hh : (2⁻¹ : ℝ) ∈ Ioo (1 - w₁) 1 := ⟨hw, by norm_num⟩
+  obtain ⟨y₀, hy₀, hφ₀⟩ := intermediate_value_Ioo' (show (9 / 16 : ℝ) ≤ 4 / 5 by norm_num)
+    (hc2.mono fun z hz ↦ ⟨by linarith [hz.1], by linarith [hz.2]⟩)
+    (show (0 : ℝ) ∈ Ioo (φ (4 / 5)) (φ (9 / 16)) from ⟨by linarith, by linarith⟩)
+  have hy₀' : y₀ ∈ Ioo (2⁻¹ : ℝ) 1 := ⟨by linarith [hy₀.1], by linarith [hy₀.2]⟩
+  have hpos : ∀ y ∈ Ioo (2⁻¹ : ℝ) y₀, 0 < φ y := fun y hy ↦
+    concaveOn_pos_of_pos hconc.concaveOn hh (hU y₀ hy₀') hy.1 hy.2 (by linarith) hφ₀.ge
+  have hneg : ∀ y ∈ Ioo y₀ 1, φ y < 0 := fun y hy ↦ by
+    by_contra h
+    have := concaveOn_pos_of_pos hconc.concaveOn hh ⟨by linarith [hy.1, hy₀'.1], hy.2⟩ hy₀'.1
+      hy.1 (by linarith) (not_lt.1 h)
+    linarith
+  have hsm : StrictMonoOn (deriv f) (Ioc 2⁻¹ y₀) :=
+    strictMonoOn_of_deriv_pos (convex_Ioc _ _)
+      (fun z hz ↦ (hd1 z ⟨by linarith [hz.1], by linarith [hz.2, hy₀'.2]⟩).continuousAt
+        |>.continuousWithinAt)
+      fun z hz ↦ by rw [interior_Ioc] at hz; exact hpos z hz
+  have hsa : StrictAntiOn (deriv f) (Ico y₀ 1) :=
+    strictAntiOn_of_deriv_neg (convex_Ico _ _)
+      (fun z hz ↦ (hd1 z ⟨by linarith [hz.1, hy₀'.1], hz.2⟩).continuousAt.continuousWithinAt)
+      fun z hz ↦ by rw [interior_Ico] at hz; exact hneg z hz
+  refine ⟨y₀, hy₀', hφ₀, fun y hy hφ ↦ ?_, fun y hy hne ↦ ?_, hsm, hsa⟩
+  · rcases lt_trichotomy y y₀ with h | h | h
+    · linarith [hpos y ⟨hy.1, h⟩]
+    · exact h
+    · linarith [hneg y ⟨h, hy.2⟩]
+  · rcases lt_or_gt_of_ne hne with h | h
+    · exact hsm ⟨hy.1, h.le⟩ ⟨hy₀'.1, le_rfl⟩ h
+    · exact hsa ⟨le_rfl, hy₀'.2⟩ ⟨h.le, hy.2⟩ h
 
 /-- [DIRX], §3.3: $f'(\frac9{16})>0.05$ and $f'(\frac{15}{16})<-0.08$. -/
 theorem fX_deriv_eval : deriv f (9 / 16) > 0.05 ∧ deriv f (15 / 16) < -0.08 := by
@@ -318,7 +377,74 @@ theorem fX_deriv_zero :
     ∃ y₁ ∈ Ioo (2⁻¹ : ℝ) 1, deriv f y₁ = 0 ∧
       (∀ y ∈ Ioo (2⁻¹ : ℝ) 1, deriv f y = 0 → y = y₁) ∧
       MonotoneOn f (Icc 2⁻¹ y₁) ∧ AntitoneOn f (Icc y₁ 1) := by
-  sorry
+  have hw := one_sub_w₁_lt_half
+  have hJc : ContinuousOn J (Ioo (1 - w₁) 1) := JX_contDiff.1.continuousOn
+  have hc2 : ContinuousOn (deriv (deriv f)) (Ioo (1 - w₁) 1) :=
+    ((continuousOn_const.mul (hJc.inv₀ fun z hz ↦ (JX_pos hz).ne')).sub
+      (by unfold Q2f; fun_prop)).congr fun z hz ↦ derivs_fl.2.1 hz
+  have hd1 : ∀ z ∈ Ioo (1 - w₁) 1, DifferentiableAt ℝ (deriv f) z := fun z hz ↦ by
+    have hq0 := (hasDerivAt_Q1f 2⁻¹ (z / 2)).comp z ((hasDerivAt_id' z).div_const 2)
+    have hq : DifferentiableAt ℝ (fun y ↦ Q1f 2⁻¹ (y / 2)) z := hq0.differentiableAt
+    have h : DifferentiableAt ℝ (fun y ↦ 1 + (√2 - 1) * deriv J y - Q1f 2⁻¹ (y / 2)) z :=
+      (((JX_diff hz).2.const_mul (√2 - 1)).const_add 1).sub hq
+    refine h.congr_of_eventuallyEq ?_
+    filter_upwards [isOpen_Ioo.mem_nhds hz] with w hw' using derivs_fl.1 hw'
+  have hdf : ∀ z ∈ Ioo (1 - w₁) 1, DifferentiableAt ℝ f z := fun z hz ↦ by
+    have hq0 := (hasDerivAt_Q 2⁻¹ ((0 + z) / 2)).comp z
+      (((hasDerivAt_id' z).const_add 0).div_const 2)
+    have hq : DifferentiableAt ℝ (fun y ↦ Q ((0 + y) / 2)) z := hq0.differentiableAt
+    exact (((differentiableAt_id.sub_const 0).add ((JX_diff hz).1.const_mul (√2 - 1))).add_const
+      _).sub (hq.const_mul 2)
+  obtain ⟨y₀, hy₀, -, -, hmax, hsm, hsa⟩ := fX_deriv2_zero
+  obtain ⟨e1, e2⟩ := fX_deriv_eval
+  have hhalf := fX_deriv_half_pos
+  have hy₀1 : y₀ < 15 / 16 := by
+    by_contra h
+    have := hsm ⟨by norm_num, by linarith⟩ ⟨by norm_num, not_lt.1 h⟩
+      (by norm_num : (9 / 16 : ℝ) < 15 / 16)
+    linarith
+  have hfy₀ : deriv f y₀ > 0.05 := by
+    rcases eq_or_ne (9 / 16) y₀ with h | h
+    · rw [← h]; exact e1
+    · linarith [hmax (9 / 16) ⟨by norm_num, by norm_num⟩ h]
+  obtain ⟨y₁, hy₁, hf₁⟩ := intermediate_value_Ioo' hy₀1.le
+    (fun z hz ↦ (hd1 z ⟨by linarith [hz.1, hy₀.1], by linarith [hz.2]⟩).continuousAt
+      |>.continuousWithinAt)
+    (show (0 : ℝ) ∈ Ioo (deriv f (15 / 16)) (deriv f y₀) from ⟨by linarith, by linarith⟩)
+  have hy₁' : y₁ ∈ Ioo (2⁻¹ : ℝ) 1 := ⟨by linarith [hy₁.1, hy₀.1], by linarith [hy₁.2]⟩
+  have hle : ∀ y ∈ Ioc (2⁻¹ : ℝ) y₀, deriv f 2⁻¹ ≤ deriv f y := fun y hy ↦ by
+    have hc : ContinuousAt (deriv f) 2⁻¹ := (hd1 _ ⟨hw, by norm_num⟩).continuousAt
+    refine le_of_tendsto (hc.tendsto.mono_left (nhdsWithin_le_nhds (s := Ioi 2⁻¹))) ?_
+    filter_upwards [Ioo_mem_nhdsGT hy.1] with z hz
+    exact (hsm ⟨hz.1, hz.2.le.trans hy.2⟩ hy hz.2).le
+  have hfpos : ∀ y ∈ Ioo (2⁻¹ : ℝ) y₁, 0 < deriv f y := fun y hy ↦ by
+    rcases le_total y y₀ with h | h
+    · linarith [hle y ⟨hy.1, h⟩]
+    · have := hsa ⟨h, by linarith [hy.2, hy₁.2]⟩ ⟨hy₁.1.le, hy₁'.2⟩ hy.2
+      linarith
+  refine ⟨y₁, hy₁', hf₁, fun y hy h0 ↦ ?_, ?_, ?_⟩
+  · rcases le_total y y₀ with h | h
+    · linarith [hle y ⟨hy.1, h⟩]
+    · exact hsa.injOn ⟨h, hy.2⟩ ⟨hy₁.1.le, hy₁'.2⟩ (h0.trans hf₁.symm)
+  · have hJc' : ContinuousOn J (Icc 2⁻¹ 1) := JX_contDiff.2.mono (Icc_subset_Icc hw.le le_rfl)
+    refine monotoneOn_of_deriv_nonneg (convex_Icc _ _) ?_ (fun z hz ↦ ?_) fun z hz ↦ ?_
+    · exact fun z hz ↦ (hdf z ⟨by linarith [hz.1], by linarith [hz.2, hy₁'.2]⟩).continuousAt
+        |>.continuousWithinAt
+    · rw [interior_Icc] at hz
+      exact (hdf z ⟨by linarith [hz.1], by linarith [hz.2, hy₁'.2]⟩).differentiableWithinAt
+    · rw [interior_Icc] at hz; exact (hfpos z hz).le
+  · have hJc' : ContinuousOn J (Icc 2⁻¹ 1) := JX_contDiff.2.mono (Icc_subset_Icc hw.le le_rfl)
+    have hcf : ContinuousOn f (Icc 2⁻¹ 1) := by
+      have hQ : Continuous (fun y : ℝ ↦ Q ((0 + y) / 2)) :=
+        (continuous_Q _).comp (by fun_prop)
+      exact ((((continuousOn_id.sub continuousOn_const).add (continuousOn_const.mul hJc')).add
+        continuousOn_const).sub (continuousOn_const.mul hQ.continuousOn))
+    refine antitoneOn_of_deriv_nonpos (convex_Icc _ _)
+      (hcf.mono (Icc_subset_Icc hy₁'.1.le le_rfl)) (fun z hz ↦ ?_) fun z hz ↦ ?_
+    · rw [interior_Icc] at hz
+      exact (hdf z ⟨by linarith [hz.1, hy₁'.1], hz.2⟩).differentiableWithinAt
+    · rw [interior_Icc] at hz
+      exact (hsa ⟨hy₁.1.le, hy₁'.2⟩ ⟨(hy₁.1.trans hz.1).le, hz.2⟩ hz.1).le.trans_eq hf₁
 
 /-- [DIRX], §3.3: $f(1)=f(\frac12)=0$. -/
 theorem fX_one_half : f 1 = 0 ∧ f 2⁻¹ = 0 := by
@@ -333,7 +459,13 @@ theorem fX_one_half : f 1 = 0 ∧ f 2⁻¹ = 0 := by
 
 /-- [DIRX], §3.3: $f(y)\ge0$ for $y\in[\frac12,1]$, i.e. $G_{LJQ}(0,y)\ge0$. -/
 theorem fX_nonneg (y : ℝ) (hy : y ∈ Icc (2⁻¹ : ℝ) 1) : f y ≥ 0 := by
-  sorry
+  obtain ⟨y₁, hy₁, -, -, hm, ha⟩ := fX_deriv_zero
+  obtain ⟨h1, h2⟩ := fX_one_half
+  rcases le_total y y₁ with h | h
+  · have := hm ⟨le_rfl, hy₁.1.le⟩ ⟨hy.1, h⟩ hy.1
+    rw [h2] at this; exact this
+  · have := ha ⟨h, hy.2⟩ ⟨hy₁.2.le, le_rfl⟩ hy.2
+    rw [h1] at this; exact this
 
 end Boundary_x_eq_0
 
@@ -355,19 +487,97 @@ theorem G_LJQ_diag_deriv2 (y : ℝ) (hy : y ∈ Ioo (3 / 4 : ℝ) 1) :
         (√2 - 1) * deriv (deriv J) y + deriv (deriv L) (1 - y) ∧
       deriv (deriv J) y ≤ 0 ∧ deriv (deriv L) (1 - y) ≤ 0 ∧
       (√2 - 1) * deriv (deriv J) y + deriv (deriv L) (1 - y) ≤ 0 := by
-  sorry
+  have hw := one_sub_w₁_lt_half
+  have d1 : ∀ t ∈ Ioo (3 / 4 : ℝ) 1, HasDerivAt (fun t ↦ G_LJQX (1 - t) t)
+      (2 + (√2 - 1) * deriv J t - L1f 2⁻¹ (1 - t)) t := fun t ht ↦ by
+    have ht' : t ∈ Ioo (1 - w₁) 1 := ⟨by linarith [ht.1], ht.2⟩
+    have hl := (hasDerivAt_L (β := 2⁻¹) (⟨by linarith [ht.2], by linarith [ht.1]⟩ :
+      1 - t ∈ Ioo (0 : ℝ) 1)).comp t ((hasDerivAt_id' t).const_sub 1)
+    have hq := (hasDerivAt_Q 2⁻¹ ((1 - t + t) / 2)).comp t
+      ((((hasDerivAt_id' t).const_sub 1).add (hasDerivAt_id' t)).div_const 2)
+    have := (((((hasDerivAt_id' t).sub ((hasDerivAt_id' t).const_sub 1)).add
+      ((JX_diff ht').1.hasDerivAt.const_mul (√2 - 1))).add hl).sub (hq.const_mul 2))
+    exact this.congr_deriv (by ring)
+  have d2 : ∀ t ∈ Ioo (3 / 4 : ℝ) 1, HasDerivAt
+      (fun t ↦ 2 + (√2 - 1) * deriv J t - L1f 2⁻¹ (1 - t))
+      ((√2 - 1) * deriv (deriv J) t + L2f 2⁻¹ (1 - t)) t := fun t ht ↦ by
+    have ht' : t ∈ Ioo (1 - w₁) 1 := ⟨by linarith [ht.1], ht.2⟩
+    have hl := (hasDerivAt_L1f (β := 2⁻¹) (⟨by linarith [ht.2], by linarith [ht.1]⟩ :
+      1 - t ∈ Ioo (0 : ℝ) 1)).comp t ((hasDerivAt_id' t).const_sub 1)
+    have := (((JX_diff ht').2.hasDerivAt.const_mul (√2 - 1)).const_add 2).sub hl
+    exact this.congr_deriv (by ring)
+  have e1 : EqOn (deriv fun t ↦ G_LJQX (1 - t) t)
+      (fun t ↦ 2 + (√2 - 1) * deriv J t - L1f 2⁻¹ (1 - t)) (Ioo (3 / 4) 1) :=
+    eqOn_deriv_of_eqOn isOpen_Ioo (fun _ _ ↦ rfl) d1
+  have e2 := eqOn_deriv_of_eqOn isOpen_Ioo e1 d2
+  have hy' : y ∈ Ioo (1 - w₁) 1 := ⟨by linarith [hy.1], hy.2⟩
+  have hz : 1 - y ∈ Ioo (0 : ℝ) 1 := ⟨by linarith [hy.2], by linarith [hy.1]⟩
+  have hJ'' : deriv (deriv J) y ≤ 0 := by
+    rw [deriv2_JX hy']; exact div_nonpos_of_nonpos_of_nonneg (by linarith [γX_pos]) (JX_pos hy').le
+  have hL'' : deriv (deriv L) (1 - y) ≤ 0 := by
+    rw [deriv2_L_eq hz]
+    have h := neg_L2f_eq (β := 2⁻¹) hz
+    have hu : 0 < log (1 - y)⁻¹ := log_pos ((one_lt_inv₀ hz.1).2 hz.2)
+    have : 0 ≤ 2⁻¹ * (1 - 2⁻¹ + log (1 - y)⁻¹) * ((1 - y)⁻¹ * log (1 - y)⁻¹ ^ (-2 : ℝ)) *
+        (log (1 - y)⁻¹ / log 2) ^ (2⁻¹ : ℝ) := by
+      have := rpow_pos_of_pos hu (-2 : ℝ)
+      have := rpow_nonneg (div_nonneg hu.le (log_pos one_lt_two).le) (2⁻¹ : ℝ)
+      have := inv_pos.2 hz.1
+      positivity
+    linarith
+  have hs : 0 ≤ √2 - 1 := by linarith [sqrt_two_mem.1]
+  refine ⟨?_, hJ'', hL'', by nlinarith [mul_nonpos_of_nonneg_of_nonpos hs hJ'']⟩
+  rw [e2 hy, deriv2_L_eq hz]
 
 /-- [DIRX], §3.3: the function $y\mapsto G_{LJQ}(1-y,y)$ is concave on $[\frac34,1]$. -/
 theorem G_LJQ_diag_concave : ConcaveOn ℝ (Icc (3 / 4) 1) (fun y ↦ G_LJQX (1 - y) y) := by
-  sorry
+  have hw := one_sub_w₁_lt_half
+  have d1 : ∀ t ∈ Ioo (3 / 4 : ℝ) 1, HasDerivAt (fun t ↦ G_LJQX (1 - t) t)
+      (2 + (√2 - 1) * deriv J t - L1f 2⁻¹ (1 - t)) t := fun t ht ↦ by
+    have ht' : t ∈ Ioo (1 - w₁) 1 := ⟨by linarith [ht.1], ht.2⟩
+    have hl := (hasDerivAt_L (β := 2⁻¹) (⟨by linarith [ht.2], by linarith [ht.1]⟩ :
+      1 - t ∈ Ioo (0 : ℝ) 1)).comp t ((hasDerivAt_id' t).const_sub 1)
+    have hq := (hasDerivAt_Q 2⁻¹ ((1 - t + t) / 2)).comp t
+      ((((hasDerivAt_id' t).const_sub 1).add (hasDerivAt_id' t)).div_const 2)
+    have := (((((hasDerivAt_id' t).sub ((hasDerivAt_id' t).const_sub 1)).add
+      ((JX_diff ht').1.hasDerivAt.const_mul (√2 - 1))).add hl).sub (hq.const_mul 2))
+    exact this.congr_deriv (by ring)
+  have d2 : ∀ t ∈ Ioo (3 / 4 : ℝ) 1, HasDerivAt
+      (fun t ↦ 2 + (√2 - 1) * deriv J t - L1f 2⁻¹ (1 - t))
+      ((√2 - 1) * deriv (deriv J) t + L2f 2⁻¹ (1 - t)) t := fun t ht ↦ by
+    have ht' : t ∈ Ioo (1 - w₁) 1 := ⟨by linarith [ht.1], ht.2⟩
+    have hl := (hasDerivAt_L1f (β := 2⁻¹) (⟨by linarith [ht.2], by linarith [ht.1]⟩ :
+      1 - t ∈ Ioo (0 : ℝ) 1)).comp t ((hasDerivAt_id' t).const_sub 1)
+    have := (((JX_diff ht').2.hasDerivAt.const_mul (√2 - 1)).const_add 2).sub hl
+    exact this.congr_deriv (by ring)
+  have e1 : EqOn (deriv fun t ↦ G_LJQX (1 - t) t)
+      (fun t ↦ 2 + (√2 - 1) * deriv J t - L1f 2⁻¹ (1 - t)) (Ioo (3 / 4) 1) :=
+    eqOn_deriv_of_eqOn isOpen_Ioo (fun _ _ ↦ rfl) d1
+  have e2 := eqOn_deriv_of_eqOn isOpen_Ioo e1 d2
+  have hJc : ContinuousOn J (Icc (3 / 4) 1) :=
+    JX_contDiff.2.mono (Icc_subset_Icc (by linarith) le_rfl)
+  have hLc : ContinuousOn (fun t ↦ L (1 - t)) (Icc (3 / 4) 1) :=
+    (continuousOn_L (by norm_num) (by norm_num)).comp (by fun_prop) fun t ht ↦
+      ⟨by linarith [ht.2], by linarith [ht.1]⟩
+  have hQc : Continuous (fun t : ℝ ↦ Q ((1 - t + t) / 2)) := (continuous_Q _).comp (by fun_prop)
+  have hc : ContinuousOn (fun t ↦ G_LJQX (1 - t) t) (Icc (3 / 4) 1) :=
+    ((((continuousOn_id.sub (continuousOn_const.sub continuousOn_id)).add
+      (continuousOn_const.mul hJc)).add hLc).sub (continuousOn_const.mul hQc.continuousOn))
+  refine concaveOn_of_deriv2_nonpos (convex_Icc _ _) hc (fun t ht ↦ ?_) (fun t ht ↦ ?_)
+    (fun t ht ↦ ?_) <;> rw [interior_Icc] at ht
+  · exact (d1 t ht).differentiableAt.differentiableWithinAt
+  · exact ((d2 t ht).differentiableAt.congr_of_eventuallyEq
+      (by filter_upwards [isOpen_Ioo.mem_nhds ht] with z hz using e1 hz)).differentiableWithinAt
+  · change deriv (deriv fun t ↦ G_LJQX (1 - t) t) t ≤ 0
+    rw [(G_LJQ_diag_deriv2 t ht).1]; exact (G_LJQ_diag_deriv2 t ht).2.2.2
 
 /-- [DIRX], §3.3: $G_{LJQ}(0,1)=0$ and $G_{LJQ}(\frac14,\frac34)>0.01$. -/
 theorem G_LJQ_diag_eval : G_LJQX 0 1 = 0 ∧ G_LJQX 4⁻¹ (3 / 4) > 0.01 := by
   have hJ1 : J 1 = 0 := (JXw_half_one w₁ ⟨by norm_num [w₁], by norm_num [w₁]⟩).2
   have hQ1 : Q 2⁻¹ = 2⁻¹ := Q_half_values.2.2
   have hL4 : L 4⁻¹ = √2 / 4 := by
-    rw [Auto.DIR.L, inv_inv, show (4 : ℝ) = 2 ^ (2 : ℝ) by norm_num, logb_rpow two_pos (by norm_num),
-      sqrt_eq_rpow]; norm_num; ring
+    rw [Auto.DIR.L, inv_inv, show (4 : ℝ) = 2 ^ (2 : ℝ) by norm_num,
+      logb_rpow two_pos (by norm_num), sqrt_eq_rpow]; norm_num; ring
   refine ⟨?_, ?_⟩
   · rw [G_LJQX, hJ1, L_zero, show ((0 : ℝ) + 1) / 2 = 2⁻¹ by norm_num, hQ1]; ring
   · have hg := gJw_w₁_mem (y := 3 / 4) (a := 0.4283) (b := 0.4284)
@@ -380,7 +590,11 @@ theorem G_LJQ_diag_eval : G_LJQX 0 1 = 0 ∧ G_LJQX 4⁻¹ (3 / 4) > 0.01 := by
 
 /-- [DIRX], §3.3: $G_{LJQ}(1-y,y)\ge0$ for all $y\in[\frac34,1]$. -/
 theorem G_LJQ_diag_nonneg (y : ℝ) (hy : y ∈ Icc (3 / 4 : ℝ) 1) : G_LJQX (1 - y) y ≥ 0 := by
-  sorry
+  have h := G_LJQ_diag_concave.min_le_of_mem_Icc (left_mem_Icc.2 (by norm_num))
+    (right_mem_Icc.2 (by norm_num)) hy
+  obtain ⟨h0, h1⟩ := G_LJQ_diag_eval
+  rw [show (1 : ℝ) - 3 / 4 = 4⁻¹ by norm_num, sub_self, h0] at h
+  exact le_trans (le_min (by linarith) le_rfl) h
 
 end Boundary_x_eq_1_sub_y
 
