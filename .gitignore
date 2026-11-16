@@ -63,3 +63,4 @@ automation/raw.md
 
 # Scratch analysis files.
 automation/tmp/
+__pycache__/
