@@ -9,6 +9,7 @@ public import Isoperim.DIR.«1_Introduction».Definitions
 public import Isoperim.DIR.«2_Envelope_Functions».Definitions
 public import Isoperim.DIR.«5_Auxiliary_Estimates».«5_2_Two_Point_Inequalities»
 public import Isoperim.DIR.«5_Auxiliary_Estimates».«5_3_Properties_L_Q»
+public import Isoperim.DIR.«6_Proof_Two_Point_Inequality».«6_2_Case_Q_aux»
 
 /-!
 # [DIR] §6.2 Case Q: $0\le x\le y\le\frac12$
@@ -38,10 +39,13 @@ namespace Auto.DIR
 open Real Set Filter Topology
 
 /-- [DIR], §6.2 (cited from [BIM23, Lemma 2.2]): $G^1_\beta[L_\beta](x,y)\ge0$ for all
-$0\le x\le y\le\frac12$ (for $\beta\in[\frac12,1]$). -/
+$0\le x\le y\le\frac12$ (for $\beta\in[\frac12,1]$).
+
+**Discrepancy with the paper.** Paper: cited, no proof. Lean: proved following the proof of
+[BIM23, Lemma 2.2] (arXiv:2303.06738), see `6_2_Case_Q_aux.lean`. -/
 theorem caseQ_G₁_L (β : ℝ) (hβ : β ∈ Icc (2⁻¹ : ℝ) 1) (x y : ℝ) (hx : 0 ≤ x) (hxy : x ≤ y)
-    (hy : y ≤ 2⁻¹) : G₁ β (L β) x y ≥ 0 := by
-  sorry
+    (hy : y ≤ 2⁻¹) : G₁ β (L β) x y ≥ 0 :=
+  G₁_L_nonneg hβ hx hxy hy
 
 /-- [DIR], §6.2: by Lemma 5.2 and Lemma 5.9, Proposition 6.2 holds on the triangle I,
 $0\le x\le y\le\frac12$, $\frac{x+y}2\le\frac14$. -/

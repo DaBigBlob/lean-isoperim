@@ -421,3 +421,14 @@ $w_0=0.895769$.
   and smoothness of $I$ and $J$, monotonicity of $G^1_\beta$ in $\beta$, $G_{1/2}[cB]\ge cG_{1/2}[B]$
   for $0<c\le1$, the second claim of Lemma 6.4) are listed in `automation/forward_reasoning.md`,
   §4. Unresolved; to be added in the proof phase.
+
+## Proof stage, Task 3 ([DIR] §5.2, §5.3, §6.2, [DIRX] §2–§3, 2026-11-16)
+
+- [DIR] §6.2: $G^1_\beta[L_\beta](x,y)\ge0$ for $0\le x\le y\le\frac12$ is only cited
+  ([BIM23, Lemma 2.2]). Resolved (user decision, 2026-11-16): `Auto.DIR.caseQ_G₁_L` is proved
+  following the proof in [BIM23] (D. Beltran, P. Ivanisvili, J. Madrid, arXiv:2303.06738,
+  Lemma 2.2) in `6_2_Case_Q_aux.lean`. That proof has three steps: the power mean reduction to
+  $\beta=\frac12$; monotonicity in $a=\log_2\frac1y$, which reduces to $y=\frac12$; and the
+  one-variable inequality, via the bounds $-\log(1-s)\ge s+\frac{s^2}2$,
+  $\log\frac2{2-s}\le\frac s2+(\log2-\frac12)s^2$ and the polynomial $v(s)<0$. Lean's `ring`
+  checks the identity $4(1-s)^2(1+s^2)P-W^2=-\frac{s^2(1-s)^2}{4(\log2)^2}v(s)$ stated there.
