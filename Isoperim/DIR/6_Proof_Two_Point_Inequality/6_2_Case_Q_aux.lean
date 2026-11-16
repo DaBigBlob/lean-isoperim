@@ -487,4 +487,122 @@ theorem g_Q_1_lo_le {β : ℝ} (hβ : β = 2⁻¹ ∨ β = β₀) {hl hu yl yu h
   have := mul_le_mul_of_nonneg_left T3 hc
   nlinarith
 
+/-! ### Case Q, region III: the quadratic $R_\beta(y)=y^{-1}Q_\beta(y)$ -/
+
+/-- The quadratic $\frac23(1-y)(2^{\beta+2}-3+4(3-2^{\beta+1})y)$, equal to $y^{-1}Q_\beta(y)$ for
+$y\ne0$. -/
+noncomputable def Rp (β y : ℝ) : ℝ := 2 / 3 * (1 - y) * (2 ^ (β + 2) - 3 + 4 * (3 - 2 ^ (β + 1)) * y)
+
+/-- The derivative of `Rp`. -/
+noncomputable def Rp1 (β y : ℝ) : ℝ :=
+  2 / 3 * (4 * (3 - 2 * 2 ^ β) - (4 * 2 ^ β - 3) - 2 * (4 * (3 - 2 * 2 ^ β)) * y)
+
+/-- The second derivative of `Rp` (a constant). -/
+noncomputable def Rp2 (β : ℝ) : ℝ := -4 / 3 * (4 * (3 - 2 * 2 ^ β))
+
+/-- $y^{-1}Q_\beta(y)=$ `Rp β y` for $y\ne0$. -/
+theorem inv_mul_Q_eq {β y : ℝ} (hy : y ≠ 0) : y⁻¹ * Q β y = Rp β y := by
+  rw [Q, Rp]; field_simp
+
+/-- `Rp β` has derivative `Rp1 β`. -/
+theorem hasDerivAt_Rp (β y : ℝ) : HasDerivAt (Rp β) (Rp1 β y) y := by
+  have h := ((((hasDerivAt_id' y).const_sub 1).const_mul (2 / 3)).mul
+    (((hasDerivAt_id' y).const_mul (4 * (3 - (2 : ℝ) ^ (β + 1)))).const_add
+      ((2 : ℝ) ^ (β + 2) - 3)))
+  refine h.congr_deriv ?_
+  rw [Rp1, two_rpow_add_two, two_rpow_add_one']; ring
+
+/-- `Rp1 β` has derivative `Rp2 β`. -/
+theorem hasDerivAt_Rp1 (β y : ℝ) : HasDerivAt (Rp1 β) (Rp2 β) y := by
+  have h := (((hasDerivAt_id' y).const_mul (2 * (4 * (3 - 2 * (2 : ℝ) ^ β)))).const_sub
+    (4 * (3 - 2 * (2 : ℝ) ^ β) - (4 * 2 ^ β - 3))).const_mul (2 / 3)
+  refine h.congr_deriv ?_
+  rw [Rp2]; ring
+
+/-- `Rp β` and $y^{-1}Q_\beta(y)$ agree near any $y\ne0$. -/
+theorem inv_mul_Q_eventuallyEq {β y : ℝ} (hy : y ≠ 0) :
+    (fun z ↦ z⁻¹ * Q β z) =ᶠ[𝓝 y] Rp β := by
+  filter_upwards [isOpen_ne.mem_nhds hy] with z hz using inv_mul_Q_eq hz
+
+/-- Signs of $R_\beta=$ `Rp β` and its derivatives for $\beta\in\{\frac12,\beta_0\}$:
+$R_\beta>0$ on $(0,1)$, $R_\beta'\le0$ on $[\frac18,1]$, $R_\beta''\le0$. -/
+theorem Rp_signs {β : ℝ} (hβ : β = 2⁻¹ ∨ β = β₀) :
+    (∀ y ∈ Ioo (0 : ℝ) 1, 0 < Rp β y) ∧ (∀ y, 8⁻¹ ≤ y → Rp1 β y ≤ 0) ∧ Rp2 β ≤ 0 := by
+  have hβr := mem_Ico_of_caseQ hβ
+  have hs := two_rpow_gt_of_half_le hβr.1
+  have hs2 := two_rpow_le_three_halves hβr.2.le
+  refine ⟨fun y hy ↦ ?_, fun y hy ↦ ?_, ?_⟩
+  · rw [← inv_mul_Q_eq hy.1.ne']
+    exact mul_pos (inv_pos.2 hy.1) (Q_pos (mem_Icc_one_of_caseQ hβ) hy)
+  · rw [Rp1]; nlinarith
+  · rw [Rp2]; nlinarith
+
+/-- $y\mapsto y^{-1}Q_\beta(y)$ has derivative `Rp1 β y` at $y\ne0$. -/
+theorem hasDerivAt_invQ {β y : ℝ} (hy : y ≠ 0) :
+    HasDerivAt (fun z ↦ z⁻¹ * Q β z) (Rp1 β y) y :=
+  (hasDerivAt_Rp β y).congr_of_eventuallyEq (inv_mul_Q_eventuallyEq hy)
+
+/-- The derivative of $y^{-1}Q_\beta(y)$ is `Rp1 β` near $y\ne0$. -/
+theorem deriv_invQ_eventuallyEq {β y : ℝ} (hy : y ≠ 0) :
+    deriv (fun z ↦ z⁻¹ * Q β z) =ᶠ[𝓝 y] Rp1 β := by
+  filter_upwards [isOpen_ne.mem_nhds hy] with z hz using (hasDerivAt_invQ hz).deriv
+
+/-- The second derivative of $y^{-1}Q_\beta(y)$ is `Rp2 β` near $y\ne0$. -/
+theorem deriv2_invQ_eventuallyEq {β y : ℝ} (hy : y ≠ 0) :
+    deriv (deriv (fun z ↦ z⁻¹ * Q β z)) =ᶠ[𝓝 y] fun _ ↦ Rp2 β := by
+  filter_upwards [isOpen_ne.mem_nhds hy] with z hz
+  rw [(deriv_invQ_eventuallyEq hz).deriv_eq, (hasDerivAt_Rp1 β z).deriv]
+
+/-! ### Case Q, region III: derivatives of $R^c$ and $yR'$ -/
+
+section RpPow
+
+variable {β c y : ℝ}
+
+/-- $(R^c)'=cR^{c-1}R'$ where $R>0$ (with $R=$ `Rp β`). -/
+theorem hasDerivAt_Rp_rpow (hR : 0 < Rp β y) :
+    HasDerivAt (fun z ↦ Rp β z ^ c) (c * Rp β y ^ (c - 1) * Rp1 β y) y :=
+  ((hasDerivAt_Rp β y).rpow_const (Or.inl hR.ne')).congr_deriv (by ring)
+
+/-- $(cR^{c-1}R')'=c((c-1)R^{c-2}R'^2+R^{c-1}R'')$ where $R>0$. -/
+theorem hasDerivAt_Rp_rpow_d1 (hR : 0 < Rp β y) :
+    HasDerivAt (fun z ↦ c * Rp β z ^ (c - 1) * Rp1 β z)
+      (c * ((c - 1) * Rp β y ^ (c - 2) * Rp1 β y ^ 2 + Rp β y ^ (c - 1) * Rp2 β)) y := by
+  have h := ((hasDerivAt_Rp_rpow (c := c - 1) hR).const_mul c).mul (hasDerivAt_Rp1 β y)
+  refine h.congr_deriv ?_
+  rw [show c - 1 - 1 = c - 2 by ring]; ring
+
+/-- $(c(c-1)R^{c-2}R'^2+cR^{c-1}R'')'=c(c-1)(c-2)R^{c-3}R'^3+3c(c-1)R^{c-2}R'R''$ where $R>0$
+(as $R'''=0$). -/
+theorem hasDerivAt_Rp_rpow_d2 (hR : 0 < Rp β y) :
+    HasDerivAt
+      (fun z ↦ c * ((c - 1) * Rp β z ^ (c - 2) * Rp1 β z ^ 2 + Rp β z ^ (c - 1) * Rp2 β))
+      (c * (c - 1) * (c - 2) * Rp β y ^ (c - 3) * Rp1 β y ^ 3
+        + 3 * c * (c - 1) * Rp β y ^ (c - 2) * Rp1 β y * Rp2 β) y := by
+  have h1 := ((hasDerivAt_Rp_rpow (c := c - 2) hR).const_mul (c - 1)).mul
+    ((hasDerivAt_Rp1 β y).pow 2)
+  have h2 := (hasDerivAt_Rp_rpow (c := c - 1) hR).mul_const (Rp2 β)
+  refine ((h1.add h2).const_mul c).congr_deriv ?_
+  rw [show c - 2 - 1 = c - 3 by ring, show c - 1 - 1 = c - 2 by ring]
+  simp only [Pi.pow_apply]
+  push_cast; ring
+
+/-- $(yR')'=R'+yR''$. -/
+theorem hasDerivAt_mul_Rp1 (β y : ℝ) :
+    HasDerivAt (fun z ↦ z * Rp1 β z) (Rp1 β y + y * Rp2 β) y :=
+  ((hasDerivAt_id' y).mul (hasDerivAt_Rp1 β y)).congr_deriv (by ring)
+
+/-- $(R'+yR'')'=2R''$. -/
+theorem hasDerivAt_Rp1_add (β y : ℝ) :
+    HasDerivAt (fun z ↦ Rp1 β z + z * Rp2 β) (2 * Rp2 β) y :=
+  ((hasDerivAt_Rp1 β y).add ((hasDerivAt_id' y).mul_const (Rp2 β))).congr_deriv (by ring)
+
+end RpPow
+
+/-- $y\,R(y)^cR'(y)$ (with $R=$ `Rp β`) is differentiable where $R>0$. -/
+theorem differentiableAt_f0p {β c y : ℝ} (hR : 0 < Rp β y) :
+    DifferentiableAt ℝ (fun z ↦ z * Rp β z ^ c * Rp1 β z) y :=
+  (((hasDerivAt_id' y).mul (hasDerivAt_Rp_rpow (c := c) hR)).mul
+    (hasDerivAt_Rp1 β y)).differentiableAt
+
 end Auto.DIR
