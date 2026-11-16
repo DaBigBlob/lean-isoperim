@@ -349,9 +349,9 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 14:23:37 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `caseLJ`
 - complete — 2026-11-16 14:11:17 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `caseQJQ_of_eqn_3_9`
 - complete — 2026-11-16 14:11:17 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `eqn_3_9_deriv`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `eqn_3_11`
+- complete — 2026-11-16 14:39:22 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `eqn_3_11`
 - complete — 2026-11-16 14:11:17 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `eqn_3_9_half`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `eqn_3_9_low`
+- complete — 2026-11-16 14:39:22 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `eqn_3_9_low`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `eqn_3_12`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `eqn_3_9`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `caseQJQ`

@@ -154,4 +154,40 @@ theorem pos_of_dyTree (t : DyTree) (xl xu yl yu : ℚ) (hx : xl < xu) (hy : yl <
       Matrix.cons_val_one]
     exact ⟨⟨hx'.1, hy'.1⟩, hx'.2, hy'.2⟩
 
+
+
+/-- A balanced binary tree of rectangles (to state properties of long lists of rectangles as nested
+conjunctions of logarithmic depth). -/
+inductive BoxT where
+  /-- One rectangle. -/
+  | one (p : DyBox)
+  /-- Two subtrees. -/
+  | two (a b : BoxT)
+
+/-- The rectangles of a `BoxT`, from left to right. -/
+def BoxT.toList : BoxT → List DyBox
+  | .one p => [p]
+  | .two a b => a.toList ++ b.toList
+
+/-- Every rectangle of a `BoxT` satisfies `P` (nested conjunction). -/
+def BoxT.All (P : DyBox → Prop) : BoxT → Prop
+  | .one p => P p
+  | .two a b => a.All P ∧ b.All P
+
+/-- `BoxT.All` gives the property for every rectangle of `BoxT.toList`. -/
+theorem BoxT.all_mem {P : DyBox → Prop} : ∀ (b : BoxT), b.All P → ∀ p ∈ b.toList, P p
+  | .one q, h, p, hp => by
+    simp only [BoxT.toList, List.mem_singleton] at hp; exact hp ▸ h
+  | .two a b, ⟨ha, hb⟩, p, hp => by
+    simp only [BoxT.toList, List.mem_append] at hp
+    rcases hp with hp | hp
+    · exact BoxT.all_mem a ha p hp
+    · exact BoxT.all_mem b hb p hp
+
+/-- The rectangles of a partition tree, given as a `BoxT` (the identity of the two lists is checked
+by evaluation), all satisfy `P`. -/
+theorem DyTree.forall_of_boxT {P : DyBox → Prop} (t : DyTree) (xl xu yl yu : ℚ) (b : BoxT)
+    (h : t.boxes xl xu yl yu = b.toList) (hb : b.All P) : ∀ p ∈ t.boxes xl xu yl yu, P p := by
+  rw [h]; exact BoxT.all_mem b hb
+
 end Auto.DIR

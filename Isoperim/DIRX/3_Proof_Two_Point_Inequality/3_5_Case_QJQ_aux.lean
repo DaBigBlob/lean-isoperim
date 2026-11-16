@@ -6,7 +6,7 @@ Authors: Claude
 module
 
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_2_Case_Q»
-public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_3_Case_LJQ_aux»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_4_Case_LJ_aux»
 
 /-!
 # [DIRX] §3.5 Case QJQ: auxiliary lemmas
@@ -28,6 +28,10 @@ open Auto.DIR
 
 open Real Set
 
+local notation "J" => JX
+
+local notation "γ" => γX
+
 /-- $G_1[B](x,y)=\sqrt{(y-x)^2+B(y)^2}+B(x)-2B(\frac{x+y}2)$ for $\beta=\frac12$. -/
 theorem G₁_half_eq (B : ℝ → ℝ) (x y : ℝ) :
     Auto.DIR.G₁ 2⁻¹ B x y = √((y - x) ^ 2 + B y ^ 2) + B x - 2 * B ((x + y) / 2) := by
@@ -47,5 +51,148 @@ theorem le_sqrt_of_sq {A R : ℝ} (h : R ≤ 0 ∨ R ^ 2 ≤ A) : R ≤ √A := 
   · rcases h with h | h
     · exact (le_antisymm h hR) ▸ sqrt_nonneg _
     · exact (Real.le_sqrt hR (le_trans (sq_nonneg R) h)).2 h
+
+/-! ### Monotonicity facts for $\underline{h_{QJQ,1}}$ -/
+
+/-- $Q_{1/2}'$ is antitone on $[0,\infty)$: $Q'(a)\le Q'(b)$ for $0\le b\le a$. -/
+theorem deriv_Q_half_anti {a b : ℝ} (hb : 0 ≤ b) (hab : b ≤ a) :
+    deriv (Q 2⁻¹) a ≤ deriv (Q 2⁻¹) b := by
+  rw [deriv_Q_eq, Q1f_eq_affine, Q1f_eq_affine, two_rpow_half]
+  have hs := sqrt_two_mem
+  have k : (20 - 16 * √2) + (a + b) * (16 * √2 - 24) ≤ 0 := by
+    nlinarith [hs.1, mul_nonneg (add_nonneg hb (hb.trans hab)) (by linarith [hs.2] : 0 ≤ 24 - 16 * √2)]
+  have e : (-2 + 20 * a - 24 * a ^ 2 + (8 / 3 - 16 * a + 16 * a ^ 2) * √2) -
+      (-2 + 20 * b - 24 * b ^ 2 + (8 / 3 - 16 * b + 16 * b ^ 2) * √2) =
+      (a - b) * ((20 - 16 * √2) + (a + b) * (16 * √2 - 24)) := by ring
+  nlinarith [mul_nonpos_of_nonneg_of_nonpos (sub_nonneg.2 hab) k]
+
+/-- $Q_{1/2}'\ge0$ on $[0,\frac{65}{128}]$ (concavity of $Q'$ and the endpoint values). -/
+theorem deriv_Q_half_nonneg {a : ℝ} (ha : a ∈ Icc (0 : ℝ) (65 / 128)) : 0 ≤ deriv (Q 2⁻¹) a := by
+  have hs := sqrt_two_mem
+  have hc := concaveOn_quadratic (a := -2 + 8 / 3 * √2) (b := 20 - 16 * √2) (c := 24 - 16 * √2)
+    (by linarith [hs.2]) (convex_Icc (0 : ℝ) (65 / 128))
+  have h := hc.min_le_of_mem_Icc (left_mem_Icc.2 (by norm_num)) (right_mem_Icc.2 (by norm_num)) ha
+  have e : deriv (Q 2⁻¹) a = -2 + 8 / 3 * √2 + (20 - 16 * √2) * a - (24 - 16 * √2) * a ^ 2 := by
+    rw [deriv_Q_eq, Q1f_eq_affine, two_rpow_half]; ring
+  rw [e]
+  refine le_trans (le_min ?_ ?_) h <;> norm_num <;> nlinarith [hs.1, hs.2]
+
+/-- $Q_{1/2}\ge0$ on $[0,1]$. -/
+theorem Q_half_nonneg {a : ℝ} (ha : a ∈ Icc (0 : ℝ) 1) : 0 ≤ Q 2⁻¹ a := by
+  rw [Q_eq_affine, two_rpow_half]
+  have hs := sqrt_two_mem
+  have : 0 ≤ -3 + 12 * a + (4 - 8 * a) * √2 := by
+    have e : -3 + 12 * a + (4 - 8 * a) * √2 = (1 - a) * (-3 + 4 * √2) + a * (9 - 4 * √2) := by ring
+    rw [e]
+    exact add_nonneg (mul_nonneg (by linarith [ha.2]) (by linarith [hs.1]))
+      (mul_nonneg ha.1 (by linarith [hs.2]))
+  have := mul_nonneg (mul_nonneg ha.1 (sub_nonneg.2 ha.2)) this
+  nlinarith
+
+/-- $Q_{1/2}$ is monotone on $[0,\frac{65}{128}]$. -/
+theorem Q_half_monotoneOn : MonotoneOn (Q 2⁻¹) (Icc 0 (65 / 128)) :=
+  monotoneOn_of_deriv_nonneg (convex_Icc _ _) (continuous_Q _).continuousOn
+    (fun x _ ↦ (hasDerivAt_Q _ x).differentiableAt.differentiableWithinAt)
+    fun _ hx ↦ deriv_Q_half_nonneg (interior_subset hx)
+
+/-- For fixed $y$, $x\mapsto2Q(\frac{x+y}2)-Q(x)$ is antitone on $[0,y]$. -/
+theorem two_Q_sub_Q_anti_x (y : ℝ) :
+    AntitoneOn (fun x ↦ 2 * Q 2⁻¹ ((x + y) / 2) - Q 2⁻¹ x) (Icc 0 y) := by
+  have hd : ∀ x, HasDerivAt (fun x ↦ 2 * Q 2⁻¹ ((x + y) / 2) - Q 2⁻¹ x)
+      (deriv (Q 2⁻¹) ((x + y) / 2) - deriv (Q 2⁻¹) x) x := fun x ↦ by
+    have h1 := (hasDerivAt_Q 2⁻¹ ((x + y) / 2)).comp x (((hasDerivAt_id' x).add_const y).div_const 2)
+    have h2 := hasDerivAt_Q 2⁻¹ x
+    rw [deriv_Q_eq]
+    exact ((h1.const_mul 2).sub h2).congr_deriv (by ring)
+  refine antitoneOn_of_deriv_nonpos (convex_Icc _ _)
+    (fun x _ ↦ (hd x).continuousAt.continuousWithinAt)
+    (fun x _ ↦ (hd x).differentiableAt.differentiableWithinAt)
+    fun x hx ↦ ?_
+  rw [interior_Icc] at hx
+  rw [(hd x).deriv]
+  linarith [deriv_Q_half_anti hx.1.le (show x ≤ (x + y) / 2 by linarith [hx.2])]
+
+/-- $\mathrm J\cdot\mathrm J'$ is antitone on $[\frac12,\frac34]$ ([DIRX], §3.5:
+$(\mathrm J\mathrm J')'=(\mathrm J')^2-\gamma$, $(\mathrm J')^2$ convex, endpoint values). -/
+theorem JX_mul_deriv_anti : AntitoneOn (fun t ↦ J t * deriv J t) (Icc 2⁻¹ (3 / 4)) := by
+  have hw := one_sub_w₁_lt_half
+  have hsub : ∀ t ∈ Icc (2⁻¹ : ℝ) (3 / 4), t ∈ Ioo (1 - w₁) 1 := fun t ht ↦
+    ⟨by linarith [ht.1], by linarith [ht.2]⟩
+  have hd : ∀ t ∈ Icc (2⁻¹ : ℝ) (3 / 4), HasDerivAt (fun t ↦ J t * deriv J t)
+      (deriv J t ^ 2 - γ) t := fun t ht ↦ by
+    obtain ⟨d1, d2⟩ := JX_diff (hsub t ht)
+    have := d1.hasDerivAt.mul d2.hasDerivAt
+    convert this using 1
+    have := JX_mul_deriv2 t (hsub t ht)
+    linear_combination -this
+  obtain ⟨g1, g2⟩ := gJw_w₁_half_fine
+  have hg : (0 : ℝ) < gJw w₁ 2⁻¹ := by linarith
+  have hs : (0 : ℝ) < √2 := by positivity
+  have hγ := γX_mem
+  -- endpoint values of $(\mathrm J')^2$
+  have e1 : deriv J 2⁻¹ ^ 2 ≤ 1 := by
+    rw [deriv_JX_half_eq, gInv_16_29_eq]
+    obtain ⟨h1, h2⟩ := gInv_13_29
+    rw [div_pow, div_le_one (by positivity), mul_pow, sq_sqrt (by norm_num)]
+    nlinarith [sq_sqrt (show (0 : ℝ) ≤ 2 by norm_num)]
+  have e2 : deriv J (3 / 4) ^ 2 ≤ 1 := by
+    rw [deriv_JX_eq (hsub _ ⟨by norm_num, le_rfl⟩)]
+    have hm := gInv_mem_of_phi (t := ((8 / 29 : ℚ) : ℝ)) ⟨by norm_num, by norm_num⟩
+      (sl := 45 / 100) (su := 0) (by norm_num) le_rfl
+      (by exact_mod_cast (by decide +kernel : Checker.phiNegHi Checker.P0 (45 / 100) ≤ 8 / 29))
+      (by exact_mod_cast (by decide +kernel : (8 / 29 : ℚ) ≤ Checker.phiNegLo Checker.P0 0))
+    have e : w₁⁻¹ * (1 - 3 / 4) = ((8 / 29 : ℚ) : ℝ) := by norm_num [w₁]
+    rw [e, div_pow, div_le_one (by positivity), mul_pow, sq_sqrt (by norm_num)]
+    push_cast at hm
+    nlinarith [sq_sqrt (show (0 : ℝ) ≤ 2 by norm_num)]
+  refine antitoneOn_of_deriv_nonpos (convex_Icc _ _)
+    (fun t ht ↦ (hd t ht).continuousAt.continuousWithinAt)
+    (fun t ht ↦ (hd t (interior_subset ht)).differentiableAt.differentiableWithinAt)
+    fun t ht ↦ ?_
+  have ht' := interior_subset ht
+  rw [(hd t ht').deriv]
+  have := convexOn_sq_deriv_JX.le_on_segment (hsub _ ⟨le_rfl, by norm_num⟩)
+    (hsub _ ⟨by norm_num, le_rfl⟩) (by rw [segment_eq_Icc (by norm_num)]; exact ht')
+  linarith [hγ.1, le_max_iff.1 this |>.elim (fun h ↦ h.trans e1) (fun h ↦ h.trans e2)]
+
+/-- The tight lower bound $\underline{h_{QJQ,1}}$ ([DIRX], §3.5) with its lower bound property on
+$[\frac14,\frac12]\times[\frac12,\frac{33}{64}]$. -/
+noncomputable def hQJQ1lo (xl xu yl yu : ℝ) : ℝ :=
+  yl - xu + J yu * deriv J yu - (2 * Q 2⁻¹ ((xl + yu) / 2) - Q 2⁻¹ xl) * deriv (Q 2⁻¹) ((xl + yl) / 2)
+
+/-- Lower bound property of `hQJQ1lo`. -/
+theorem hQJQ1lo_le {xl xu yl yu x y : ℝ} (hxl : 4⁻¹ ≤ xl) (hxu : xu ≤ 2⁻¹) (hyl : 2⁻¹ ≤ yl)
+    (hyu : yu ≤ 33 / 64) (hx : x ∈ Icc xl xu) (hy : y ∈ Icc yl yu) :
+    hQJQ1lo xl xu yl yu ≤
+      y - x + J y * deriv J y - (2 * Q 2⁻¹ ((x + y) / 2) - Q 2⁻¹ x) * deriv (Q 2⁻¹) ((x + y) / 2) := by
+  obtain ⟨hx1, hx2⟩ := hx
+  obtain ⟨hy1, hy2⟩ := hy
+  have hJ := JX_mul_deriv_anti ⟨hyl.trans hy1, by linarith⟩
+    ⟨by linarith, by linarith⟩ hy2
+  -- $A=2Q(\frac{x+y}2)-Q(x)$: $0\le A\le\overline A$
+  have hA1 := two_Q_sub_Q_anti_x y
+    ⟨by linarith, by linarith⟩ ⟨by linarith, by linarith⟩
+    hx1
+  beta_reduce at hA1
+  have hA2 := Q_half_monotoneOn (⟨by linarith, by linarith⟩ :
+      (xl + y) / 2 ∈ Icc (0 : ℝ) (65 / 128))
+    (⟨by linarith, by linarith⟩ : (xl + yu) / 2 ∈ Icc (0 : ℝ) (65 / 128))
+    (by linarith)
+  have hA3 := Q_half_monotoneOn (⟨by linarith, by linarith⟩ : x ∈ Icc (0 : ℝ) (65 / 128))
+    (⟨by linarith, by linarith⟩ : (x + y) / 2 ∈ Icc (0 : ℝ) (65 / 128))
+    (by linarith)
+  have hA4 := Q_half_nonneg (⟨by linarith, by linarith⟩ :
+    (x + y) / 2 ∈ Icc (0 : ℝ) 1)
+  -- $0\le Q'(\frac{x+y}2)\le Q'(\frac{x_l+y_l}2)$
+  have hQ1 := deriv_Q_half_nonneg (⟨by linarith, by linarith⟩ :
+    (x + y) / 2 ∈ Icc (0 : ℝ) (65 / 128))
+  have hQ2 := deriv_Q_half_anti (a := (x + y) / 2) (b := (xl + yl) / 2) (by linarith)
+    (by linarith)
+  have hA0 : 0 ≤ 2 * Q 2⁻¹ ((x + y) / 2) - Q 2⁻¹ x := by linarith
+  have hAu : 2 * Q 2⁻¹ ((x + y) / 2) - Q 2⁻¹ x ≤ 2 * Q 2⁻¹ ((xl + yu) / 2) - Q 2⁻¹ xl := by
+    linarith
+  have := mul_le_mul hAu hQ2 hQ1 (hA0.trans hAu)
+  rw [hQJQ1lo]
+  linarith
 
 end Auto.DIRX

@@ -443,3 +443,15 @@ $w_0=0.895769$.
   paper's lower bound at $\beta=\frac12$ (algebra in $\sqrt2$). (6.9), (6.10) and the extra fact
   $f_{\beta,0}''(\frac18)>0$ of `Auto.DIR.deriv_f_QIII_0_neg_Icc_eighth` are single checker
   evaluations.
+- [DIRX] (3.7), (3.8): the paper's tight lower bounds and partitions (`h_LJQ_2`: 29 intervals,
+  `h_LJ_1`: 5 intervals) pass unchanged (`3_3_Case_LJQ_aux_cert37.lean`,
+  `3_4_Case_LJ_aux_cert38.lean`).
+- [DIRX] (3.11): with the paper's tight lower bound $\underline{h_{QJQ,1}}$ and partition `h_QJQ_1`
+  (451 rectangles) the claimed margin $10^{-5}$ is missed on one rectangle,
+  $[\frac14,\frac{33}{128}]\times[\frac{259}{512},\frac{1037}{2048}]$, where
+  $\underline{h_{QJQ,1}}\approx8.5\cdot10^{-6}$ (the claim itself holds there). Resolved (user
+  decision, 2026-11-16): that rectangle is split into its four dyadic children (454 rectangles,
+  `3_5_Case_QJQ_aux_cert311.lean`); the statement is unchanged. The monotonicity facts used for
+  $\underline{h_{QJQ,1}}$ are proved in `3_5_Case_QJQ_aux.lean` ($\mathrm J\mathrm J'$ antitone on
+  $[\frac12,\frac34]$ as in the paper; $Q'$ antitone and $\ge0$ on $[0,\frac{65}{128}]$;
+  $x\mapsto2Q(\frac{x+y}2)-Q(x)$ antitone).

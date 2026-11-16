@@ -221,4 +221,16 @@ theorem denote_exQ1h {ρ : ℕ → ℝ} (h1 : ρ 1 = √2) (z : ℚ) :
     denote ρ (exQ1h z) = deriv (Q 2⁻¹) z := by
   simp only [exQ1h, denote, h1]; rw [deriv_Q_eq, Q1f_eq_affine, two_rpow_half]; push_cast; ring
 
+
+/-- $\mathrm J'(y)$ from the entry $\Phi^{-1}(\frac{1-y}{w_1})/\sqrt2$ (variable $i$) and
+$J_{w_1}(\frac12)$ (variable $0$). -/
+def exDJ (i : ℕ) : Ex := .div (.var i) (.var 0)
+
+/-- `exDJ` denotes $\mathrm J'$. -/
+theorem denote_exDJ {ρ : ℕ → ℝ} {i : ℕ} {y t : ℝ} (hy : y ∈ Ioo (1 - w₁) 1)
+    (ht : t = w₁⁻¹ * (1 - y)) (h0 : ρ 0 = gJw w₁ 2⁻¹) (hi : ρ i = gInv t / √2) :
+    denote ρ (exDJ i) = deriv JX y := by
+  simp only [exDJ, denote, h0, hi, deriv_JX_eq hy, ht]
+  rw [div_div, mul_comm (√2)]
+
 end Auto.DIRX

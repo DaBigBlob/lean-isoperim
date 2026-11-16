@@ -10,6 +10,7 @@ public import Isoperim.DIR.«6_Proof_Two_Point_Inequality».«6_5_Case_QJQ»
 public import Isoperim.DIRX.«2_Preliminaries».«2_2_Properties_J»
 public import Isoperim.DIRX.«2_Preliminaries».Definitions
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux_cert311»
 
 /-!
 # [DIRX] §3.5 Case QJQ
@@ -85,7 +86,8 @@ theorem eqn_3_9_deriv (x y : ℝ) (hy : y ∈ Icc (2⁻¹ : ℝ) (3 / 4)) :
 $[\frac14,\frac12]\times[\frac12,\frac{33}{64}]$. -/
 theorem eqn_3_11 (x y : ℝ) (hx : x ∈ Icc (4⁻¹ : ℝ) 2⁻¹)
     (hy : y ∈ Icc (2⁻¹ : ℝ) (33 / 64)) : h_QJQ₁ x y > (10 : ℝ) ^ (-5 : ℤ) := by
-  sorry
+  have h := eqn311_cert x hx y hy
+  rw [h_QJQ₁]; norm_num at h ⊢; linarith
 
 /-- [DIRX], §3.5: (3.9) for $y=\frac12$ reads (using $\mathrm{J}(\frac12)=\frac12$)
 $(\frac12-x)^2+\frac14-(2Q(\frac x2+\frac14)-Q(x))^2\ge0$ for $x\in[\frac14,\frac12]$; this
@@ -99,7 +101,33 @@ $(x,y)\in[\frac14,\frac12]\times[\frac12,\frac{33}{64}]$. -/
 theorem eqn_3_9_low (x y : ℝ) (hx : x ∈ Icc (4⁻¹ : ℝ) 2⁻¹)
     (hy : y ∈ Icc (2⁻¹ : ℝ) (33 / 64)) :
     (y - x) ^ 2 + J y ^ 2 - (2 * Q ((x + y) / 2) - Q x) ^ 2 ≥ 0 := by
-  sorry
+  have hw := one_sub_w₁_lt_half
+  set F := fun t ↦ (t - x) ^ 2 + J t ^ 2 - (2 * Q ((x + t) / 2) - Q x) ^ 2 with hF
+  have hsub : ∀ t ∈ Icc (2⁻¹ : ℝ) (33 / 64), t ∈ Ioo (1 - w₁) 1 := fun t ht ↦
+    ⟨by linarith [ht.1], by linarith [ht.2]⟩
+  have hdiff : ∀ t ∈ Icc (2⁻¹ : ℝ) (33 / 64), DifferentiableAt ℝ F t := fun t ht ↦ by
+    have hj := (JX_diff (hsub t ht)).1
+    have hq : DifferentiableAt ℝ (fun t ↦ Q ((x + t) / 2)) t := by
+      have := (hasDerivAt_Q 2⁻¹ ((x + t) / 2)).comp t
+        (((hasDerivAt_id' t).const_add x).div_const 2)
+      exact this.differentiableAt
+    exact ((((differentiableAt_id.sub_const x).pow 2).add (hj.pow 2)).sub
+      (((hq.const_mul 2).sub_const (Q x)).pow 2))
+  have hmono : MonotoneOn F (Icc 2⁻¹ (33 / 64)) := by
+    refine monotoneOn_of_deriv_nonneg (convex_Icc _ _)
+      (fun t ht ↦ (hdiff t ht).continuousAt.continuousWithinAt)
+      (fun t ht ↦ (hdiff t (interior_subset ht)).differentiableWithinAt) fun t ht ↦ ?_
+    have ht := interior_subset ht
+    rw [hF, eqn_3_9_deriv x t ⟨ht.1, by linarith [ht.2]⟩]
+    have := eqn_3_11 x t hx ht
+    have : (0 : ℝ) < (10 : ℝ) ^ (-5 : ℤ) := by positivity
+    linarith
+  have h1 := hmono ⟨le_rfl, by norm_num⟩ hy hy.1
+  have h0 := eqn_3_9_half x hx
+  have hJ : J 2⁻¹ = 2⁻¹ := (JXw_half_one w₁ ⟨by norm_num [w₁], by norm_num [w₁]⟩).1
+  simp only [hF, hJ, show (x + 2⁻¹) / 2 = x / 2 + 4⁻¹ by ring] at h1
+  norm_num at h0 h1 ⊢
+  linarith
 
 /-- **(3.12)** ([DIRX], §3.5) (🚗). By dyadic partitioning, LHS of (3.9) $>10^{-7}$ on
 $[\frac14,\frac12]\times[\frac{33}{64},\frac34]$. -/
