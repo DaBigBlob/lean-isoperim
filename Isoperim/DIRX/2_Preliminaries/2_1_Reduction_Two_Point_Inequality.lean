@@ -90,7 +90,17 @@ theorem thm_1_1_of_eqn_2_4
 $$G[B_w](x,y)\ge0$$ with $w=w_1$. -/
 theorem eqn_2_4 (x y : ℝ) (hx : 0 ≤ x) (hxy : x ≤ y) (hy : y ≤ 1) :
     G (BX w₁) x y ≥ 0 := by
-  sorry
+  rcases le_total y 2⁻¹ with h1 | h1
+  · exact caseQ x y hx hxy h1
+  rcases le_total 2⁻¹ x with h2 | h2
+  · exact caseJ x y h2 hxy hy
+  rcases le_total x 4⁻¹ with h3 | h3
+  · rcases le_total (x + y) 1 with h4 | h4
+    · exact caseLJQ x y ⟨hx, h3⟩ ⟨h1, hy⟩ h4
+    · exact caseLJ x y ⟨hx, h3⟩ ⟨h1, hy⟩ h4
+  · rcases le_total (x + y) 1 with h4 | h4
+    · exact caseQJQ x y ⟨h3, h2⟩ h1 h4
+    · exact caseQJ x y ⟨h3, h2⟩ ⟨h1, hy⟩ h4
 
 /-- **(2.5)** ([DIRX], §2.1). The isoperimetric inequality
 $$\mathbf{E}\sqrt{h_A}\ge B_{w_1}(|A|),$$

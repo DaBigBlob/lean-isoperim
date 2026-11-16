@@ -13,6 +13,7 @@ public import Isoperim.DIRX.«2_Preliminaries».Definitions
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_2_Case_Q»
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_3_Case_LJQ_aux»
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_3_Case_LJQ_aux_cert37»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_3_Case_LJQ_aux_cert33»
 
 /-!
 # [DIRX] §3.3 Case LJQ
@@ -65,7 +66,8 @@ $w=w_1$). -/
 theorem eqn_3_3 (x y : ℝ) (hx : x ∈ Icc (16⁻¹ : ℝ) 4⁻¹)
     (hy : y ∈ Icc (2⁻¹ : ℝ) (3 / 4)) :
     G (BX w₁) x y > (10 : ℝ) ^ (-6 : ℤ) := by
-  sorry
+  have h := eqn33_cert x hx y hy
+  norm_num at h ⊢; linarith
 
 end Case_I
 
@@ -618,6 +620,12 @@ end Case_II
 $\frac12\le y\le1$, $x+y\le1$. -/
 theorem caseLJQ (x y : ℝ) (hx : x ∈ Icc (0 : ℝ) 4⁻¹) (hy : y ∈ Icc (2⁻¹ : ℝ) 1)
     (hxy : x + y ≤ 1) : G (BX w₁) x y ≥ 0 := by
-  sorry
+  by_cases h : x ≤ 16⁻¹ ∨ y ≥ 3 / 4
+  · rw [Auto.DIR.G, G₂_BX_eq_G_LJQ x y hx hy hxy]
+    exact le_max_of_le_right (caseLJQ_II x y hx hy hxy h)
+  · push Not at h
+    have := eqn_3_3 x y ⟨h.1.le, hx.2⟩ ⟨hy.1, h.2.le⟩
+    have : (0 : ℝ) < (10 : ℝ) ^ (-6 : ℤ) := by positivity
+    linarith
 
 end Auto.DIRX

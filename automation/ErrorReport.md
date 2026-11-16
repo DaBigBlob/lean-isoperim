@@ -470,3 +470,6 @@ $w_0=0.895769$.
   `..._cert314*.lean`), with the enclosures of $\mathrm J$, $|\mathrm J'|$ proved on
   $[\frac14,1]$ (`3_6_Case_QJ_aux.lean`, item 9 above). For (3.14) (margin $\approx10^{-7}$) the
   constant $J_{w_1}(\frac12)$ is certified to $2\cdot10^{-12}$ (`Auto.DIRX.cJhalf`).
+- [DIRX] (3.3): the paper's tight lower bound $\underline{h_{LJQ,1}}$ and partition `h_LJQ_1`
+  (5506 rectangles) pass unchanged (`3_3_Case_LJQ_aux_cert33*.lean`; bound property in
+  `3_3_Case_LJQ_aux_lo.lean`, square root removed via `Auto.DIRX.lt_max_sqrt_of`).

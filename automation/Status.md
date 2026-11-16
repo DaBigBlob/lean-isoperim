@@ -309,7 +309,7 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 13:39:07 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_2_Case_Q: `BX_eq_max`
 - complete — 2026-11-16 13:39:07 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_2_Case_Q: `caseQ`
 - complete — 2026-11-16 13:40:07 ET — [DIRX] 2_Preliminaries/2_3_Properties_L_Q: `lemma_2_3`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `eqn_3_3`
+- complete — 2026-11-16 15:20:28 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `eqn_3_3`
 - complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G₂_BX_eq_G_LJQ`
 - complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `eqn_3_4`
 - complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_strictConcave`
@@ -331,7 +331,7 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_diag_eval`
 - complete — 2026-11-16 13:59:13 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_diag_nonneg`
 - complete — 2026-11-16 14:23:37 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `caseLJQ_II`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `caseLJQ`
+- complete — 2026-11-16 15:20:28 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `caseLJQ`
 - complete — 2026-11-16 14:06:28 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `G₂_BX_eq_h_LJ`
 - complete — 2026-11-16 14:06:28 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `h_LJ_deriv2`
 - complete — 2026-11-16 14:06:28 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `h_LJ_concave`
@@ -365,7 +365,7 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 15:15:36 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `eqn_3_14`
 - complete — 2026-11-16 15:15:36 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `caseQJ`
 - complete — 2026-11-16 14:11:17 ET — [DIRX] 2_Preliminaries/2_1_Reduction_Two_Point_Inequality: `BX_ge_LX`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 2_Preliminaries/2_1_Reduction_Two_Point_Inequality: `eqn_2_4`
+- complete — 2026-11-16 15:20:28 ET — [DIRX] 2_Preliminaries/2_1_Reduction_Two_Point_Inequality: `eqn_2_4`
 
 ## Task 4 — Gaussian profile, asymptotics, Poincaré propositions, Kahn–Park
 
