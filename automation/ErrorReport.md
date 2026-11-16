@@ -424,6 +424,65 @@ $w_0=0.895769$.
 
 ## Proof stage, Task 3 ([DIR] §5.2, §5.3, §6.2, [DIRX] §2–§3, 2026-11-16)
 
+### Final summary (Task 3 complete, 2026-11-16)
+
+All 157 Task 3 declarations are proved without `sorry` and depend only on `propext`,
+`Classical.choice`, `Quot.sound` (`#print axioms` checked for each). No statement was weakened; the
+only statement changes are the rule-7 removals of unused hypotheses listed at the end. **No result
+of [DIR] or [DIRX] is invalidated**: every claim below is true and proved in Lean as stated. The
+errors are in the papers' *proofs* (justifications and computer-assisted parameters).
+
+**Errors in the papers (final list):**
+
+1. **[DIRX] (3.12), §3.5 — invalid justification of the tight lower bound.**
+   $\underline{h_{QJQ,2}}$ replaces $Q(\frac{x+y}2)$ by $Q(\frac{\underline x+\overline y}2)$, which
+   needs $Q$ increasing; $Q$ decreases on $(t_*,\frac58]$, $t_*\approx0.528$, so the argument fails
+   on 161 of the 4498 rectangles of `h_QJQ_2` (all with $x+y>1.056$, outside Case $QJQ$). The
+   paper's bound values are nevertheless numerically correct there (on the 14 worst rectangles they
+   are below the true minimum by $\ge8.6\cdot10^{-3}$, dense-grid check), but no valid argument
+   from the paper's ingredients reaches them: even the exact maximum of $Q$ gives a negative bound
+   on 14 rectangles of `h_QJQ_2`. *Effect:* none on the results. *Resolution (user decision):*
+   corrected bound `Auto.DIRX.hQJQ2lo` (agrees with the paper's where its argument is valid),
+   partition refined to 4540 rectangles. Statement unchanged.
+2. **[DIRX] (3.11), §3.5 — stated margin not reached by the stated partition.** With the paper's
+   $\underline{h_{QJQ,1}}$ and `h_QJQ_1` (451 rectangles) the bound is $\approx8.5\cdot10^{-6}<10^{-5}$
+   on $[\frac14,\frac{33}{128}]\times[\frac{259}{512},\frac{1037}{2048}]$. The claim is true (true
+   minimum $\approx6.8\cdot10^{-3}$). *Effect:* none. *Resolution (user decision):* that rectangle is
+   split into its 4 dyadic children (454 rectangles). Statement unchanged.
+3. **[DIR] Lemma 6.4 — gap in the proof.** The second claim $\partial_hG_{Q,\beta}(\frac14,y)>0$ is
+   stated but not proved. The claim is true. *Resolution (user decision):* proved via (6.11) and an
+   additional computer-assisted check $p_{y,\beta}(\frac14)>\frac1{200}$ (16 intervals per $\beta$).
+4. **[DIRX] §2.2/§3.6 — enclosures used outside their stated range** (item 9 of the [DIRX] audit
+   above). The enclosures of $\mathrm J$, $|\mathrm J'|$ after (2.7) are stated on $[\frac12,1]$ but
+   used on $[\frac38,1]$ in (3.13), (3.14). They remain valid there; proved on $[\frac14,1]$
+   (`Auto.DIRX.JX_concaveOn_quarter`, `JX_monotoneOn_quarter`, `JX_le_JhpR`, `abs_deriv_JX_le`).
+   No change needed.
+
+**Not errors (recorded for completeness):**
+
+- [DIR] §6.2 cites [BIM23, Lemma 2.2] without proof; `Auto.DIR.caseQ_G₁_L` proves it following
+  [BIM23] (user decision).
+- All other computer-assisted claims pass with the papers' own tight lower bounds and partitions:
+  [DIR] (6.7), (6.12) (13, 16, 16 rectangles); [DIRX] (3.3) (5506), (3.7) (29 intervals), (3.8)
+  (5), (3.13) (1375), (3.14) (2959). (6.8)–(6.10) are single evaluations. Certificates use the
+  verified checker `Auto.DIR.Checker` with one `decide +kernel` per box; generators in
+  `automation/cert/task3/`. The certified constant $J_{w_1}(\frac12)$ (`Auto.DIRX.cJhalf`) has width
+  $2\cdot10^{-12}$; the earlier width $7\cdot10^{-6}$ was too coarse for the margins $\approx10^{-7}$
+  of (3.12), (3.14) (a precision issue of the formalization, not of the paper).
+
+**Rule-7 removals (unused hypotheses; statements strengthened):** `Auto.DIR.lemma_5_9_1_endpoints`,
+`Auto.DIR.lemma_5_9_2_quarter` ($\beta$ range), `Auto.DIR.caseQ_II_y_ge`,
+`Auto.DIR.caseQ_II_claim_1_limit`, `Auto.DIR.caseQ_III_iff_G_Q`.
+
+**Stale references in this report (names removed in the restructuring of 2026-11-12; content now
+covered as indicated):** `Auto.DIRX.h_QJQ₂_lo_tight` → `Auto.DIRX.hQJQ2lo_le`;
+`Auto.DIRX.QJQ_monotone` → `Auto.DIRX.hQJQ1lo_le`, `two_Q_sub_Q_anti_x`;
+`Auto.DIRX.h_QJ₁_lo_tight` → `Auto.DIRX.hQJ1lo_le`; `Auto.DIR.two_Q_sub_Q_pos_mono` (no
+successor); `Auto.DIR.g_QJQ_tightLowerBound` (no successor; still mentioned in a docstring of
+`6_5_Case_QJQ.lean`, which is not a Task 3 file).
+
+### Details
+
 - [DIR] §6.2: $G^1_\beta[L_\beta](x,y)\ge0$ for $0\le x\le y\le\frac12$ is only cited
   ([BIM23, Lemma 2.2]). Resolved (user decision, 2026-11-16): `Auto.DIR.caseQ_G₁_L` is proved
   following the proof in [BIM23] (D. Beltran, P. Ivanisvili, J. Madrid, arXiv:2303.06738,
