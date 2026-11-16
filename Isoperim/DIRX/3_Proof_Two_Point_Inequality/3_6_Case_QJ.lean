@@ -9,6 +9,7 @@ public import Isoperim.DIR.«2_Envelope_Functions».Definitions
 public import Isoperim.DIRX.«2_Preliminaries».«2_2_Properties_J»
 public import Isoperim.DIRX.«2_Preliminaries».Definitions
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_1_Case_J»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux»
 
 /-!
 # [DIRX] §3.6 Case QJ
@@ -60,18 +61,40 @@ noncomputable def g_QJX (x y : ℝ) : ℝ := (y - x) ^ 2 + J y ^ 2 - (2 * J ((x 
 $\frac14\le x\le\frac12\le y\le1$, $x+y\ge1$). -/
 theorem G₁_of_g_QJ (x y : ℝ) (hx : x ∈ Icc (4⁻¹ : ℝ) 2⁻¹) (hy : y ∈ Icc (2⁻¹ : ℝ) 1)
     (hxy : 1 ≤ x + y) (h : g_QJX x y ≥ 0) : G₁ (BX w₁) x y ≥ 0 := by
-  sorry
+  rw [G₁_half_eq, BX_eq_Q hx, BX_eq_JX hy, BX_eq_JX ⟨by linarith, by linarith [hx.2, hy.2]⟩]
+  have := le_sqrt_of_sq (A := (y - x) ^ 2 + J y ^ 2) (R := 2 * J ((x + y) / 2) - Q x)
+    (Or.inr (by rw [g_QJX] at h; linarith))
+  linarith
 
 /-- [DIRX], §3.6.1: $g_{QJ}(\frac12,y)\ge0$ is equivalent to $G_1[\mathrm{J}](\frac12,y)\ge0$
 (for $y\in[\frac12,\frac58]$). -/
 theorem g_QJ_half_iff (y : ℝ) (hy : y ∈ Icc (2⁻¹ : ℝ) (5 / 8)) :
     g_QJX 2⁻¹ y ≥ 0 ↔ G₁ J 2⁻¹ y ≥ 0 := by
-  sorry
+  have hJh : J 2⁻¹ = 2⁻¹ := (JXw_half_one w₁ ⟨by norm_num [w₁], by norm_num [w₁]⟩).1
+  have hQh : Q 2⁻¹ = 2⁻¹ := Q_half_values.2.2
+  obtain ⟨hconc, hnn⟩ := JX_concave
+  have j1 := JX_mem_of (by norm_num) (gJw_w₁_mem (y := 9 / 16) (a := 0.5108) (b := 0.5109)
+    (sl := 0.0305690684239289) (su := 0.0305690684219289) (by decide +kernel))
+  norm_num at j1
+  have hm : 2⁻¹ ≤ J ((2⁻¹ + y) / 2) := by
+    have := hconc.min_le_of_mem_Icc (⟨le_rfl, by norm_num⟩ : (2⁻¹ : ℝ) ∈ Icc 2⁻¹ 1)
+      (⟨by norm_num, by norm_num⟩ : (9 / 16 : ℝ) ∈ Icc 2⁻¹ 1)
+      (show (2⁻¹ + y) / 2 ∈ Icc (2⁻¹ : ℝ) (9 / 16) from ⟨by linarith [hy.1], by linarith [hy.2]⟩)
+    rw [hJh] at this
+    have h2 : (2⁻¹ : ℝ) ≤ min 2⁻¹ (J (9 / 16)) := le_min le_rfl (by linarith [j1.1])
+    exact h2.trans this
+  have hR : 0 ≤ 2 * J ((2⁻¹ + y) / 2) - Q 2⁻¹ := by rw [hQh]; linarith
+  rw [G₁_half_eq, g_QJX, hJh, ge_iff_le, ge_iff_le, sub_nonneg]
+  rw [show √((y - 2⁻¹) ^ 2 + J y ^ 2) + 2⁻¹ - 2 * J ((2⁻¹ + y) / 2) =
+    √((y - 2⁻¹) ^ 2 + J y ^ 2) - (2 * J ((2⁻¹ + y) / 2) - Q 2⁻¹) by rw [hQh]; ring, sub_nonneg,
+    Real.le_sqrt hR (by positivity)]
 
 /-- [DIRX], §3.6.1: $g_{QJ}(\frac12,y)\ge0$ for all $y\in[\frac12,\frac58]$ (this already follows
 from §3.1, (3.1)). -/
 theorem g_QJ_half (y : ℝ) (hy : y ∈ Icc (2⁻¹ : ℝ) (5 / 8)) : g_QJX 2⁻¹ y ≥ 0 := by
-  sorry
+  rw [g_QJ_half_iff y hy, G₁_half_eq]
+  have := eqn_3_1 2⁻¹ y le_rfl hy.1 (by linarith [hy.2])
+  linarith
 
 /-- **(3.13)** ([DIRX], §3.6.1) (🚗). Dyadic partitioning yields
 $$-\tfrac12\partial_xg_{QJ}>10^{-5}\quad\text{on}\quad
@@ -110,7 +133,8 @@ assumption of Case $QJ$; it is not implied by the other two conditions, e.g.
 $(x,y)=(\frac14,\frac58)$), $G_1[B_{w_1}](x,y)=h_{QJ,2}(x,y)$, so it suffices to show (3.14). -/
 theorem G₁_BX_eq_h_QJ₂ (x y : ℝ) (hx : x ∈ Icc (4⁻¹ : ℝ) 2⁻¹)
     (hy : y ∈ Icc (5 / 8 : ℝ) 1) (hxy : 1 ≤ x + y) : G₁ (BX w₁) x y = h_QJ₂ x y := by
-  sorry
+  rw [G₁_half_eq, BX_eq_Q hx, BX_eq_JX ⟨by linarith [hy.1], hy.2⟩,
+    BX_eq_JX ⟨by linarith, by linarith [hx.2, hy.2]⟩, h_QJ₂]
 
 /-- **(3.14)** ([DIRX], §3.6.2) (🚗). For all $x\in[\frac14,\frac12]$ and $y\in[\frac58,1]$,
 $$h_{QJ,2}(x,y)=\sqrt{(y-x)^2+\mathrm{J}(y)^2}+Q(x)-2\mathrm{J}(\tfrac{x+y}2)>10^{-7}.$$ -/

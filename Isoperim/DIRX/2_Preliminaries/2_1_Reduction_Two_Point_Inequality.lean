@@ -70,7 +70,12 @@ local notation "Q" => Auto.DIR.Q 2⁻¹
 /-- [DIRX], §2.1 (cited from [DIR], Lemma 5.9 (2), `Auto.DIR.lemma_5_9`): $B_w(x)\ge L(x)$ for
 $x\in[0,\frac12]$. -/
 theorem BX_ge_LX (w x : ℝ) (hx : x ∈ Icc (0 : ℝ) 2⁻¹) : BX w x ≥ L x := by
-  sorry
+  have hβ : (2⁻¹ : ℝ) ∈ Icc (2⁻¹ : ℝ) (log₂ (3 / 2)) := ⟨le_rfl, logb_three_halves_mem.1⟩
+  unfold BX
+  split_ifs with h1 h2
+  · exact le_rfl
+  · exact (lemma_5_9 2⁻¹ hβ).2 x ⟨(not_le.1 h1).le, h2⟩
+  · exact absurd hx.2 h2
 
 /-- [DIRX], §2.1: in order to prove Theorem 1.1 it suffices to prove that there exists $w$ such
 that (2.4) holds for all $0\le x\le y\le1$ (by the Kahn–Park reduction and

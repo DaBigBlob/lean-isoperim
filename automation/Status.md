@@ -347,24 +347,24 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 14:06:28 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `gX_nonneg`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `h_LJ_nonneg`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `caseLJ`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `caseQJQ_of_eqn_3_9`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `eqn_3_9_deriv`
+- complete — 2026-11-16 14:11:17 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `caseQJQ_of_eqn_3_9`
+- complete — 2026-11-16 14:11:17 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `eqn_3_9_deriv`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `eqn_3_11`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `eqn_3_9_half`
+- complete — 2026-11-16 14:11:17 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `eqn_3_9_half`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `eqn_3_9_low`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `eqn_3_12`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `eqn_3_9`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `caseQJQ`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `G₁_of_g_QJ`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `g_QJ_half_iff`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `g_QJ_half`
+- complete — 2026-11-16 14:11:17 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `G₁_of_g_QJ`
+- complete — 2026-11-16 14:11:17 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `g_QJ_half_iff`
+- complete — 2026-11-16 14:11:17 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `g_QJ_half`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `eqn_3_13`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `g_QJ_nonneg`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `caseQJ_near`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `G₁_BX_eq_h_QJ₂`
+- complete — 2026-11-16 14:11:17 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `G₁_BX_eq_h_QJ₂`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `eqn_3_14`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_6_Case_QJ: `caseQJ`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 2_Preliminaries/2_1_Reduction_Two_Point_Inequality: `BX_ge_LX`
+- complete — 2026-11-16 14:11:17 ET — [DIRX] 2_Preliminaries/2_1_Reduction_Two_Point_Inequality: `BX_ge_LX`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 2_Preliminaries/2_1_Reduction_Two_Point_Inequality: `eqn_2_4`
 
 ## Task 4 — Gaussian profile, asymptotics, Poincaré propositions, Kahn–Park

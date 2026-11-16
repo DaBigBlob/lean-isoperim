@@ -9,6 +9,7 @@ public import Isoperim.DIR.«2_Envelope_Functions».Definitions
 public import Isoperim.DIR.«6_Proof_Two_Point_Inequality».«6_5_Case_QJQ»
 public import Isoperim.DIRX.«2_Preliminaries».«2_2_Properties_J»
 public import Isoperim.DIRX.«2_Preliminaries».Definitions
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux»
 
 /-!
 # [DIRX] §3.5 Case QJQ
@@ -52,7 +53,11 @@ $G_1[B_{w_1}](x,y)=\sqrt{(y-x)^2+\mathrm{J}(y)^2}+Q(x)-2Q(\frac{x+y}2)$. -/
 theorem caseQJQ_of_eqn_3_9 (x y : ℝ) (hx : x ∈ Icc (4⁻¹ : ℝ) 2⁻¹) (hy : 2⁻¹ ≤ y)
     (hxy : x + y ≤ 1) (h : (y - x) ^ 2 + J y ^ 2 - (2 * Q ((x + y) / 2) - Q x) ^ 2 ≥ 0) :
     G₁ (BX w₁) x y ≥ 0 := by
-  sorry
+  rw [G₁_half_eq, BX_eq_Q hx, BX_eq_Q (t := (x + y) / 2) ⟨by linarith [hx.1], by linarith⟩,
+    BX_eq_JX ⟨hy, by linarith [hx.1]⟩]
+  have := le_sqrt_of_sq (A := (y - x) ^ 2 + J y ^ 2) (R := 2 * Q ((x + y) / 2) - Q x)
+    (Or.inr (by linarith))
+  linarith
 
 /-- **(3.10)** ([DIRX], §3.5).
 $$h_{QJQ,1}(x,y)=y-x+\mathrm{J}(y)\mathrm{J}'(y)-(2Q(\tfrac{x+y}2)-Q(x))Q'(\tfrac{x+y}2).$$ -/
@@ -64,7 +69,17 @@ $h_{QJQ,1}(x,y)$ (for $y\in[\frac12,\frac34]$). -/
 theorem eqn_3_9_deriv (x y : ℝ) (hy : y ∈ Icc (2⁻¹ : ℝ) (3 / 4)) :
     deriv (fun t ↦ (t - x) ^ 2 + J t ^ 2 - (2 * Q ((x + t) / 2) - Q x) ^ 2) y =
       2 * h_QJQ₁ x y := by
-  sorry
+  have hw := one_sub_w₁_lt_half
+  have hyU : y ∈ Ioo (1 - w₁) 1 := ⟨by linarith [hy.1], by linarith [hy.2]⟩
+  have hj := (JX_diff hyU).1.hasDerivAt
+  have hq := (hasDerivAt_Q 2⁻¹ ((x + y) / 2)).comp y (((hasDerivAt_id' y).const_add x).div_const 2)
+  have H := ((((hasDerivAt_id' y).sub_const x).pow 2).add (hj.pow 2)).sub
+    (((hq.const_mul 2).sub_const (Q x)).pow 2)
+  have key : HasDerivAt (fun t ↦ (t - x) ^ 2 + J t ^ 2 - (2 * Q ((x + t) / 2) - Q x) ^ 2) _ y :=
+    H
+  rw [key.deriv, h_QJQ₁, deriv_Q_eq]
+  simp only [Function.comp_apply]
+  push_cast; ring
 
 /-- **(3.11)** ([DIRX], §3.5) (🚗). Dyadic partitioning shows that $h_{QJQ,1}>10^{-5}$ on
 $[\frac14,\frac12]\times[\frac12,\frac{33}{64}]$. -/
@@ -77,7 +92,7 @@ $(\frac12-x)^2+\frac14-(2Q(\frac x2+\frac14)-Q(x))^2\ge0$ for $x\in[\frac14,\fra
 inequality was shown in [DIR], §6.5. -/
 theorem eqn_3_9_half (x : ℝ) (hx : x ∈ Icc (4⁻¹ : ℝ) 2⁻¹) :
     (2⁻¹ - x) ^ 2 + 4⁻¹ - (2 * Q (x / 2 + 4⁻¹) - Q x) ^ 2 ≥ 0 := by
-  sorry
+  exact G_QJQ_y_half_nonneg 2⁻¹ (by simp) x hx
 
 /-- [DIRX], §3.5: by (3.11) and the case $y=\frac12$, (3.9) holds for
 $(x,y)\in[\frac14,\frac12]\times[\frac12,\frac{33}{64}]$. -/
