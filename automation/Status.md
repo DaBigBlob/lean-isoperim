@@ -241,8 +241,8 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_claim_1_subst`
 - complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_claim_1_mono`
 - complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_claim_1`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_8`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_claim_2`
+- complete — 2026-11-16 12:27:09 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_8`
+- complete — 2026-11-16 12:27:09 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_claim_2`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_III_G_Q_diag`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `R_eq`

@@ -346,14 +346,69 @@ $$\underline{g_{Q,1,\frac12}}(\tfrac14,\tfrac14,\tfrac14,\tfrac38)>0.01\quad\tex
 theorem eqn_6_8 :
     g_Q_1_lo 2⁻¹ 4⁻¹ 4⁻¹ 4⁻¹ (3 / 8) > 0.01 ∧
       g_Q_1_lo 2⁻¹ 4⁻¹ 4⁻¹ (3 / 8) 2⁻¹ > 0.001 := by
-  sorry
+  obtain ⟨hs1, hs2⟩ := sqrt_two_mem
+  obtain ⟨hQ14, hQ38, hQ12⟩ := Q_half_values
+  obtain ⟨hα0, hα1⟩ := α_half
+  have e : ∀ yl yu : ℝ, g_Q_1_lo 2⁻¹ 4⁻¹ 4⁻¹ yl yu = 2⁻¹ * (Q 2⁻¹ yu)⁻¹ -
+      (α₀ 2⁻¹ - 2 * α₁ 2⁻¹ * 4⁻¹ + 4 * α₁ 2⁻¹ * yu) - 128⁻¹ * ((Q 2⁻¹ yl) ^ 3)⁻¹ := fun yl yu ↦ by
+    unfold g_Q_1_lo
+    rw [inv_inv, show (1 : ℝ) - 2 = ((-1 : ℤ) : ℝ) by norm_num, show (2 : ℝ) - 2 = 0 by norm_num,
+      show (1 : ℝ) - 2 / 2⁻¹ = ((-3 : ℤ) : ℝ) by norm_num, rpow_intCast, rpow_intCast, rpow_zero,
+      rpow_two]
+    simp only [zpow_neg, zpow_ofNat]
+    ring
+  rw [e, e, hQ14, hQ38, hQ12, hα0, hα1]
+  have hu : (0.4553 : ℝ) < 5 / 32 * (3 / 2 + √2) := by linarith
+  have i1 : (5 / 32 * (3 / 2 + √2))⁻¹ > 2.1961 := by
+    rw [gt_iff_lt, lt_inv_comm₀ (by norm_num) (by linarith)]; linarith
+  have i2 : ((√2 / 4) ^ 3)⁻¹ < 22.628 := by
+    rw [inv_lt_comm₀ (by positivity) (by norm_num)]
+    have : (0.3535525 : ℝ) ^ 3 < (√2 / 4) ^ 3 := by gcongr; linarith
+    norm_num at this ⊢; linarith
+  have i3 : ((5 / 32 * (3 / 2 + √2)) ^ 3)⁻¹ < 10.6 := by
+    rw [inv_lt_comm₀ (by positivity) (by norm_num)]
+    have : (0.4553 : ℝ) ^ 3 < (5 / 32 * (3 / 2 + √2)) ^ 3 := by gcongr
+    norm_num at this ⊢; linarith
+  constructor
+  · nlinarith
+  · norm_num; nlinarith
 
 end Proof_Claim_2
 
 /-- [DIR], §6.2.1, claim (2): $g_{Q,1,\frac12}(\frac14,y)>0$ for all $y\in[\frac14,\frac12]$. -/
 theorem caseQ_II_claim_2 (y : ℝ) (hy : y ∈ Icc (4⁻¹ : ℝ) 2⁻¹) :
     g_Q_1 2⁻¹ 4⁻¹ y > 0 := by
-  sorry
+  have hβr : (2⁻¹ : ℝ) ∈ Ico (2⁻¹ : ℝ) (log₂ (3 / 2)) := mem_Ico_of_caseQ (Or.inl rfl)
+  have hmono := Q_monotoneOn hβr
+  have hpos : ∀ z ∈ Icc (4⁻¹ : ℝ) 2⁻¹, 0 < Q 2⁻¹ z := fun z hz ↦
+    Q_pos ⟨le_rfl, by norm_num⟩ ⟨by linarith [hz.1], by linarith [hz.2]⟩
+  have hα : 0 ≤ α₁ 2⁻¹ := by rw [α_half.2]; linarith [sqrt_two_mem.2]
+  have e : ∀ yl yu : ℝ, g_Q_1_lo 2⁻¹ 4⁻¹ 4⁻¹ yl yu = 2⁻¹ * (Q 2⁻¹ yu)⁻¹ -
+      (α₀ 2⁻¹ - 2 * α₁ 2⁻¹ * 4⁻¹ + 4 * α₁ 2⁻¹ * yu) - 128⁻¹ * ((Q 2⁻¹ yl) ^ 3)⁻¹ := fun yl yu ↦ by
+    unfold g_Q_1_lo
+    rw [inv_inv, show (1 : ℝ) - 2 = ((-1 : ℤ) : ℝ) by norm_num, show (2 : ℝ) - 2 = 0 by norm_num,
+      show (1 : ℝ) - 2 / 2⁻¹ = ((-3 : ℤ) : ℝ) by norm_num, rpow_intCast, rpow_intCast, rpow_zero,
+      rpow_two]
+    simp only [zpow_neg, zpow_ofNat]
+    ring
+  have key : ∀ yl yu, yl ∈ Icc (4⁻¹ : ℝ) 2⁻¹ → yu ∈ Icc (4⁻¹ : ℝ) 2⁻¹ → y ∈ Icc yl yu →
+      g_Q_1_lo 2⁻¹ 4⁻¹ 4⁻¹ yl yu ≤ g_Q_1 2⁻¹ 4⁻¹ y := fun yl yu hyl hyu hy' ↦ by
+    have hy0 : y ∈ Icc (0 : ℝ) 2⁻¹ := ⟨by linarith [hy.1], hy.2⟩
+    have h1 := hmono ⟨by linarith [hyl.1], hyl.2⟩ hy0 hy'.1
+    have h2 := hmono hy0 ⟨by linarith [hyu.1], hyu.2⟩ hy'.2
+    have p0 := hpos y hy
+    have pl := hpos yl hyl
+    rw [e, caseQ_II_g_Q_1_half_eq 4⁻¹ y (by norm_num)]
+    simp only [zpow_neg, zpow_ofNat, pow_one]
+    have i1 : (Q 2⁻¹ yu)⁻¹ ≤ (Q 2⁻¹ y)⁻¹ := inv_anti₀ p0 h2
+    have i2 : ((Q 2⁻¹ y) ^ 3)⁻¹ ≤ ((Q 2⁻¹ yl) ^ 3)⁻¹ := inv_anti₀ (by positivity) (by gcongr)
+    nlinarith [mul_le_mul_of_nonneg_left hy'.2 hα]
+  obtain ⟨h68a, h68b⟩ := eqn_6_8
+  rcases le_total y (3 / 8) with h | h
+  · have := key 4⁻¹ (3 / 8) ⟨le_rfl, by norm_num⟩ ⟨by norm_num, by norm_num⟩ ⟨hy.1, h⟩
+    linarith
+  · have := key (3 / 8) 2⁻¹ ⟨by norm_num, by norm_num⟩ ⟨by norm_num, le_rfl⟩ ⟨h, hy.2⟩
+    linarith
 
 /-- [DIR], §6.2.1 (conclusion): (6.6) near the diagonal, for $\beta\in\{\frac12,\beta_0\}$ and
 $0\le h\le\frac14\le y\le\frac12$: $G^1_\beta[Q_\beta](y-h,y)\ge0$. -/

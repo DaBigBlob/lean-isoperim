@@ -417,4 +417,19 @@ theorem sqrt_two_mem : √2 ∈ Ioo (1.41421 : ℝ) 1.41422 :=
 theorem α_half : α₀ 2⁻¹ = 4 * √2 - 5 ∧ α₁ 2⁻¹ = 3 - 2 * √2 := by
   rw [α₀, α₁, two_rpow_two_add, two_rpow_one_add, two_rpow_half]; exact ⟨rfl, rfl⟩
 
+/-- $Q_\beta$ is monotone on $[0,\frac12]$ for $\beta\in[\frac12,\log_2\frac32)$ (Lemma 5.8). -/
+theorem Q_monotoneOn {β : ℝ} (hβ : β ∈ Ico (2⁻¹ : ℝ) (log₂ (3 / 2))) :
+    MonotoneOn (Q β) (Icc 0 2⁻¹) :=
+  monotoneOn_of_deriv_nonneg (convex_Icc 0 2⁻¹) (continuous_Q β).continuousOn
+    (fun x _ ↦ (hasDerivAt_Q β x).differentiableAt.differentiableWithinAt)
+    fun x hx ↦ by
+      rw [interior_Icc] at hx
+      exact (lemma_5_8 x ⟨hx.1.le, hx.2.le⟩ β hβ).2.1.1.le
+
+/-- $Q_{\frac12}(\frac14)=\frac{\sqrt2}4$, $Q_{\frac12}(\frac38)=\frac5{32}(\frac32+\sqrt2)$,
+$Q_{\frac12}(\frac12)=\frac12$. -/
+theorem Q_half_values : Q 2⁻¹ 4⁻¹ = √2 / 4 ∧ Q 2⁻¹ (3 / 8) = 5 / 32 * (3 / 2 + √2) ∧
+    Q 2⁻¹ 2⁻¹ = 2⁻¹ := by
+  refine ⟨?_, ?_, ?_⟩ <;> rw [Q_eq_affine, two_rpow_half] <;> ring
+
 end Auto.DIR
