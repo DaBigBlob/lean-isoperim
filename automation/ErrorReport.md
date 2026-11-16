@@ -432,3 +432,14 @@ $w_0=0.895769$.
   one-variable inequality, via the bounds $-\log(1-s)\ge s+\frac{s^2}2$,
   $\log\frac2{2-s}\le\frac s2+(\log2-\frac12)s^2$ and the polynomial $v(s)<0$. Lean's `ring`
   checks the identity $4(1-s)^2(1+s^2)P-W^2=-\frac{s^2(1-s)^2}{4(\log2)^2}v(s)$ stated there.
+- [DIR] Lemma 6.4: the paper's proof does not show the second claim
+  $\partial_hG_{Q,\beta}(\frac14,y)>0$. Resolved (user decision, 2026-11-16): by (6.11) the claim is
+  equivalent to $p_{y,\beta}(\frac14)>0$. This is proved by an additional computer-assisted check
+  `Auto.DIR.pQ_quarter_cert_b0`, `Auto.DIR.pQ_quarter_cert_h`: $p_{y,\beta}(\frac14)>\frac1{200}$
+  on $[\frac14,\frac12]$, $\beta\in\{\frac12,\beta_0\}$, with 16 intervals and the lower bound
+  `Auto.DIR.pQl_quarter_lo_le` (minimum $\approx0.0126$, at $y=\frac12$).
+- [DIR] (6.7), (6.12): the paper's tight lower bounds and partitions (`g_Q_1`: 13 rectangles;
+  `g_Q_2`, `g_Q_2h`: 16 rectangles each) pass unchanged. (6.8) is two exact evaluations of the
+  paper's lower bound at $\beta=\frac12$ (algebra in $\sqrt2$). (6.9), (6.10) and the extra fact
+  $f_{\beta,0}''(\frac18)>0$ of `Auto.DIR.deriv_f_QIII_0_neg_Icc_eighth` are single checker
+  evaluations.

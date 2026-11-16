@@ -354,4 +354,591 @@ theorem D1_half_h : D1 2⁻¹ ((2⁻¹ : ℝ)⁻¹ - 1) 2⁻¹ < (-3 / 5 : ℝ) 
     (by decide +kernel)
   norm_num at this ⊢; exact this
 
+/-! ### (6.12) and the extra check of Lemma 6.4: expressions and box lemmas -/
+
+/-- The paper's tight lower bound
+$\underline{g_{Q,2,\beta}}(\underline h,\overline h,\underline y,\overline y)$ ([DIR], proof of
+Lemma 6.4). -/
+noncomputable def gQ2lo (β hl hu yl yu : ℝ) : ℝ :=
+  -12 * α₁ β * hu ^ 2 + (2 * α₀ β + 8 * α₁ β * yl) * hl
+    - 6 * (3 - β⁻¹) * α₁ β * Q β yu ^ β⁻¹ * hu ^ (2 - β⁻¹)
+    + (2 - β⁻¹) * (2 * α₀ β + 8 * α₁ β * yl) * Q β yl ^ β⁻¹ * hu ^ (1 - β⁻¹)
+
+/-- $\underline{g_{Q,2,\beta}}$ as an expression ($\beta=b$ rational, variable $0$ is $2^\beta$). -/
+def exGQ2 (b hl hu yl yu : ℚ) : Ex :=
+  .add (.sub (.add (.mul (.const (-12 * hu ^ 2)) exα₁)
+        (.mul (.add (.mul (.const 2) exα₀) (.mul (.const (8 * yl)) exα₁)) (.const hl)))
+      (.mul (.mul (.mul (.const (6 * (3 - 1 / b))) exα₁) (.rpow (exQ yu) (1 / b)))
+        (.rpow (.const hu) (2 - 1 / b))))
+    (.mul (.mul (.mul (.const (2 - 1 / b)) (.add (.mul (.const 2) exα₀)
+      (.mul (.const (8 * yl)) exα₁))) (.rpow (exQ yl) (1 / b))) (.rpow (.const hu) (1 - 1 / b)))
+
+theorem denote_exGQ2 {ρ : ℕ → ℝ} {b : ℚ} {β : ℝ} (hb : ((b : ℚ) : ℝ) = β) (h0 : ρ 0 = 2 ^ β)
+    (hl hu yl yu : ℚ) : denote ρ (exGQ2 b hl hu yl yu) = gQ2lo β hl hu yl yu := by
+  simp only [exGQ2, denote, denote_exQ h0, denote_exα₀ h0, denote_exα₁ h0, gQ2lo]
+  push_cast
+  rw [hb, one_div]
+  ring
+
+/-- A box certificate of (6.12): one evaluation of the checker. -/
+theorem gQ2_box (cert : Cert) {b : ℚ} {β : ℝ} (hb : ((b : ℚ) : ℝ) = β) (hv : cert.v = 2 ^ β)
+    (hl hu yl yu : ℚ) (h : check P11 (Cert.env [cert]) (exGQ2 b hl hu yl yu) (1 / 100) = true) :
+    (1 / 100 : ℝ) < gQ2lo β hl hu yl yu := by
+  have := check_sound P11 hw11 [cert] _ _ h
+  rw [denote_exGQ2 hb hv, show ((1 / 100 : ℚ) : ℝ) = 1 / 100 by norm_num] at this
+  exact this
+
+/-- The lower bound of $p_{y,\beta}(\frac14)$ on $[\underline y,\overline y]$
+(`Auto.DIR.pQl_quarter_lo_le`). -/
+noncomputable def pQlo (β yl yu : ℝ) : ℝ :=
+  (α₁ β - α₀ β) / 16 - α₁ β * yu / 4 + Q β yu ^ β⁻¹ * (6 * α₁ β * 4⁻¹ ^ (3 - β⁻¹)
+    - (2 * α₀ β + 8 * α₁ β * yu) * 4⁻¹ ^ (2 - β⁻¹)) + Q β yl
+
+/-- `pQlo` as an expression. -/
+def exPQ (b yl yu : ℚ) : Ex :=
+  .add (.add (.sub (.mul (.const (1 / 16)) (.sub exα₁ exα₀)) (.mul (.const (yu / 4)) exα₁))
+      (.mul (.rpow (exQ yu) (1 / b)) (.sub (.mul (.mul (.const 6) exα₁)
+        (.rpow (.const (1 / 4)) (3 - 1 / b))) (.mul (.add (.mul (.const 2) exα₀)
+          (.mul (.const (8 * yu)) exα₁)) (.rpow (.const (1 / 4)) (2 - 1 / b))))))
+    (exQ yl)
+
+theorem denote_exPQ {ρ : ℕ → ℝ} {b : ℚ} {β : ℝ} (hb : ((b : ℚ) : ℝ) = β) (h0 : ρ 0 = 2 ^ β)
+    (yl yu : ℚ) : denote ρ (exPQ b yl yu) = pQlo β yl yu := by
+  simp only [exPQ, denote, denote_exQ h0, denote_exα₀ h0, denote_exα₁ h0, pQlo]
+  push_cast
+  rw [hb, one_div]
+  ring_nf
+
+/-- A box certificate of $p_{y,\beta}(\frac14)>\frac1{200}$ on an interval. -/
+theorem pQ_box (cert : Cert) {b : ℚ} {β : ℝ} (hb : ((b : ℚ) : ℝ) = β) (hv : cert.v = 2 ^ β)
+    (yl yu : ℚ) (h : check P11 (Cert.env [cert]) (exPQ b yl yu) (1 / 200) = true) :
+    (1 / 200 : ℝ) < pQlo β yl yu := by
+  have := check_sound P11 hw11 [cert] _ _ h
+  rw [denote_exPQ hb hv, show ((1 / 200 : ℚ) : ℝ) = 1 / 200 by norm_num] at this
+  exact this
+
+/-! ### (6.12) for $\beta=β₀$: the partition `g_Q_2` (16 rectangles) -/
+
+/-- The dyadic tree of the partition `g_Q_2` of $[\frac14,\frac12]^2$. -/
+def gQ2Tree_b0 : DyTree :=
+(.node (.node .leaf .leaf .leaf .leaf) (.node .leaf .leaf .leaf .leaf) (.node .leaf .leaf .leaf
+    .leaf) (.node .leaf .leaf .leaf .leaf))
+
+/-- The rectangles of `gQ2Tree_b0`. -/
+theorem gQ2Tree_b0_boxes : gQ2Tree_b0.boxes (1 / 4) (1 / 2) (1 / 4) (1 / 2) =
+[((1 / 4 : ℚ), (5 / 16 : ℚ), (1 / 4 : ℚ), (5 / 16 : ℚ)), ((1 / 4 : ℚ), (5 / 16 : ℚ), (5 / 16 :
+    ℚ), (3 / 8 : ℚ)), ((5 / 16 : ℚ), (3 / 8 : ℚ), (1 / 4 : ℚ), (5 / 16 : ℚ)), ((5 / 16 : ℚ), (3
+    / 8 : ℚ), (5 / 16 : ℚ), (3 / 8 : ℚ)), ((1 / 4 : ℚ), (5 / 16 : ℚ), (3 / 8 : ℚ), (7 / 16 :
+    ℚ)), ((1 / 4 : ℚ), (5 / 16 : ℚ), (7 / 16 : ℚ), (1 / 2 : ℚ)), ((5 / 16 : ℚ), (3 / 8 : ℚ), (3
+    / 8 : ℚ), (7 / 16 : ℚ)), ((5 / 16 : ℚ), (3 / 8 : ℚ), (7 / 16 : ℚ), (1 / 2 : ℚ)), ((3 / 8 :
+    ℚ), (7 / 16 : ℚ), (1 / 4 : ℚ), (5 / 16 : ℚ)), ((3 / 8 : ℚ), (7 / 16 : ℚ), (5 / 16 : ℚ), (3 /
+    8 : ℚ)), ((7 / 16 : ℚ), (1 / 2 : ℚ), (1 / 4 : ℚ), (5 / 16 : ℚ)), ((7 / 16 : ℚ), (1 / 2 : ℚ),
+    (5 / 16 : ℚ), (3 / 8 : ℚ)), ((3 / 8 : ℚ), (7 / 16 : ℚ), (3 / 8 : ℚ), (7 / 16 : ℚ)), ((3 / 8
+    : ℚ), (7 / 16 : ℚ), (7 / 16 : ℚ), (1 / 2 : ℚ)), ((7 / 16 : ℚ), (1 / 2 : ℚ), (3 / 8 : ℚ), (7
+    / 16 : ℚ)), ((7 / 16 : ℚ), (1 / 2 : ℚ), (7 / 16 : ℚ), (1 / 2 : ℚ))] := by
+  decide +kernel
+
+/-- Box certificate of (6.12), $\beta=β₀$, on $[1/4,5/16]\times[1/4,5/16]$. -/
+theorem gQ2_b0_box_0 :
+    (1 / 100 : ℝ) < gQ2lo β₀ (1 / 4 : ℚ) (5 / 16 : ℚ) (1 / 4 : ℚ) (5 / 16 : ℚ) :=
+  gQ2_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=β₀$, on $[1/4,5/16]\times[5/16,3/8]$. -/
+theorem gQ2_b0_box_1 :
+    (1 / 100 : ℝ) < gQ2lo β₀ (1 / 4 : ℚ) (5 / 16 : ℚ) (5 / 16 : ℚ) (3 / 8 : ℚ) :=
+  gQ2_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=β₀$, on $[5/16,3/8]\times[1/4,5/16]$. -/
+theorem gQ2_b0_box_2 :
+    (1 / 100 : ℝ) < gQ2lo β₀ (5 / 16 : ℚ) (3 / 8 : ℚ) (1 / 4 : ℚ) (5 / 16 : ℚ) :=
+  gQ2_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=β₀$, on $[5/16,3/8]\times[5/16,3/8]$. -/
+theorem gQ2_b0_box_3 :
+    (1 / 100 : ℝ) < gQ2lo β₀ (5 / 16 : ℚ) (3 / 8 : ℚ) (5 / 16 : ℚ) (3 / 8 : ℚ) :=
+  gQ2_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=β₀$, on $[1/4,5/16]\times[3/8,7/16]$. -/
+theorem gQ2_b0_box_4 :
+    (1 / 100 : ℝ) < gQ2lo β₀ (1 / 4 : ℚ) (5 / 16 : ℚ) (3 / 8 : ℚ) (7 / 16 : ℚ) :=
+  gQ2_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=β₀$, on $[1/4,5/16]\times[7/16,1/2]$. -/
+theorem gQ2_b0_box_5 :
+    (1 / 100 : ℝ) < gQ2lo β₀ (1 / 4 : ℚ) (5 / 16 : ℚ) (7 / 16 : ℚ) (1 / 2 : ℚ) :=
+  gQ2_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=β₀$, on $[5/16,3/8]\times[3/8,7/16]$. -/
+theorem gQ2_b0_box_6 :
+    (1 / 100 : ℝ) < gQ2lo β₀ (5 / 16 : ℚ) (3 / 8 : ℚ) (3 / 8 : ℚ) (7 / 16 : ℚ) :=
+  gQ2_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=β₀$, on $[5/16,3/8]\times[7/16,1/2]$. -/
+theorem gQ2_b0_box_7 :
+    (1 / 100 : ℝ) < gQ2lo β₀ (5 / 16 : ℚ) (3 / 8 : ℚ) (7 / 16 : ℚ) (1 / 2 : ℚ) :=
+  gQ2_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=β₀$, on $[3/8,7/16]\times[1/4,5/16]$. -/
+theorem gQ2_b0_box_8 :
+    (1 / 100 : ℝ) < gQ2lo β₀ (3 / 8 : ℚ) (7 / 16 : ℚ) (1 / 4 : ℚ) (5 / 16 : ℚ) :=
+  gQ2_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=β₀$, on $[3/8,7/16]\times[5/16,3/8]$. -/
+theorem gQ2_b0_box_9 :
+    (1 / 100 : ℝ) < gQ2lo β₀ (3 / 8 : ℚ) (7 / 16 : ℚ) (5 / 16 : ℚ) (3 / 8 : ℚ) :=
+  gQ2_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=β₀$, on $[7/16,1/2]\times[1/4,5/16]$. -/
+theorem gQ2_b0_box_10 :
+    (1 / 100 : ℝ) < gQ2lo β₀ (7 / 16 : ℚ) (1 / 2 : ℚ) (1 / 4 : ℚ) (5 / 16 : ℚ) :=
+  gQ2_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=β₀$, on $[7/16,1/2]\times[5/16,3/8]$. -/
+theorem gQ2_b0_box_11 :
+    (1 / 100 : ℝ) < gQ2lo β₀ (7 / 16 : ℚ) (1 / 2 : ℚ) (5 / 16 : ℚ) (3 / 8 : ℚ) :=
+  gQ2_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=β₀$, on $[3/8,7/16]\times[3/8,7/16]$. -/
+theorem gQ2_b0_box_12 :
+    (1 / 100 : ℝ) < gQ2lo β₀ (3 / 8 : ℚ) (7 / 16 : ℚ) (3 / 8 : ℚ) (7 / 16 : ℚ) :=
+  gQ2_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=β₀$, on $[3/8,7/16]\times[7/16,1/2]$. -/
+theorem gQ2_b0_box_13 :
+    (1 / 100 : ℝ) < gQ2lo β₀ (3 / 8 : ℚ) (7 / 16 : ℚ) (7 / 16 : ℚ) (1 / 2 : ℚ) :=
+  gQ2_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=β₀$, on $[7/16,1/2]\times[3/8,7/16]$. -/
+theorem gQ2_b0_box_14 :
+    (1 / 100 : ℝ) < gQ2lo β₀ (7 / 16 : ℚ) (1 / 2 : ℚ) (3 / 8 : ℚ) (7 / 16 : ℚ) :=
+  gQ2_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=β₀$, on $[7/16,1/2]\times[7/16,1/2]$. -/
+theorem gQ2_b0_box_15 :
+    (1 / 100 : ℝ) < gQ2lo β₀ (7 / 16 : ℚ) (1 / 2 : ℚ) (7 / 16 : ℚ) (1 / 2 : ℚ) :=
+  gQ2_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ _ _ (by decide +kernel)
+
+/-- **(6.12)** for $\beta=β₀$ (computer-assisted), with $g_{Q,2,\beta}$ explicit (`gQ2l`):
+$g_{Q,2,\beta}(h,y)>0.01$ on $[\frac14,\frac12]^2$. -/
+theorem eqn_6_12_cert_b0 : ∀ h ∈ Icc (4⁻¹ : ℝ) 2⁻¹, ∀ y ∈ Icc (4⁻¹ : ℝ) 2⁻¹,
+    (1 / 100 : ℝ) < gQ2l β₀ h y := by
+  intro h hh y hy
+  have := pos_of_dyTree gQ2Tree_b0 (1 / 4) (1 / 2) (1 / 4) (1 / 2) (by norm_num) (by norm_num)
+    (fun h y ↦ gQ2l β₀ h y - 1 / 100) (fun hl hu yl yu ↦ gQ2lo β₀ hl hu yl yu - 1 / 100) ?_ ?_ h
+    (by constructor <;> push_cast <;> linarith [hh.1, hh.2]) y
+    (by constructor <;> push_cast <;> linarith [hy.1, hy.2])
+  · linarith
+  · intro al au bl bu x y h1 h2 h3 h4 hx hy
+    push_cast at h1 h2 h3 h4
+    have := gQ2l_lo_le (Or.inr rfl) (by linarith) (by linarith) (by linarith) hx hy
+    simp only [gQ2lo]; linarith
+  · rw [gQ2Tree_b0_boxes]
+    intro p hp
+    simp only [List.mem_cons, List.mem_nil_iff, or_false] at hp
+    refine sub_pos.2 ?_
+    rcases hp with
+      rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+      | rfl <;>
+    first
+    | exact gQ2_b0_box_0
+    | exact gQ2_b0_box_1
+    | exact gQ2_b0_box_2
+    | exact gQ2_b0_box_3
+    | exact gQ2_b0_box_4
+    | exact gQ2_b0_box_5
+    | exact gQ2_b0_box_6
+    | exact gQ2_b0_box_7
+    | exact gQ2_b0_box_8
+    | exact gQ2_b0_box_9
+    | exact gQ2_b0_box_10
+    | exact gQ2_b0_box_11
+    | exact gQ2_b0_box_12
+    | exact gQ2_b0_box_13
+    | exact gQ2_b0_box_14
+    | exact gQ2_b0_box_15
+
+/-! ### Lemma 6.4, second claim, $\beta=β₀$: $p_{y,\beta}(\frac14)>\frac1{200}$
+
+16 intervals. -/
+
+/-- Interval certificate on $[1/4,17/64]$. -/
+theorem pQ_b0_box_0 : (1 / 200 : ℝ) < pQlo β₀ (1 / 4 : ℚ) (17 / 64 : ℚ) :=
+  pQ_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[17/64,9/32]$. -/
+theorem pQ_b0_box_1 : (1 / 200 : ℝ) < pQlo β₀ (17 / 64 : ℚ) (9 / 32 : ℚ) :=
+  pQ_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[9/32,19/64]$. -/
+theorem pQ_b0_box_2 : (1 / 200 : ℝ) < pQlo β₀ (9 / 32 : ℚ) (19 / 64 : ℚ) :=
+  pQ_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[19/64,5/16]$. -/
+theorem pQ_b0_box_3 : (1 / 200 : ℝ) < pQlo β₀ (19 / 64 : ℚ) (5 / 16 : ℚ) :=
+  pQ_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[5/16,21/64]$. -/
+theorem pQ_b0_box_4 : (1 / 200 : ℝ) < pQlo β₀ (5 / 16 : ℚ) (21 / 64 : ℚ) :=
+  pQ_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[21/64,11/32]$. -/
+theorem pQ_b0_box_5 : (1 / 200 : ℝ) < pQlo β₀ (21 / 64 : ℚ) (11 / 32 : ℚ) :=
+  pQ_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[11/32,23/64]$. -/
+theorem pQ_b0_box_6 : (1 / 200 : ℝ) < pQlo β₀ (11 / 32 : ℚ) (23 / 64 : ℚ) :=
+  pQ_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[23/64,3/8]$. -/
+theorem pQ_b0_box_7 : (1 / 200 : ℝ) < pQlo β₀ (23 / 64 : ℚ) (3 / 8 : ℚ) :=
+  pQ_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[3/8,25/64]$. -/
+theorem pQ_b0_box_8 : (1 / 200 : ℝ) < pQlo β₀ (3 / 8 : ℚ) (25 / 64 : ℚ) :=
+  pQ_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[25/64,13/32]$. -/
+theorem pQ_b0_box_9 : (1 / 200 : ℝ) < pQlo β₀ (25 / 64 : ℚ) (13 / 32 : ℚ) :=
+  pQ_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[13/32,27/64]$. -/
+theorem pQ_b0_box_10 : (1 / 200 : ℝ) < pQlo β₀ (13 / 32 : ℚ) (27 / 64 : ℚ) :=
+  pQ_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[27/64,7/16]$. -/
+theorem pQ_b0_box_11 : (1 / 200 : ℝ) < pQlo β₀ (27 / 64 : ℚ) (7 / 16 : ℚ) :=
+  pQ_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[7/16,29/64]$. -/
+theorem pQ_b0_box_12 : (1 / 200 : ℝ) < pQlo β₀ (7 / 16 : ℚ) (29 / 64 : ℚ) :=
+  pQ_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[29/64,15/32]$. -/
+theorem pQ_b0_box_13 : (1 / 200 : ℝ) < pQlo β₀ (29 / 64 : ℚ) (15 / 32 : ℚ) :=
+  pQ_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[15/32,31/64]$. -/
+theorem pQ_b0_box_14 : (1 / 200 : ℝ) < pQlo β₀ (15 / 32 : ℚ) (31 / 64 : ℚ) :=
+  pQ_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[31/64,1/2]$. -/
+theorem pQ_b0_box_15 : (1 / 200 : ℝ) < pQlo β₀ (31 / 64 : ℚ) (1 / 2 : ℚ) :=
+  pQ_box cTwoPowβ₀ β₀Q_cast cTwoPowβ₀_v' _ _ (by decide +kernel)
+
+/-- $p_{y,\beta}(\frac14)>\frac1{200}$ for $y\in[\frac14,\frac12]$, $\beta=β₀$. -/
+theorem pQ_quarter_cert_b0 : ∀ y ∈ Icc (4⁻¹ : ℝ) 2⁻¹, (1 / 200 : ℝ) < pQl β₀ y 4⁻¹ := by
+  intro y hy
+  have key : ∀ (yl yu : ℚ), (1 / 200 : ℝ) < pQlo β₀ yl yu → (4⁻¹ : ℝ) ≤ yl →
+      (yu : ℝ) ≤ 2⁻¹ → y ∈ Icc (yl : ℝ) yu → (1 / 200 : ℝ) < pQl β₀ y 4⁻¹ :=
+    fun yl yu h hl hu hy' ↦ h.trans_le (pQl_quarter_lo_le (Or.inr rfl) hl hu hy')
+  rcases le_total y (17 / 64 : ℚ) with h0 | h0
+  · exact key _ _ pQ_b0_box_0 (by norm_num) (by norm_num)
+      ⟨by push_cast; linarith [hy.1], by exact_mod_cast h0⟩
+  rcases le_total y (9 / 32 : ℚ) with h1 | h1
+  · exact key _ _ pQ_b0_box_1 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h0, by exact_mod_cast h1⟩
+  rcases le_total y (19 / 64 : ℚ) with h2 | h2
+  · exact key _ _ pQ_b0_box_2 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h1, by exact_mod_cast h2⟩
+  rcases le_total y (5 / 16 : ℚ) with h3 | h3
+  · exact key _ _ pQ_b0_box_3 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h2, by exact_mod_cast h3⟩
+  rcases le_total y (21 / 64 : ℚ) with h4 | h4
+  · exact key _ _ pQ_b0_box_4 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h3, by exact_mod_cast h4⟩
+  rcases le_total y (11 / 32 : ℚ) with h5 | h5
+  · exact key _ _ pQ_b0_box_5 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h4, by exact_mod_cast h5⟩
+  rcases le_total y (23 / 64 : ℚ) with h6 | h6
+  · exact key _ _ pQ_b0_box_6 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h5, by exact_mod_cast h6⟩
+  rcases le_total y (3 / 8 : ℚ) with h7 | h7
+  · exact key _ _ pQ_b0_box_7 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h6, by exact_mod_cast h7⟩
+  rcases le_total y (25 / 64 : ℚ) with h8 | h8
+  · exact key _ _ pQ_b0_box_8 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h7, by exact_mod_cast h8⟩
+  rcases le_total y (13 / 32 : ℚ) with h9 | h9
+  · exact key _ _ pQ_b0_box_9 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h8, by exact_mod_cast h9⟩
+  rcases le_total y (27 / 64 : ℚ) with h10 | h10
+  · exact key _ _ pQ_b0_box_10 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h9, by exact_mod_cast h10⟩
+  rcases le_total y (7 / 16 : ℚ) with h11 | h11
+  · exact key _ _ pQ_b0_box_11 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h10, by exact_mod_cast h11⟩
+  rcases le_total y (29 / 64 : ℚ) with h12 | h12
+  · exact key _ _ pQ_b0_box_12 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h11, by exact_mod_cast h12⟩
+  rcases le_total y (15 / 32 : ℚ) with h13 | h13
+  · exact key _ _ pQ_b0_box_13 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h12, by exact_mod_cast h13⟩
+  rcases le_total y (31 / 64 : ℚ) with h14 | h14
+  · exact key _ _ pQ_b0_box_14 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h13, by exact_mod_cast h14⟩
+  exact key _ _ pQ_b0_box_15 (by norm_num) (by norm_num)
+    ⟨by exact_mod_cast h14, by push_cast; linarith [hy.2]⟩
+
+/-! ### (6.12) for $\beta=\frac12$: the partition `g_Q_2h` (16 rectangles) -/
+
+/-- The dyadic tree of the partition `g_Q_2h` of $[\frac14,\frac12]^2$. -/
+def gQ2Tree_h : DyTree :=
+(.node (.node .leaf .leaf .leaf .leaf) (.node .leaf .leaf .leaf .leaf) (.node .leaf .leaf .leaf
+    .leaf) (.node .leaf .leaf .leaf .leaf))
+
+/-- The rectangles of `gQ2Tree_h`. -/
+theorem gQ2Tree_h_boxes : gQ2Tree_h.boxes (1 / 4) (1 / 2) (1 / 4) (1 / 2) =
+[((1 / 4 : ℚ), (5 / 16 : ℚ), (1 / 4 : ℚ), (5 / 16 : ℚ)), ((1 / 4 : ℚ), (5 / 16 : ℚ), (5 / 16 :
+    ℚ), (3 / 8 : ℚ)), ((5 / 16 : ℚ), (3 / 8 : ℚ), (1 / 4 : ℚ), (5 / 16 : ℚ)), ((5 / 16 : ℚ), (3
+    / 8 : ℚ), (5 / 16 : ℚ), (3 / 8 : ℚ)), ((1 / 4 : ℚ), (5 / 16 : ℚ), (3 / 8 : ℚ), (7 / 16 :
+    ℚ)), ((1 / 4 : ℚ), (5 / 16 : ℚ), (7 / 16 : ℚ), (1 / 2 : ℚ)), ((5 / 16 : ℚ), (3 / 8 : ℚ), (3
+    / 8 : ℚ), (7 / 16 : ℚ)), ((5 / 16 : ℚ), (3 / 8 : ℚ), (7 / 16 : ℚ), (1 / 2 : ℚ)), ((3 / 8 :
+    ℚ), (7 / 16 : ℚ), (1 / 4 : ℚ), (5 / 16 : ℚ)), ((3 / 8 : ℚ), (7 / 16 : ℚ), (5 / 16 : ℚ), (3 /
+    8 : ℚ)), ((7 / 16 : ℚ), (1 / 2 : ℚ), (1 / 4 : ℚ), (5 / 16 : ℚ)), ((7 / 16 : ℚ), (1 / 2 : ℚ),
+    (5 / 16 : ℚ), (3 / 8 : ℚ)), ((3 / 8 : ℚ), (7 / 16 : ℚ), (3 / 8 : ℚ), (7 / 16 : ℚ)), ((3 / 8
+    : ℚ), (7 / 16 : ℚ), (7 / 16 : ℚ), (1 / 2 : ℚ)), ((7 / 16 : ℚ), (1 / 2 : ℚ), (3 / 8 : ℚ), (7
+    / 16 : ℚ)), ((7 / 16 : ℚ), (1 / 2 : ℚ), (7 / 16 : ℚ), (1 / 2 : ℚ))] := by
+  decide +kernel
+
+/-- Box certificate of (6.12), $\beta=\frac12$, on $[1/4,5/16]\times[1/4,5/16]$. -/
+theorem gQ2_h_box_0 :
+    (1 / 100 : ℝ) < gQ2lo 2⁻¹ (1 / 4 : ℚ) (5 / 16 : ℚ) (1 / 4 : ℚ) (5 / 16 : ℚ) :=
+  gQ2_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=\frac12$, on $[1/4,5/16]\times[5/16,3/8]$. -/
+theorem gQ2_h_box_1 :
+    (1 / 100 : ℝ) < gQ2lo 2⁻¹ (1 / 4 : ℚ) (5 / 16 : ℚ) (5 / 16 : ℚ) (3 / 8 : ℚ) :=
+  gQ2_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=\frac12$, on $[5/16,3/8]\times[1/4,5/16]$. -/
+theorem gQ2_h_box_2 :
+    (1 / 100 : ℝ) < gQ2lo 2⁻¹ (5 / 16 : ℚ) (3 / 8 : ℚ) (1 / 4 : ℚ) (5 / 16 : ℚ) :=
+  gQ2_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=\frac12$, on $[5/16,3/8]\times[5/16,3/8]$. -/
+theorem gQ2_h_box_3 :
+    (1 / 100 : ℝ) < gQ2lo 2⁻¹ (5 / 16 : ℚ) (3 / 8 : ℚ) (5 / 16 : ℚ) (3 / 8 : ℚ) :=
+  gQ2_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=\frac12$, on $[1/4,5/16]\times[3/8,7/16]$. -/
+theorem gQ2_h_box_4 :
+    (1 / 100 : ℝ) < gQ2lo 2⁻¹ (1 / 4 : ℚ) (5 / 16 : ℚ) (3 / 8 : ℚ) (7 / 16 : ℚ) :=
+  gQ2_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=\frac12$, on $[1/4,5/16]\times[7/16,1/2]$. -/
+theorem gQ2_h_box_5 :
+    (1 / 100 : ℝ) < gQ2lo 2⁻¹ (1 / 4 : ℚ) (5 / 16 : ℚ) (7 / 16 : ℚ) (1 / 2 : ℚ) :=
+  gQ2_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=\frac12$, on $[5/16,3/8]\times[3/8,7/16]$. -/
+theorem gQ2_h_box_6 :
+    (1 / 100 : ℝ) < gQ2lo 2⁻¹ (5 / 16 : ℚ) (3 / 8 : ℚ) (3 / 8 : ℚ) (7 / 16 : ℚ) :=
+  gQ2_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=\frac12$, on $[5/16,3/8]\times[7/16,1/2]$. -/
+theorem gQ2_h_box_7 :
+    (1 / 100 : ℝ) < gQ2lo 2⁻¹ (5 / 16 : ℚ) (3 / 8 : ℚ) (7 / 16 : ℚ) (1 / 2 : ℚ) :=
+  gQ2_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=\frac12$, on $[3/8,7/16]\times[1/4,5/16]$. -/
+theorem gQ2_h_box_8 :
+    (1 / 100 : ℝ) < gQ2lo 2⁻¹ (3 / 8 : ℚ) (7 / 16 : ℚ) (1 / 4 : ℚ) (5 / 16 : ℚ) :=
+  gQ2_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=\frac12$, on $[3/8,7/16]\times[5/16,3/8]$. -/
+theorem gQ2_h_box_9 :
+    (1 / 100 : ℝ) < gQ2lo 2⁻¹ (3 / 8 : ℚ) (7 / 16 : ℚ) (5 / 16 : ℚ) (3 / 8 : ℚ) :=
+  gQ2_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=\frac12$, on $[7/16,1/2]\times[1/4,5/16]$. -/
+theorem gQ2_h_box_10 :
+    (1 / 100 : ℝ) < gQ2lo 2⁻¹ (7 / 16 : ℚ) (1 / 2 : ℚ) (1 / 4 : ℚ) (5 / 16 : ℚ) :=
+  gQ2_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=\frac12$, on $[7/16,1/2]\times[5/16,3/8]$. -/
+theorem gQ2_h_box_11 :
+    (1 / 100 : ℝ) < gQ2lo 2⁻¹ (7 / 16 : ℚ) (1 / 2 : ℚ) (5 / 16 : ℚ) (3 / 8 : ℚ) :=
+  gQ2_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=\frac12$, on $[3/8,7/16]\times[3/8,7/16]$. -/
+theorem gQ2_h_box_12 :
+    (1 / 100 : ℝ) < gQ2lo 2⁻¹ (3 / 8 : ℚ) (7 / 16 : ℚ) (3 / 8 : ℚ) (7 / 16 : ℚ) :=
+  gQ2_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=\frac12$, on $[3/8,7/16]\times[7/16,1/2]$. -/
+theorem gQ2_h_box_13 :
+    (1 / 100 : ℝ) < gQ2lo 2⁻¹ (3 / 8 : ℚ) (7 / 16 : ℚ) (7 / 16 : ℚ) (1 / 2 : ℚ) :=
+  gQ2_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=\frac12$, on $[7/16,1/2]\times[3/8,7/16]$. -/
+theorem gQ2_h_box_14 :
+    (1 / 100 : ℝ) < gQ2lo 2⁻¹ (7 / 16 : ℚ) (1 / 2 : ℚ) (3 / 8 : ℚ) (7 / 16 : ℚ) :=
+  gQ2_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ _ _ (by decide +kernel)
+
+/-- Box certificate of (6.12), $\beta=\frac12$, on $[7/16,1/2]\times[7/16,1/2]$. -/
+theorem gQ2_h_box_15 :
+    (1 / 100 : ℝ) < gQ2lo 2⁻¹ (7 / 16 : ℚ) (1 / 2 : ℚ) (7 / 16 : ℚ) (1 / 2 : ℚ) :=
+  gQ2_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ _ _ (by decide +kernel)
+
+/-- **(6.12)** for $\beta=\frac12$ (computer-assisted), with $g_{Q,2,\beta}$ explicit (`gQ2l`):
+$g_{Q,2,\beta}(h,y)>0.01$ on $[\frac14,\frac12]^2$. -/
+theorem eqn_6_12_cert_h : ∀ h ∈ Icc (4⁻¹ : ℝ) 2⁻¹, ∀ y ∈ Icc (4⁻¹ : ℝ) 2⁻¹,
+    (1 / 100 : ℝ) < gQ2l 2⁻¹ h y := by
+  intro h hh y hy
+  have := pos_of_dyTree gQ2Tree_h (1 / 4) (1 / 2) (1 / 4) (1 / 2) (by norm_num) (by norm_num)
+    (fun h y ↦ gQ2l 2⁻¹ h y - 1 / 100) (fun hl hu yl yu ↦ gQ2lo 2⁻¹ hl hu yl yu - 1 / 100) ?_ ?_ h
+    (by constructor <;> push_cast <;> linarith [hh.1, hh.2]) y
+    (by constructor <;> push_cast <;> linarith [hy.1, hy.2])
+  · linarith
+  · intro al au bl bu x y h1 h2 h3 h4 hx hy
+    push_cast at h1 h2 h3 h4
+    have := gQ2l_lo_le (Or.inl rfl) (by linarith) (by linarith) (by linarith) hx hy
+    simp only [gQ2lo]; linarith
+  · rw [gQ2Tree_h_boxes]
+    intro p hp
+    simp only [List.mem_cons, List.mem_nil_iff, or_false] at hp
+    refine sub_pos.2 ?_
+    rcases hp with
+      rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+      | rfl <;>
+    first
+    | exact gQ2_h_box_0
+    | exact gQ2_h_box_1
+    | exact gQ2_h_box_2
+    | exact gQ2_h_box_3
+    | exact gQ2_h_box_4
+    | exact gQ2_h_box_5
+    | exact gQ2_h_box_6
+    | exact gQ2_h_box_7
+    | exact gQ2_h_box_8
+    | exact gQ2_h_box_9
+    | exact gQ2_h_box_10
+    | exact gQ2_h_box_11
+    | exact gQ2_h_box_12
+    | exact gQ2_h_box_13
+    | exact gQ2_h_box_14
+    | exact gQ2_h_box_15
+
+/-! ### Lemma 6.4, second claim, $\beta=\frac12$: $p_{y,\beta}(\frac14)>\frac1{200}$
+
+16 intervals. -/
+
+/-- Interval certificate on $[1/4,17/64]$. -/
+theorem pQ_h_box_0 : (1 / 200 : ℝ) < pQlo 2⁻¹ (1 / 4 : ℚ) (17 / 64 : ℚ) :=
+  pQ_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[17/64,9/32]$. -/
+theorem pQ_h_box_1 : (1 / 200 : ℝ) < pQlo 2⁻¹ (17 / 64 : ℚ) (9 / 32 : ℚ) :=
+  pQ_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[9/32,19/64]$. -/
+theorem pQ_h_box_2 : (1 / 200 : ℝ) < pQlo 2⁻¹ (9 / 32 : ℚ) (19 / 64 : ℚ) :=
+  pQ_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[19/64,5/16]$. -/
+theorem pQ_h_box_3 : (1 / 200 : ℝ) < pQlo 2⁻¹ (19 / 64 : ℚ) (5 / 16 : ℚ) :=
+  pQ_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[5/16,21/64]$. -/
+theorem pQ_h_box_4 : (1 / 200 : ℝ) < pQlo 2⁻¹ (5 / 16 : ℚ) (21 / 64 : ℚ) :=
+  pQ_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[21/64,11/32]$. -/
+theorem pQ_h_box_5 : (1 / 200 : ℝ) < pQlo 2⁻¹ (21 / 64 : ℚ) (11 / 32 : ℚ) :=
+  pQ_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[11/32,23/64]$. -/
+theorem pQ_h_box_6 : (1 / 200 : ℝ) < pQlo 2⁻¹ (11 / 32 : ℚ) (23 / 64 : ℚ) :=
+  pQ_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[23/64,3/8]$. -/
+theorem pQ_h_box_7 : (1 / 200 : ℝ) < pQlo 2⁻¹ (23 / 64 : ℚ) (3 / 8 : ℚ) :=
+  pQ_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[3/8,25/64]$. -/
+theorem pQ_h_box_8 : (1 / 200 : ℝ) < pQlo 2⁻¹ (3 / 8 : ℚ) (25 / 64 : ℚ) :=
+  pQ_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[25/64,13/32]$. -/
+theorem pQ_h_box_9 : (1 / 200 : ℝ) < pQlo 2⁻¹ (25 / 64 : ℚ) (13 / 32 : ℚ) :=
+  pQ_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[13/32,27/64]$. -/
+theorem pQ_h_box_10 : (1 / 200 : ℝ) < pQlo 2⁻¹ (13 / 32 : ℚ) (27 / 64 : ℚ) :=
+  pQ_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[27/64,7/16]$. -/
+theorem pQ_h_box_11 : (1 / 200 : ℝ) < pQlo 2⁻¹ (27 / 64 : ℚ) (7 / 16 : ℚ) :=
+  pQ_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[7/16,29/64]$. -/
+theorem pQ_h_box_12 : (1 / 200 : ℝ) < pQlo 2⁻¹ (7 / 16 : ℚ) (29 / 64 : ℚ) :=
+  pQ_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[29/64,15/32]$. -/
+theorem pQ_h_box_13 : (1 / 200 : ℝ) < pQlo 2⁻¹ (29 / 64 : ℚ) (15 / 32 : ℚ) :=
+  pQ_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[15/32,31/64]$. -/
+theorem pQ_h_box_14 : (1 / 200 : ℝ) < pQlo 2⁻¹ (15 / 32 : ℚ) (31 / 64 : ℚ) :=
+  pQ_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ (by decide +kernel)
+
+/-- Interval certificate on $[31/64,1/2]$. -/
+theorem pQ_h_box_15 : (1 / 200 : ℝ) < pQlo 2⁻¹ (31 / 64 : ℚ) (1 / 2 : ℚ) :=
+  pQ_box cTwoPowHalf (b := 1 / 2) (by norm_num) cTwoPowHalf_v' _ _ (by decide +kernel)
+
+/-- $p_{y,\beta}(\frac14)>\frac1{200}$ for $y\in[\frac14,\frac12]$, $\beta=\frac12$. -/
+theorem pQ_quarter_cert_h : ∀ y ∈ Icc (4⁻¹ : ℝ) 2⁻¹, (1 / 200 : ℝ) < pQl 2⁻¹ y 4⁻¹ := by
+  intro y hy
+  have key : ∀ (yl yu : ℚ), (1 / 200 : ℝ) < pQlo 2⁻¹ yl yu → (4⁻¹ : ℝ) ≤ yl →
+      (yu : ℝ) ≤ 2⁻¹ → y ∈ Icc (yl : ℝ) yu → (1 / 200 : ℝ) < pQl 2⁻¹ y 4⁻¹ :=
+    fun yl yu h hl hu hy' ↦ h.trans_le (pQl_quarter_lo_le (Or.inl rfl) hl hu hy')
+  rcases le_total y (17 / 64 : ℚ) with h0 | h0
+  · exact key _ _ pQ_h_box_0 (by norm_num) (by norm_num)
+      ⟨by push_cast; linarith [hy.1], by exact_mod_cast h0⟩
+  rcases le_total y (9 / 32 : ℚ) with h1 | h1
+  · exact key _ _ pQ_h_box_1 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h0, by exact_mod_cast h1⟩
+  rcases le_total y (19 / 64 : ℚ) with h2 | h2
+  · exact key _ _ pQ_h_box_2 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h1, by exact_mod_cast h2⟩
+  rcases le_total y (5 / 16 : ℚ) with h3 | h3
+  · exact key _ _ pQ_h_box_3 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h2, by exact_mod_cast h3⟩
+  rcases le_total y (21 / 64 : ℚ) with h4 | h4
+  · exact key _ _ pQ_h_box_4 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h3, by exact_mod_cast h4⟩
+  rcases le_total y (11 / 32 : ℚ) with h5 | h5
+  · exact key _ _ pQ_h_box_5 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h4, by exact_mod_cast h5⟩
+  rcases le_total y (23 / 64 : ℚ) with h6 | h6
+  · exact key _ _ pQ_h_box_6 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h5, by exact_mod_cast h6⟩
+  rcases le_total y (3 / 8 : ℚ) with h7 | h7
+  · exact key _ _ pQ_h_box_7 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h6, by exact_mod_cast h7⟩
+  rcases le_total y (25 / 64 : ℚ) with h8 | h8
+  · exact key _ _ pQ_h_box_8 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h7, by exact_mod_cast h8⟩
+  rcases le_total y (13 / 32 : ℚ) with h9 | h9
+  · exact key _ _ pQ_h_box_9 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h8, by exact_mod_cast h9⟩
+  rcases le_total y (27 / 64 : ℚ) with h10 | h10
+  · exact key _ _ pQ_h_box_10 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h9, by exact_mod_cast h10⟩
+  rcases le_total y (7 / 16 : ℚ) with h11 | h11
+  · exact key _ _ pQ_h_box_11 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h10, by exact_mod_cast h11⟩
+  rcases le_total y (29 / 64 : ℚ) with h12 | h12
+  · exact key _ _ pQ_h_box_12 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h11, by exact_mod_cast h12⟩
+  rcases le_total y (15 / 32 : ℚ) with h13 | h13
+  · exact key _ _ pQ_h_box_13 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h12, by exact_mod_cast h13⟩
+  rcases le_total y (31 / 64 : ℚ) with h14 | h14
+  · exact key _ _ pQ_h_box_14 (by norm_num) (by norm_num)
+      ⟨by exact_mod_cast h13, by exact_mod_cast h14⟩
+  exact key _ _ pQ_h_box_15 (by norm_num) (by norm_num)
+    ⟨by exact_mod_cast h14, by push_cast; linarith [hy.2]⟩
+
 end Auto.DIR

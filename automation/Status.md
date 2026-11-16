@@ -268,19 +268,19 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 13:01:28 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `deriv_f_QIII_0_neg_Icc_eighth`
 - complete — 2026-11-16 13:01:28 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `deriv_f_QIII_nonpos`
 - complete — 2026-11-16 13:01:28 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `f_QIII_nonneg`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `lemma_6_4_denom_pos`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `lemma_6_4_deriv`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_11`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `lemma_6_4_poly`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_11_eq_p_Q`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `lemma_6_4_of_strictAntiOn`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_12`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_III_iff_G_Q`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `lemma_6_4`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_III_min`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_III_G_Q_quarter`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_6`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `prop_6_2`
+- complete — 2026-11-16 13:21:41 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `lemma_6_4_denom_pos`
+- complete — 2026-11-16 13:21:41 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `lemma_6_4_deriv`
+- complete — 2026-11-16 13:21:41 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_11`
+- complete — 2026-11-16 13:21:41 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `lemma_6_4_poly`
+- complete — 2026-11-16 13:21:41 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_11_eq_p_Q`
+- complete — 2026-11-16 13:21:41 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `lemma_6_4_of_strictAntiOn`
+- complete — 2026-11-16 13:21:41 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_12`
+- complete — 2026-11-16 13:21:41 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_III_iff_G_Q`
+- complete — 2026-11-16 13:21:41 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `lemma_6_4`
+- complete — 2026-11-16 13:21:41 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_III_min`
+- complete — 2026-11-16 13:21:41 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_III_G_Q_quarter`
+- complete — 2026-11-16 13:21:41 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_6`
+- complete — 2026-11-16 13:21:41 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `prop_6_2`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 2_Envelope_Functions/2_2_Proofs_Theorems_1_1_1_5_1_7: `b_eq_Q_ge_L`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 2_Preliminaries/2_2_Properties_J: `JX_mul_deriv2`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 2_Preliminaries/2_2_Properties_J: `γX_mem`
