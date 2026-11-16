@@ -432,4 +432,59 @@ theorem Q_half_values : Q 2⁻¹ 4⁻¹ = √2 / 4 ∧ Q 2⁻¹ (3 / 8) = 5 / 32
     Q 2⁻¹ 2⁻¹ = 2⁻¹ := by
   refine ⟨?_, ?_, ?_⟩ <;> rw [Q_eq_affine, two_rpow_half] <;> ring
 
+/-- Facts on $\beta\in\{\frac12,\beta_0\}$: $\beta<1$, $1<\beta^{-1}\le2$,
+$\alpha_0,\alpha_1\ge0$. -/
+theorem caseQ_β_facts {β : ℝ} (hβ : β = 2⁻¹ ∨ β = β₀) :
+    β < 1 ∧ 1 < β⁻¹ ∧ β⁻¹ ≤ 2 ∧ 0 ≤ α₀ β ∧ 0 ≤ α₁ β := by
+  have hβr := mem_Ico_of_caseQ hβ
+  have hβ1 : β < 1 := by rcases hβ with rfl | rfl <;> norm_num [β₀]
+  have hβ0 : 0 < β := by linarith [hβr.1]
+  have hs := two_rpow_gt_of_half_le hβr.1
+  refine ⟨hβ1, (one_lt_inv₀ hβ0).2 hβ1, ?_, ?_, ?_⟩
+  · rw [inv_le_comm₀ hβ0 two_pos]; linarith [hβr.1]
+  · rw [α₀, two_rpow_two_add]; linarith
+  · rw [α₁, two_rpow_one_add]; linarith [two_rpow_le_three_halves hβr.2.le]
+
+/-- The lower bound property of the tight lower bound $\underline{g_{Q,1,\beta}}$ ([DIR], §6.2.1),
+with $g_{Q,1,\beta}$ in the form of `Auto.DIR.caseQ_II_g_Q_1_eq`: by monotonicity of $Q_\beta$ on
+$[0,\frac12]$, for $0\le\underline h\le h\le\overline h\le\frac14$ and
+$\frac14\le\underline y\le y\le\overline y\le\frac12$ ($\beta\in\{\frac12,\beta_0\}$). -/
+theorem g_Q_1_lo_le {β : ℝ} (hβ : β = 2⁻¹ ∨ β = β₀) {hl hu yl yu h y : ℝ} (hhl : 0 ≤ hl)
+    (hhu : hu ≤ 4⁻¹) (hyl : 4⁻¹ ≤ yl) (hyu : yu ≤ 2⁻¹) (hh : h ∈ Icc hl hu)
+    (hy : y ∈ Icc yl yu) :
+    β * Q β yu ^ (1 - β⁻¹) - (α₀ β - 2 * α₁ β * hl + 4 * α₁ β * yu) * hu ^ (2 - β⁻¹)
+        - 2⁻¹ * β * (1 - β) * Q β yl ^ (1 - 2 / β) * hu ^ β⁻¹ ≤
+      β * Q β y ^ (1 - β⁻¹) - (α₀ β - 2 * α₁ β * h + 4 * α₁ β * y) * h ^ (2 - β⁻¹)
+        - 2⁻¹ * β * (1 - β) * Q β y ^ (1 - 2 / β) * h ^ β⁻¹ := by
+  obtain ⟨hβ1, hbi1, hbi2, hα0, hα1⟩ := caseQ_β_facts hβ
+  have hβr := mem_Ico_of_caseQ hβ
+  have hβ0 : 0 < β := by linarith [hβr.1]
+  have hmono := Q_monotoneOn hβr
+  have hh0 : 0 ≤ h := hhl.trans hh.1
+  have hyQ : ∀ z ∈ Icc yl yu, 0 < Q β z := fun z hz ↦
+    Q_pos (mem_Icc_one_of_caseQ hβ) ⟨by linarith [hz.1], by linarith [hz.2]⟩
+  have hQl : Q β yl ≤ Q β y := hmono ⟨by linarith, by linarith [hy.1, hy.2]⟩
+    ⟨by linarith [hy.1], by linarith [hy.2]⟩ hy.1
+  have hQu : Q β y ≤ Q β yu := hmono ⟨by linarith [hy.1], by linarith [hy.2]⟩
+    ⟨by linarith [hy.1, hy.2], hyu⟩ hy.2
+  have T1 : Q β yu ^ (1 - β⁻¹) ≤ Q β y ^ (1 - β⁻¹) :=
+    rpow_le_rpow_of_nonpos (hyQ y hy) hQu (by linarith)
+  have hK0 : 0 ≤ α₀ β - 2 * α₁ β * h + 4 * α₁ β * y := by
+    nlinarith [mul_nonneg hα1 (show (0 : ℝ) ≤ 4 * y - 2 * h by linarith [hh.2, hy.1])]
+  have hK : α₀ β - 2 * α₁ β * h + 4 * α₁ β * y ≤ α₀ β - 2 * α₁ β * hl + 4 * α₁ β * yu := by
+    nlinarith [mul_le_mul_of_nonneg_left hh.1 hα1, mul_le_mul_of_nonneg_left hy.2 hα1]
+  have hP2 : h ^ (2 - β⁻¹) ≤ hu ^ (2 - β⁻¹) := rpow_le_rpow hh0 hh.2 (by linarith)
+  have T2 := mul_le_mul hK hP2 (rpow_nonneg hh0 _) (hK0.trans hK)
+  have T3a : Q β y ^ (1 - 2 / β) ≤ Q β yl ^ (1 - 2 / β) := by
+    refine rpow_le_rpow_of_nonpos (hyQ yl ⟨le_rfl, hy.1.trans hy.2⟩) hQl ?_
+    rw [div_eq_mul_inv]; linarith
+  have hP3 : h ^ β⁻¹ ≤ hu ^ β⁻¹ := rpow_le_rpow hh0 hh.2 (by linarith)
+  have T3 := mul_le_mul T3a hP3 (rpow_nonneg hh0 _)
+    (rpow_nonneg (hyQ yl ⟨le_rfl, hy.1.trans hy.2⟩).le _)
+  have hc : 0 ≤ 2⁻¹ * β * (1 - β) := by have : 0 ≤ 1 - β := by linarith
+                                        positivity
+  have := mul_le_mul_of_nonneg_left T1 hβ0.le
+  have := mul_le_mul_of_nonneg_left T3 hc
+  nlinarith
+
 end Auto.DIR

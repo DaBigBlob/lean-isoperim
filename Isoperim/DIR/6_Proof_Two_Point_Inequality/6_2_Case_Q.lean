@@ -9,7 +9,7 @@ public import Isoperim.DIR.«1_Introduction».Definitions
 public import Isoperim.DIR.«2_Envelope_Functions».Definitions
 public import Isoperim.DIR.«5_Auxiliary_Estimates».«5_2_Two_Point_Inequalities»
 public import Isoperim.DIR.«5_Auxiliary_Estimates».«5_3_Properties_L_Q»
-public import Isoperim.DIR.«6_Proof_Two_Point_Inequality».«6_2_Case_Q_aux»
+public import Isoperim.DIR.«6_Proof_Two_Point_Inequality».«6_2_Case_Q_aux_cert»
 
 /-!
 # [DIR] §6.2 Case Q: $0\le x\le y\le\frac12$
@@ -171,13 +171,26 @@ noncomputable def g_Q_1_lo (β hl hu yl yu : ℝ) : ℝ :=
 $$g_{Q,1,\beta_0}(h,y)>0.001.$$ -/
 theorem eqn_6_7 (h y : ℝ) (hh : h ∈ Icc (0 : ℝ) 4⁻¹) (hy : y ∈ Icc (4⁻¹ : ℝ) 2⁻¹) :
     g_Q_1 β₀ h y > 0.001 := by
-  sorry
+  obtain ⟨hβ1, hbi1, -, -, -⟩ := caseQ_β_facts (Or.inr rfl : β₀ = 2⁻¹ ∨ β₀ = β₀)
+  have hbi2 : β₀⁻¹ < 2 := by rw [β₀]; norm_num
+  have hc := eqn_6_7_cert h hh y hy
+  rcases eq_or_lt_of_le hh.1 with h0 | hpos
+  · rw [← h0] at hc ⊢
+    rw [zero_rpow (by linarith : (2 : ℝ) - β₀⁻¹ ≠ 0), zero_rpow (by linarith : β₀⁻¹ ≠ 0)] at hc
+    unfold g_Q_1
+    rw [zero_rpow (by linarith : -β₀⁻¹ ≠ 0), zero_rpow (by linarith : β₀⁻¹ ≠ 0)]
+    norm_num at hc ⊢; linarith
+  · rw [caseQ_II_g_Q_1_eq β₀ h y hpos]; norm_num at hc ⊢; linarith
 
 /-- [DIR], §6.2.1: (6.6) near the diagonal for $\beta=\beta_0$: for
 $0\le h\le\frac14\le y\le\frac12$, $G^1_{\beta_0}[Q_{\beta_0}](y-h,y)\ge0$. -/
 theorem caseQ_II_β₀ (h y : ℝ) (hh : h ∈ Icc (0 : ℝ) 4⁻¹)
     (hy : y ∈ Icc (4⁻¹ : ℝ) 2⁻¹) : G₁ β₀ (Q β₀) (y - h) y ≥ 0 := by
-  sorry
+  have h1 := caseQ_II_neardiag_bound β₀ (Or.inr rfl) h y hh hy
+  have h2 := eqn_6_7 h y hh hy
+  have : 0 ≤ h ^ β₀⁻¹ * g_Q_1 β₀ h y :=
+    mul_nonneg (rpow_nonneg hh.1 _) (by linarith)
+  linarith
 
 /-- [DIR], §6.2.1: for $h>0$ (and $\alpha_i=\alpha_i(\frac12)$),
 $$g_{Q,1,\frac12}(h,y)=\tfrac12Q_{\frac12}(y)^{-1}-(\alpha_0+4\alpha_1y)+2\alpha_1h
@@ -414,7 +427,19 @@ theorem caseQ_II_claim_2 (y : ℝ) (hy : y ∈ Icc (4⁻¹ : ℝ) 2⁻¹) :
 $0\le h\le\frac14\le y\le\frac12$: $G^1_\beta[Q_\beta](y-h,y)\ge0$. -/
 theorem caseQ_II (β : ℝ) (hβ : β = 2⁻¹ ∨ β = β₀) (h y : ℝ) (hh : h ∈ Icc (0 : ℝ) 4⁻¹)
     (hy : y ∈ Icc (4⁻¹ : ℝ) 2⁻¹) : G₁ β (Q β) (y - h) y ≥ 0 := by
-  sorry
+  rcases hβ with rfl | rfl
+  · rcases eq_or_lt_of_le hh.1 with h0 | hpos
+    · rw [← h0, sub_zero]
+      exact (G₁_diag 2⁻¹ (by norm_num) _ _
+        (Q_pos ⟨le_rfl, by norm_num⟩ ⟨by linarith [hy.1], by linarith [hy.2]⟩).le).ge
+    have h1 := caseQ_II_neardiag_bound 2⁻¹ (Or.inl rfl) h y hh hy
+    obtain ⟨g₀, hg₀, hlim⟩ := caseQ_II_claim_1 y hy
+    have h2 := (caseQ_II_g_Q_1_half_concave y hy).2 g₀ hlim h ⟨hpos, hh.2⟩
+    have h3 := caseQ_II_claim_2 y hy
+    have : 0 ≤ g_Q_1 2⁻¹ h y := le_trans (le_min hg₀ h3.le) h2
+    have : 0 ≤ h ^ (2⁻¹ : ℝ)⁻¹ * g_Q_1 2⁻¹ h y := mul_nonneg (rpow_nonneg hh.1 _) this
+    linarith
+  · exact caseQ_II_β₀ h y hh hy
 
 end Case_Q_II
 

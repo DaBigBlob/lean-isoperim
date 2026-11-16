@@ -231,8 +231,8 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_neardiag_bound`
 - complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_second_difference`
 - complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_g_Q_1_eq`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_7`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_β₀`
+- complete — 2026-11-16 12:41:09 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_7`
+- complete — 2026-11-16 12:41:09 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_β₀`
 - complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_g_Q_1_half_eq`
 - complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_g_Q_1_half_deriv2`
 - complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_g_Q_1_half_concave`
@@ -243,7 +243,7 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 12:24:06 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_claim_1`
 - complete — 2026-11-16 12:27:09 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_8`
 - complete — 2026-11-16 12:27:09 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II_claim_2`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II`
+- complete — 2026-11-16 12:41:09 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_II`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_III_G_Q_diag`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `R_eq`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_III_iff_f_QIII`
