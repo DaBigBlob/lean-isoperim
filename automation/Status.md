@@ -308,7 +308,7 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 13:39:07 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_2_Case_Q: `caseQ_G₁_max`
 - complete — 2026-11-16 13:39:07 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_2_Case_Q: `BX_eq_max`
 - complete — 2026-11-16 13:39:07 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_2_Case_Q: `caseQ`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 2_Preliminaries/2_3_Properties_L_Q: `lemma_2_3`
+- complete — 2026-11-16 13:40:07 ET — [DIRX] 2_Preliminaries/2_3_Properties_L_Q: `lemma_2_3`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `eqn_3_3`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G₂_BX_eq_G_LJQ`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `eqn_3_4`
