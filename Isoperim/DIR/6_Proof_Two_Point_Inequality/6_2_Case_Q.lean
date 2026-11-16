@@ -642,7 +642,26 @@ theorem derivs_f_QIII_1 (β : ℝ) (hβ : β = β₀ ∨ β = 2⁻¹) (y : ℝ)
     iteratedDeriv 3 (f_QIII_1 β) y =
       (β⁻¹ - 1) * (β⁻¹ - 2) * ((β⁻¹ - 3) * R β y ^ (β⁻¹ - 4) * (deriv (R β) y) ^ 3
         + 3 * R β y ^ (β⁻¹ - 3) * deriv (R β) y * deriv (deriv (R β)) y) := by
-  sorry
+  have hβ' : β = 2⁻¹ ∨ β = β₀ := hβ.symm
+  have hy0 : 0 < y := by linarith [hy.1]
+  have hyU : y ∈ Ioo (0 : ℝ) 1 := ⟨hy0, by linarith [hy.2]⟩
+  have hRy : R β y = Rp β y := inv_mul_Q_eq hy0.ne'
+  have hR1 : deriv (R β) y = Rp1 β y := (hasDerivAt_invQ hy0.ne').deriv
+  have hR2 : deriv (deriv (R β)) y = Rp2 β := (deriv2_invQ_eventuallyEq hy0.ne').eq_of_nhds
+  obtain ⟨-, d1, d2, d3⟩ := derivs_f1 hβ' (β⁻¹ - 1)
+  have h1 : deriv (f_QIII_1 β) y = G1 β (β⁻¹ - 1) y := d1 hyU
+  have h2 : deriv (deriv (f_QIII_1 β)) y = G2 β (β⁻¹ - 1) y := d2 hyU
+  have h3 : iteratedDeriv 3 (f_QIII_1 β) y = G3 β (β⁻¹ - 1) y := by
+    simp only [iteratedDeriv_succ, iteratedDeriv_zero]; exact d3 hyU
+  obtain ⟨e2, e21, e22, e23⟩ := derivs_f2 β
+  have k0 : f_QIII_2 β y = F2 β y := e2 hyU
+  have k1 : deriv (f_QIII_2 β) y = F2d β y := e21 hyU
+  have k2 : deriv (deriv (f_QIII_2 β)) y = 2 * Rp2 β := e22 hyU
+  have k3 : iteratedDeriv 3 (f_QIII_2 β) y = 0 := by
+    simp only [iteratedDeriv_succ, iteratedDeriv_zero]; exact e23 hyU
+  rw [h1, h2, h3, hRy, hR1, hR2, G1, G2, G3, show β⁻¹ - 1 - 1 = β⁻¹ - 2 by ring,
+    show β⁻¹ - 1 - 2 = β⁻¹ - 3 by ring, show β⁻¹ - 1 - 3 = β⁻¹ - 4 by ring]
+  refine ⟨rfl, by ring, by ring⟩
 
 /-- [DIR], §6.2.2: for $\beta\in\{\beta_0,\frac12\}$: $R_\beta''\le0$, $R_\beta'''=0$ (on
 $(0,\infty)$), and $\frac1\beta>1$, $\frac1\beta\le2$, $\frac1\beta<3$. -/
@@ -664,7 +683,25 @@ theorem derivs_f_QIII_1_nonpos (β : ℝ) (hβ : β = β₀ ∨ β = 2⁻¹) (y 
     (hy : y ∈ Icc (4⁻¹ : ℝ) 2⁻¹) :
     deriv (f_QIII_1 β) y ≤ 0 ∧ deriv (deriv (f_QIII_1 β)) y ≤ 0 ∧
       iteratedDeriv 3 (f_QIII_1 β) y ≤ 0 := by
-  sorry
+  have hβ' : β = 2⁻¹ ∨ β = β₀ := hβ.symm
+  have hy0 : 0 < y := by linarith [hy.1]
+  have hyU : y ∈ Ioo (0 : ℝ) 1 := ⟨hy0, by linarith [hy.2]⟩
+  have hRy : R β y = Rp β y := inv_mul_Q_eq hy0.ne'
+  have hR1 : deriv (R β) y = Rp1 β y := (hasDerivAt_invQ hy0.ne').deriv
+  have hR2 : deriv (deriv (R β)) y = Rp2 β := (deriv2_invQ_eventuallyEq hy0.ne').eq_of_nhds
+  obtain ⟨-, d1, d2, d3⟩ := derivs_f1 hβ' (β⁻¹ - 1)
+  have h1 : deriv (f_QIII_1 β) y = G1 β (β⁻¹ - 1) y := d1 hyU
+  have h2 : deriv (deriv (f_QIII_1 β)) y = G2 β (β⁻¹ - 1) y := d2 hyU
+  have h3 : iteratedDeriv 3 (f_QIII_1 β) y = G3 β (β⁻¹ - 1) y := by
+    simp only [iteratedDeriv_succ, iteratedDeriv_zero]; exact d3 hyU
+  obtain ⟨e2, e21, e22, e23⟩ := derivs_f2 β
+  have k0 : f_QIII_2 β y = F2 β y := e2 hyU
+  have k1 : deriv (f_QIII_2 β) y = F2d β y := e21 hyU
+  have k2 : deriv (deriv (f_QIII_2 β)) y = 2 * Rp2 β := e22 hyU
+  have k3 : iteratedDeriv 3 (f_QIII_2 β) y = 0 := by
+    simp only [iteratedDeriv_succ, iteratedDeriv_zero]; exact e23 hyU
+  obtain ⟨g1, g2, g3, -⟩ := D3_nonneg hβ' ⟨by linarith [hy.1], hy.2⟩
+  rw [h1, h2, h3]; exact ⟨g1, g2, g3⟩
 
 /-- [DIR], §6.2.2: for $y\in[\frac14,\frac12]$ and $\beta\in\{\beta_0,\frac12\}$:
 $f_{\beta,2}'(y)=R_\beta'(y)+yR_\beta''(y)$,
@@ -674,14 +711,51 @@ theorem derivs_f_QIII_2 (β : ℝ) (hβ : β = β₀ ∨ β = 2⁻¹) (y : ℝ)
     deriv (f_QIII_2 β) y = deriv (R β) y + y * deriv (deriv (R β)) y ∧
       deriv (deriv (f_QIII_2 β)) y = 2 * deriv (deriv (R β)) y + y * iteratedDeriv 3 (R β) y ∧
       2 * deriv (deriv (R β)) y + y * iteratedDeriv 3 (R β) y = 2 * deriv (deriv (R β)) y := by
-  sorry
+  have hβ' : β = 2⁻¹ ∨ β = β₀ := hβ.symm
+  have hy0 : 0 < y := by linarith [hy.1]
+  have hyU : y ∈ Ioo (0 : ℝ) 1 := ⟨hy0, by linarith [hy.2]⟩
+  have hRy : R β y = Rp β y := inv_mul_Q_eq hy0.ne'
+  have hR1 : deriv (R β) y = Rp1 β y := (hasDerivAt_invQ hy0.ne').deriv
+  have hR2 : deriv (deriv (R β)) y = Rp2 β := (deriv2_invQ_eventuallyEq hy0.ne').eq_of_nhds
+  obtain ⟨-, d1, d2, d3⟩ := derivs_f1 hβ' (β⁻¹ - 1)
+  have h1 : deriv (f_QIII_1 β) y = G1 β (β⁻¹ - 1) y := d1 hyU
+  have h2 : deriv (deriv (f_QIII_1 β)) y = G2 β (β⁻¹ - 1) y := d2 hyU
+  have h3 : iteratedDeriv 3 (f_QIII_1 β) y = G3 β (β⁻¹ - 1) y := by
+    simp only [iteratedDeriv_succ, iteratedDeriv_zero]; exact d3 hyU
+  obtain ⟨e2, e21, e22, e23⟩ := derivs_f2 β
+  have k0 : f_QIII_2 β y = F2 β y := e2 hyU
+  have k1 : deriv (f_QIII_2 β) y = F2d β y := e21 hyU
+  have k2 : deriv (deriv (f_QIII_2 β)) y = 2 * Rp2 β := e22 hyU
+  have k3 : iteratedDeriv 3 (f_QIII_2 β) y = 0 := by
+    simp only [iteratedDeriv_succ, iteratedDeriv_zero]; exact e23 hyU
+  have hR3 : iteratedDeriv 3 (R β) y = 0 := ((R_derivs_one_div_β β hβ).1 y hy0).2
+  rw [k1, k2, hR1, hR2, hR3, F2d]
+  exact ⟨rfl, by ring, by ring⟩
 
 /-- [DIR], §6.2.2: $f_{\beta,2}'\le0$ and $f_{\beta,2}''\le0$ on $[\frac14,\frac12]$ (for
 $\beta\in\{\beta_0,\frac12\}$). -/
 theorem derivs_f_QIII_2_nonpos (β : ℝ) (hβ : β = β₀ ∨ β = 2⁻¹) (y : ℝ)
     (hy : y ∈ Icc (4⁻¹ : ℝ) 2⁻¹) :
     deriv (f_QIII_2 β) y ≤ 0 ∧ deriv (deriv (f_QIII_2 β)) y ≤ 0 := by
-  sorry
+  have hβ' : β = 2⁻¹ ∨ β = β₀ := hβ.symm
+  have hy0 : 0 < y := by linarith [hy.1]
+  have hyU : y ∈ Ioo (0 : ℝ) 1 := ⟨hy0, by linarith [hy.2]⟩
+  have hRy : R β y = Rp β y := inv_mul_Q_eq hy0.ne'
+  have hR1 : deriv (R β) y = Rp1 β y := (hasDerivAt_invQ hy0.ne').deriv
+  have hR2 : deriv (deriv (R β)) y = Rp2 β := (deriv2_invQ_eventuallyEq hy0.ne').eq_of_nhds
+  obtain ⟨-, d1, d2, d3⟩ := derivs_f1 hβ' (β⁻¹ - 1)
+  have h1 : deriv (f_QIII_1 β) y = G1 β (β⁻¹ - 1) y := d1 hyU
+  have h2 : deriv (deriv (f_QIII_1 β)) y = G2 β (β⁻¹ - 1) y := d2 hyU
+  have h3 : iteratedDeriv 3 (f_QIII_1 β) y = G3 β (β⁻¹ - 1) y := by
+    simp only [iteratedDeriv_succ, iteratedDeriv_zero]; exact d3 hyU
+  obtain ⟨e2, e21, e22, e23⟩ := derivs_f2 β
+  have k0 : f_QIII_2 β y = F2 β y := e2 hyU
+  have k1 : deriv (f_QIII_2 β) y = F2d β y := e21 hyU
+  have k2 : deriv (deriv (f_QIII_2 β)) y = 2 * Rp2 β := e22 hyU
+  have k3 : iteratedDeriv 3 (f_QIII_2 β) y = 0 := by
+    simp only [iteratedDeriv_succ, iteratedDeriv_zero]; exact e23 hyU
+  obtain ⟨-, -, -, -, f2d, -⟩ := D3_nonneg hβ' ⟨by linarith [hy.1], hy.2⟩
+  rw [k1, k2]; exact ⟨f2d, by linarith [(Rp_signs hβ').2.2]⟩
 
 /-- [DIR], §6.2.2: for $y\in[\frac14,\frac12]$ and $\beta\in\{\beta_0,\frac12\}$:
 $f_{\beta,2}'''=0$ and
@@ -694,33 +768,105 @@ theorem iteratedDeriv_three_f_QIII_0 (β : ℝ) (hβ : β = β₀ ∨ β = 2⁻�
         iteratedDeriv 3 (f_QIII_1 β) y * f_QIII_2 β y
           + 3 * deriv (deriv (f_QIII_1 β)) y * deriv (f_QIII_2 β) y
           + 3 * deriv (f_QIII_1 β) y * deriv (deriv (f_QIII_2 β)) y := by
-  sorry
+  have hβ' : β = 2⁻¹ ∨ β = β₀ := hβ.symm
+  have hy0 : 0 < y := by linarith [hy.1]
+  have hyU : y ∈ Ioo (0 : ℝ) 1 := ⟨hy0, by linarith [hy.2]⟩
+  have hRy : R β y = Rp β y := inv_mul_Q_eq hy0.ne'
+  have hR1 : deriv (R β) y = Rp1 β y := (hasDerivAt_invQ hy0.ne').deriv
+  have hR2 : deriv (deriv (R β)) y = Rp2 β := (deriv2_invQ_eventuallyEq hy0.ne').eq_of_nhds
+  obtain ⟨-, d1, d2, d3⟩ := derivs_f1 hβ' (β⁻¹ - 1)
+  have h1 : deriv (f_QIII_1 β) y = G1 β (β⁻¹ - 1) y := d1 hyU
+  have h2 : deriv (deriv (f_QIII_1 β)) y = G2 β (β⁻¹ - 1) y := d2 hyU
+  have h3 : iteratedDeriv 3 (f_QIII_1 β) y = G3 β (β⁻¹ - 1) y := by
+    simp only [iteratedDeriv_succ, iteratedDeriv_zero]; exact d3 hyU
+  obtain ⟨e2, e21, e22, e23⟩ := derivs_f2 β
+  have k0 : f_QIII_2 β y = F2 β y := e2 hyU
+  have k1 : deriv (f_QIII_2 β) y = F2d β y := e21 hyU
+  have k2 : deriv (deriv (f_QIII_2 β)) y = 2 * Rp2 β := e22 hyU
+  have k3 : iteratedDeriv 3 (f_QIII_2 β) y = 0 := by
+    simp only [iteratedDeriv_succ, iteratedDeriv_zero]; exact e23 hyU
+  obtain ⟨-, -, d03⟩ := derivs_f0 hβ' (β⁻¹ - 1)
+  have h03 : iteratedDeriv 3 (f_QIII_0 β) y = D3 β (β⁻¹ - 1) y := by
+    simp only [iteratedDeriv_succ, iteratedDeriv_zero]; exact d03 hyU
+  rw [k3, h03, h1, h2, h3, k0, k1, k2, D3]
+  exact ⟨rfl, rfl⟩
 
 /-- [DIR], §6.2.2: $f_{\beta,0}'''\ge0$ on $[\frac14,\frac12]$ (for $\beta\in\{\beta_0,\frac12\}$).
 -/
 theorem iteratedDeriv_three_f_QIII_0_nonneg (β : ℝ) (hβ : β = β₀ ∨ β = 2⁻¹) (y : ℝ)
     (hy : y ∈ Icc (4⁻¹ : ℝ) 2⁻¹) : iteratedDeriv 3 (f_QIII_0 β) y ≥ 0 := by
-  sorry
+  have hβ' : β = 2⁻¹ ∨ β = β₀ := hβ.symm
+  have hy0 : 0 < y := by linarith [hy.1]
+  have hyU : y ∈ Ioo (0 : ℝ) 1 := ⟨hy0, by linarith [hy.2]⟩
+  have hRy : R β y = Rp β y := inv_mul_Q_eq hy0.ne'
+  have hR1 : deriv (R β) y = Rp1 β y := (hasDerivAt_invQ hy0.ne').deriv
+  have hR2 : deriv (deriv (R β)) y = Rp2 β := (deriv2_invQ_eventuallyEq hy0.ne').eq_of_nhds
+  obtain ⟨-, d1, d2, d3⟩ := derivs_f1 hβ' (β⁻¹ - 1)
+  have h1 : deriv (f_QIII_1 β) y = G1 β (β⁻¹ - 1) y := d1 hyU
+  have h2 : deriv (deriv (f_QIII_1 β)) y = G2 β (β⁻¹ - 1) y := d2 hyU
+  have h3 : iteratedDeriv 3 (f_QIII_1 β) y = G3 β (β⁻¹ - 1) y := by
+    simp only [iteratedDeriv_succ, iteratedDeriv_zero]; exact d3 hyU
+  obtain ⟨e2, e21, e22, e23⟩ := derivs_f2 β
+  have k0 : f_QIII_2 β y = F2 β y := e2 hyU
+  have k1 : deriv (f_QIII_2 β) y = F2d β y := e21 hyU
+  have k2 : deriv (deriv (f_QIII_2 β)) y = 2 * Rp2 β := e22 hyU
+  have k3 : iteratedDeriv 3 (f_QIII_2 β) y = 0 := by
+    simp only [iteratedDeriv_succ, iteratedDeriv_zero]; exact e23 hyU
+  obtain ⟨-, -, d03⟩ := derivs_f0 hβ' (β⁻¹ - 1)
+  have h03 : iteratedDeriv 3 (f_QIII_0 β) y = D3 β (β⁻¹ - 1) y := by
+    simp only [iteratedDeriv_succ, iteratedDeriv_zero]; exact d03 hyU
+  rw [h03]; exact (D3_nonneg hβ' ⟨by linarith [hy.1], hy.2⟩).2.2.2.2.2
 
 /-- **(6.9)** ([DIR], §6.2.2). For $\beta\in\{\beta_0,\frac12\}$: $f_{\beta,0}''(\frac14)>3.2$. -/
 theorem eqn_6_9 (β : ℝ) (hβ : β = β₀ ∨ β = 2⁻¹) :
     deriv (deriv (f_QIII_0 β)) 4⁻¹ > 3.2 := by
-  sorry
+  have hβ' : β = 2⁻¹ ∨ β = β₀ := hβ.symm
+  have h : deriv (deriv (f_QIII_0 β)) 4⁻¹ = D2 β (β⁻¹ - 1) 4⁻¹ :=
+    (derivs_f0 hβ' (β⁻¹ - 1)).2.1 (by norm_num : (4⁻¹ : ℝ) ∈ Ioo 0 1)
+  rw [h]
+  rcases hβ with rfl | rfl
+  · have := D2_quarter_b0; norm_num at this ⊢; linarith
+  · have := D2_quarter_h; norm_num at this ⊢; linarith
 
 /-- [DIR], §6.2.2: (6.9) implies $f_{\beta,0}''>0$ (on $[\frac14,\frac12]$, for
 $\beta\in\{\beta_0,\frac12\}$). -/
 theorem deriv2_f_QIII_0_pos (β : ℝ) (hβ : β = β₀ ∨ β = 2⁻¹) (y : ℝ)
     (hy : y ∈ Icc (4⁻¹ : ℝ) 2⁻¹) : deriv (deriv (f_QIII_0 β)) y > 0 := by
-  sorry
+  have hβ' : β = 2⁻¹ ∨ β = β₀ := hβ.symm
+  have hd := (derivs_f0 hβ' (β⁻¹ - 1)).2.1
+  have h : deriv (deriv (f_QIII_0 β)) y = D2 β (β⁻¹ - 1) y :=
+    hd ⟨by linarith [hy.1], by linarith [hy.2]⟩
+  have h4 : deriv (deriv (f_QIII_0 β)) 4⁻¹ = D2 β (β⁻¹ - 1) 4⁻¹ := hd (by norm_num)
+  have h9 := eqn_6_9 β hβ
+  have hm := D2_monotoneOn hβ' (show (4⁻¹ : ℝ) ∈ Icc 8⁻¹ 2⁻¹ by norm_num)
+    (show y ∈ Icc (8⁻¹ : ℝ) 2⁻¹ from ⟨by linarith [hy.1], hy.2⟩) hy.1
+  rw [h]; rw [h4] at h9; linarith
 
 /-- **(6.10)** ([DIR], §6.2.2). For $\beta\in\{\beta_0,\frac12\}$: $f_{\beta,0}'(\frac12)<-0.6$. -/
 theorem eqn_6_10 (β : ℝ) (hβ : β = β₀ ∨ β = 2⁻¹) : deriv (f_QIII_0 β) 2⁻¹ < -0.6 := by
-  sorry
+  have hβ' : β = 2⁻¹ ∨ β = β₀ := hβ.symm
+  have h : deriv (f_QIII_0 β) 2⁻¹ = D1 β (β⁻¹ - 1) 2⁻¹ :=
+    (derivs_f0 hβ' (β⁻¹ - 1)).1 (by norm_num : (2⁻¹ : ℝ) ∈ Ioo 0 1)
+  rw [h]
+  rcases hβ with rfl | rfl
+  · have := D1_half_b0; norm_num at this ⊢; linarith
+  · have := D1_half_h; norm_num at this ⊢; linarith
 
 /-- [DIR], §6.2.2: $f_{\beta,0}'<0$ on $[\frac14,\frac12]$ (for $\beta\in\{\beta_0,\frac12\}$). -/
 theorem deriv_f_QIII_0_neg (β : ℝ) (hβ : β = β₀ ∨ β = 2⁻¹) (y : ℝ)
     (hy : y ∈ Icc (4⁻¹ : ℝ) 2⁻¹) : deriv (f_QIII_0 β) y < 0 := by
-  sorry
+  have hβ' : β = 2⁻¹ ∨ β = β₀ := hβ.symm
+  have hd1 : EqOn (deriv (f_QIII_0 β)) (D1 β (β⁻¹ - 1)) (Ioo 0 1) := (derivs_f0 hβ' _).1
+  have hd2 : EqOn (deriv (deriv (f_QIII_0 β))) (D2 β (β⁻¹ - 1)) (Ioo 0 1) :=
+    (derivs_f0 hβ' _).2.1
+  have hm := D1_monotoneOn hβ' (a := 4⁻¹) (by norm_num) fun z hz ↦ by
+    have := deriv2_f_QIII_0_pos β hβ z hz
+    rw [hd2 ⟨by linarith [hz.1], by linarith [hz.2]⟩] at this; exact this.le
+  have h := hm hy (show (2⁻¹ : ℝ) ∈ Icc 4⁻¹ 2⁻¹ by norm_num) hy.2
+  have h10 := eqn_6_10 β hβ
+  rw [hd1 (by norm_num : (2⁻¹ : ℝ) ∈ Ioo 0 1)] at h10
+  rw [hd1 ⟨by linarith [hy.1], by linarith [hy.2]⟩]
+  linarith
 
 /-- [DIR], §6.2.2 (not stated in the paper; needed by `Auto.DIR.caseQ_III_suffices_f_QIII_0`,
 see the discrepancy noted there): $f_{\beta,0}'<0$ on $[\frac18,\frac12]$ (for
@@ -728,18 +874,41 @@ $\beta\in\{\beta_0,\frac12\}$). It follows as in the paper from $f_{\beta,0}'''\
 $[\frac18,\frac12]$, $f_{\beta,0}''(\frac18)>0$ and (6.10). -/
 theorem deriv_f_QIII_0_neg_Icc_eighth (β : ℝ) (hβ : β = β₀ ∨ β = 2⁻¹) (y : ℝ)
     (hy : y ∈ Icc (8⁻¹ : ℝ) 2⁻¹) : deriv (f_QIII_0 β) y < 0 := by
-  sorry
+  have hβ' : β = 2⁻¹ ∨ β = β₀ := hβ.symm
+  have hd1 : EqOn (deriv (f_QIII_0 β)) (D1 β (β⁻¹ - 1)) (Ioo 0 1) := (derivs_f0 hβ' _).1
+  have h8 : 0 < D2 β (β⁻¹ - 1) 8⁻¹ := by
+    rcases hβ with rfl | rfl
+    · exact D2_eighth_b0
+    · exact D2_eighth_h
+  have hm := D1_monotoneOn hβ' (a := 8⁻¹) le_rfl fun z hz ↦
+    h8.le.trans (D2_monotoneOn hβ' (show (8⁻¹ : ℝ) ∈ Icc 8⁻¹ 2⁻¹ by norm_num) hz hz.1)
+  have h := hm hy (show (2⁻¹ : ℝ) ∈ Icc 8⁻¹ 2⁻¹ by norm_num) hy.2
+  have h10 := eqn_6_10 β hβ
+  rw [hd1 (by norm_num : (2⁻¹ : ℝ) ∈ Ioo 0 1)] at h10
+  rw [hd1 ⟨by linarith [hy.1], by linarith [hy.2]⟩]
+  linarith
 
 /-- [DIR], §6.2.2 (claim): $f_\beta'\le0$ on $[\frac14,\frac12]$ (for
 $\beta\in\{\beta_0,\frac12\}$). -/
 theorem deriv_f_QIII_nonpos (β : ℝ) (hβ : β = β₀ ∨ β = 2⁻¹) (y : ℝ)
     (hy : y ∈ Icc (4⁻¹ : ℝ) 2⁻¹) : deriv (f_QIII β) y ≤ 0 := by
-  sorry
+  exact caseQ_III_suffices_f_QIII_0 β hβ
+    (fun z hz ↦ (deriv_f_QIII_0_neg_Icc_eighth β hβ z hz).le) y hy
 
 /-- [DIR], §6.2.2: $f_\beta\ge0$ on $[\frac14,\frac12]$ (for $\beta\in\{\beta_0,\frac12\}$). -/
 theorem f_QIII_nonneg (β : ℝ) (hβ : β = β₀ ∨ β = 2⁻¹) (y : ℝ)
     (hy : y ∈ Icc (4⁻¹ : ℝ) 2⁻¹) : f_QIII β y ≥ 0 := by
-  sorry
+  have hβ' : β = 2⁻¹ ∨ β = β₀ := hβ.symm
+  have hdiff : ∀ z ∈ Icc (4⁻¹ : ℝ) 2⁻¹, DifferentiableAt ℝ (f_QIII β) z := fun z hz ↦
+    differentiableAt_fQIII hβ' ⟨by linarith [hz.1], by linarith [hz.2]⟩
+  have hanti : AntitoneOn (f_QIII β) (Icc 4⁻¹ 2⁻¹) :=
+    antitoneOn_of_deriv_nonpos (convex_Icc _ _)
+      (fun z hz ↦ (hdiff z hz).continuousAt.continuousWithinAt)
+      (fun z hz ↦ (hdiff z (interior_subset hz)).differentiableWithinAt)
+      fun z hz ↦ deriv_f_QIII_nonpos β hβ z (interior_subset hz)
+  have := hanti hy (show (2⁻¹ : ℝ) ∈ Icc 4⁻¹ 2⁻¹ by norm_num) hy.2
+  rw [f_QIII_half β hβ] at this
+  exact this
 
 section Proof_Lemma_6_4
 /-- [DIR], proof of Lemma 6.4: $2Q_\beta(y-\frac h2)-Q_\beta(y-h)>0$ (by strict concavity of

@@ -605,4 +605,210 @@ theorem differentiableAt_f0p {β c y : ℝ} (hR : 0 < Rp β y) :
   (((hasDerivAt_id' y).mul (hasDerivAt_Rp_rpow (c := c) hR)).mul
     (hasDerivAt_Rp1 β y)).differentiableAt
 
+/-- If $f=g$ on an open set $U$ and $g'$ is the derivative of $g$ on $U$, then $f'=g'$ on $U$. -/
+theorem eqOn_deriv_of_eqOn {f g g' : ℝ → ℝ} {U : Set ℝ} (hU : IsOpen U) (h : EqOn f g U)
+    (hg : ∀ z ∈ U, HasDerivAt g (g' z) z) : EqOn (deriv f) g' U := fun z hz ↦ by
+  have : f =ᶠ[𝓝 z] g := by
+    filter_upwards [hU.mem_nhds hz] with w hw using h hw
+  rw [this.deriv_eq, (hg z hz).deriv]
+
+/-! ### Case Q, region III: the derivatives of $f_{\beta,0}=f_{\beta,1}f_{\beta,2}$ -/
+
+/-- $f_{\beta,1}=R^c$ (with $R=$ `Rp β`, $c=\frac1\beta-1$). -/
+noncomputable def F1 (β c y : ℝ) : ℝ := Rp β y ^ c
+
+/-- $f_{\beta,1}'=cR^{c-1}R'$. -/
+noncomputable def G1 (β c y : ℝ) : ℝ := c * Rp β y ^ (c - 1) * Rp1 β y
+
+/-- $f_{\beta,1}''=c((c-1)R^{c-2}R'^2+R^{c-1}R'')$. -/
+noncomputable def G2 (β c y : ℝ) : ℝ :=
+  c * ((c - 1) * Rp β y ^ (c - 2) * Rp1 β y ^ 2 + Rp β y ^ (c - 1) * Rp2 β)
+
+/-- $f_{\beta,1}'''=c(c-1)(c-2)R^{c-3}R'^3+3c(c-1)R^{c-2}R'R''$. -/
+noncomputable def G3 (β c y : ℝ) : ℝ :=
+  c * (c - 1) * (c - 2) * Rp β y ^ (c - 3) * Rp1 β y ^ 3
+    + 3 * c * (c - 1) * Rp β y ^ (c - 2) * Rp1 β y * Rp2 β
+
+/-- $f_{\beta,2}=yR'$. -/
+noncomputable def F2 (β y : ℝ) : ℝ := y * Rp1 β y
+
+/-- $f_{\beta,2}'=R'+yR''$. -/
+noncomputable def F2d (β y : ℝ) : ℝ := Rp1 β y + y * Rp2 β
+
+/-- $f_{\beta,0}'=f_{\beta,1}'f_{\beta,2}+f_{\beta,1}f_{\beta,2}'$. -/
+noncomputable def D1 (β c y : ℝ) : ℝ := G1 β c y * F2 β y + F1 β c y * F2d β y
+
+/-- $f_{\beta,0}''=f_{\beta,1}''f_{\beta,2}+2f_{\beta,1}'f_{\beta,2}'+f_{\beta,1}f_{\beta,2}''$
+($f_{\beta,2}''=2R''$). -/
+noncomputable def D2 (β c y : ℝ) : ℝ :=
+  G2 β c y * F2 β y + 2 * G1 β c y * F2d β y + F1 β c y * (2 * Rp2 β)
+
+/-- $f_{\beta,0}'''=f_{\beta,1}'''f_{\beta,2}+3f_{\beta,1}''f_{\beta,2}'+3f_{\beta,1}'f_{\beta,2}''$. -/
+noncomputable def D3 (β c y : ℝ) : ℝ :=
+  G3 β c y * F2 β y + 3 * G2 β c y * F2d β y + 3 * G1 β c y * (2 * Rp2 β)
+
+section RpDerivs
+
+variable {β c y : ℝ}
+
+theorem hasDerivAt_F1 (hR : 0 < Rp β y) : HasDerivAt (F1 β c) (G1 β c y) y :=
+  hasDerivAt_Rp_rpow hR
+
+theorem hasDerivAt_G1 (hR : 0 < Rp β y) : HasDerivAt (G1 β c) (G2 β c y) y :=
+  hasDerivAt_Rp_rpow_d1 hR
+
+theorem hasDerivAt_G2 (hR : 0 < Rp β y) : HasDerivAt (G2 β c) (G3 β c y) y :=
+  hasDerivAt_Rp_rpow_d2 hR
+
+theorem hasDerivAt_F2 : HasDerivAt (F2 β) (F2d β y) y := hasDerivAt_mul_Rp1 β y
+
+theorem hasDerivAt_F2d : HasDerivAt (F2d β) (2 * Rp2 β) y := hasDerivAt_Rp1_add β y
+
+/-- $(f_{\beta,1}f_{\beta,2})'=$ `D1`. -/
+theorem hasDerivAt_F1F2 (hR : 0 < Rp β y) :
+    HasDerivAt (fun z ↦ F1 β c z * F2 β z) (D1 β c y) y :=
+  ((hasDerivAt_F1 hR).mul hasDerivAt_F2).congr_deriv (by rw [D1])
+
+theorem hasDerivAt_D1 (hR : 0 < Rp β y) : HasDerivAt (D1 β c) (D2 β c y) y :=
+  (((hasDerivAt_G1 hR).mul hasDerivAt_F2).add ((hasDerivAt_F1 hR).mul hasDerivAt_F2d))
+    |>.congr_deriv (by rw [D2]; ring)
+
+theorem hasDerivAt_D2 (hR : 0 < Rp β y) : HasDerivAt (D2 β c) (D3 β c y) y :=
+  ((((hasDerivAt_G2 (c := c) hR).mul hasDerivAt_F2).add
+    (((hasDerivAt_G1 (c := c) hR).const_mul 2).mul hasDerivAt_F2d)).add
+      ((hasDerivAt_F1 (c := c) hR).mul_const (2 * Rp2 β))) |>.congr_deriv (by rw [D3]; ring)
+
+end RpDerivs
+
+/-- Signs on $[\frac18,\frac12]$ for $\beta\in\{\frac12,\beta_0\}$, $c=\frac1\beta-1$:
+$f_{\beta,1}',f_{\beta,1}'',f_{\beta,1}'''\le0$, $f_{\beta,2},f_{\beta,2}',f_{\beta,2}''\le0$, hence
+$f_{\beta,0}'''\ge0$. -/
+theorem D3_nonneg {β y : ℝ} (hβ : β = 2⁻¹ ∨ β = β₀) (hy : y ∈ Icc (8⁻¹ : ℝ) 2⁻¹) :
+    G1 β (β⁻¹ - 1) y ≤ 0 ∧ G2 β (β⁻¹ - 1) y ≤ 0 ∧ G3 β (β⁻¹ - 1) y ≤ 0 ∧ F2 β y ≤ 0 ∧
+      F2d β y ≤ 0 ∧ 0 ≤ D3 β (β⁻¹ - 1) y := by
+  obtain ⟨-, hb1, hb2, -, -⟩ := caseQ_β_facts hβ
+  obtain ⟨hR, hR1, hR2⟩ := Rp_signs hβ
+  have hy0 : 0 < y := by linarith [hy.1]
+  have r := hR y ⟨hy0, by linarith [hy.2]⟩
+  have r1 := hR1 y hy.1
+  set c := β⁻¹ - 1
+  have hc : 0 < c := by linarith
+  have hc1 : c - 1 ≤ 0 := by linarith
+  have hc2 : c - 2 < 0 := by linarith
+  have p1 : 0 < Rp β y ^ (c - 1) := rpow_pos_of_pos r _
+  have p2 : 0 < Rp β y ^ (c - 2) := rpow_pos_of_pos r _
+  have p3 : 0 < Rp β y ^ (c - 3) := rpow_pos_of_pos r _
+  have g1 : G1 β c y ≤ 0 := by
+    rw [G1]; exact mul_nonpos_of_nonneg_of_nonpos (by positivity) r1
+  have g2 : G2 β c y ≤ 0 := by
+    rw [G2]
+    refine mul_nonpos_of_nonneg_of_nonpos hc.le (add_nonpos ?_ ?_)
+    · exact mul_nonpos_of_nonpos_of_nonneg (mul_nonpos_of_nonpos_of_nonneg hc1 p2.le) (sq_nonneg _)
+    · exact mul_nonpos_of_nonneg_of_nonpos p1.le hR2
+  have g3 : G3 β c y ≤ 0 := by
+    rw [G3]
+    have k1 : 0 ≤ c * (c - 1) * (c - 2) :=
+      mul_nonneg_of_nonpos_of_nonpos (mul_nonpos_of_nonneg_of_nonpos hc.le hc1) hc2.le
+    have k2 : Rp1 β y ^ 3 ≤ 0 := by
+      have : Rp1 β y ^ 3 = Rp1 β y * Rp1 β y ^ 2 := by ring
+      rw [this]; exact mul_nonpos_of_nonpos_of_nonneg r1 (sq_nonneg _)
+    have k3 : 0 ≤ Rp1 β y * Rp2 β := mul_nonneg_of_nonpos_of_nonpos r1 hR2
+    have k4 : 3 * c * (c - 1) ≤ 0 := by nlinarith
+    nlinarith [mul_nonneg (mul_nonneg k1 p3.le) (neg_nonneg.2 k2),
+      mul_nonneg (neg_nonneg.2 k4) (mul_nonneg p2.le k3)]
+  have f2 : F2 β y ≤ 0 := by rw [F2]; exact mul_nonpos_of_nonneg_of_nonpos hy0.le r1
+  have f2d : F2d β y ≤ 0 := by
+    rw [F2d]; linarith [mul_nonpos_of_nonneg_of_nonpos hy0.le hR2]
+  refine ⟨g1, g2, g3, f2, f2d, ?_⟩
+  rw [D3]
+  nlinarith [mul_nonneg_of_nonpos_of_nonpos g3 f2, mul_nonneg_of_nonpos_of_nonpos g2 f2d,
+    mul_nonneg_of_nonpos_of_nonpos g1 hR2]
+
+/-- The derivatives of $f_{\beta,1}=R_\beta^c$, $R_\beta(y)=y^{-1}Q_\beta(y)$, on $(0,1)$. -/
+theorem derivs_f1 {β : ℝ} (hβ : β = 2⁻¹ ∨ β = β₀) (c : ℝ) :
+    EqOn (fun y ↦ (y⁻¹ * Q β y) ^ c) (F1 β c) (Ioo 0 1) ∧
+      EqOn (deriv (fun y ↦ (y⁻¹ * Q β y) ^ c)) (G1 β c) (Ioo 0 1) ∧
+      EqOn (deriv (deriv (fun y ↦ (y⁻¹ * Q β y) ^ c))) (G2 β c) (Ioo 0 1) ∧
+      EqOn (deriv (deriv (deriv (fun y ↦ (y⁻¹ * Q β y) ^ c)))) (G3 β c) (Ioo 0 1) := by
+  have hR := (Rp_signs hβ).1
+  have e : EqOn (fun y ↦ (y⁻¹ * Q β y) ^ c) (F1 β c) (Ioo 0 1) := fun z hz ↦ by
+    simp only [F1, inv_mul_Q_eq hz.1.ne']
+  have d1 := eqOn_deriv_of_eqOn isOpen_Ioo e fun z hz ↦ hasDerivAt_F1 (hR z hz)
+  have d2 := eqOn_deriv_of_eqOn isOpen_Ioo d1 fun z hz ↦ hasDerivAt_G1 (hR z hz)
+  exact ⟨e, d1, d2, eqOn_deriv_of_eqOn isOpen_Ioo d2 fun z hz ↦ hasDerivAt_G2 (hR z hz)⟩
+
+/-- The derivatives of $f_{\beta,2}=yR_\beta'(y)$ on $(0,1)$. -/
+theorem derivs_f2 (β : ℝ) :
+    EqOn (fun y ↦ y * deriv (fun z ↦ z⁻¹ * Q β z) y) (F2 β) (Ioo 0 1) ∧
+      EqOn (deriv (fun y ↦ y * deriv (fun z ↦ z⁻¹ * Q β z) y)) (F2d β) (Ioo 0 1) ∧
+      EqOn (deriv (deriv (fun y ↦ y * deriv (fun z ↦ z⁻¹ * Q β z) y))) (fun _ ↦ 2 * Rp2 β)
+        (Ioo 0 1) ∧
+      EqOn (deriv (deriv (deriv (fun y ↦ y * deriv (fun z ↦ z⁻¹ * Q β z) y)))) (fun _ ↦ 0)
+        (Ioo 0 1) := by
+  have e : EqOn (fun y ↦ y * deriv (fun z ↦ z⁻¹ * Q β z) y) (F2 β) (Ioo 0 1) := fun z hz ↦ by
+    simp only [F2, (hasDerivAt_invQ hz.1.ne').deriv]
+  have d1 := eqOn_deriv_of_eqOn isOpen_Ioo e fun z _ ↦ hasDerivAt_F2
+  have d2 := eqOn_deriv_of_eqOn isOpen_Ioo d1 fun z _ ↦ hasDerivAt_F2d
+  exact ⟨e, d1, d2, eqOn_deriv_of_eqOn isOpen_Ioo d2 fun z _ ↦ hasDerivAt_const z _⟩
+
+/-- The derivatives of $f_{\beta,0}=yR_\beta(y)^cR_\beta'(y)$ on $(0,1)$. -/
+theorem derivs_f0 {β : ℝ} (hβ : β = 2⁻¹ ∨ β = β₀) (c : ℝ) :
+    EqOn (deriv (fun y ↦ y * (y⁻¹ * Q β y) ^ c * deriv (fun z ↦ z⁻¹ * Q β z) y)) (D1 β c)
+        (Ioo 0 1) ∧
+      EqOn (deriv (deriv (fun y ↦ y * (y⁻¹ * Q β y) ^ c * deriv (fun z ↦ z⁻¹ * Q β z) y)))
+        (D2 β c) (Ioo 0 1) ∧
+      EqOn (deriv (deriv (deriv
+        (fun y ↦ y * (y⁻¹ * Q β y) ^ c * deriv (fun z ↦ z⁻¹ * Q β z) y)))) (D3 β c)
+        (Ioo 0 1) := by
+  have hR := (Rp_signs hβ).1
+  have e : EqOn (fun y ↦ y * (y⁻¹ * Q β y) ^ c * deriv (fun z ↦ z⁻¹ * Q β z) y)
+      (fun z ↦ F1 β c z * F2 β z) (Ioo 0 1) := fun z hz ↦ by
+    simp only [F1, F2, inv_mul_Q_eq hz.1.ne', (hasDerivAt_invQ hz.1.ne').deriv]; ring
+  have d1 := eqOn_deriv_of_eqOn isOpen_Ioo e fun z hz ↦ hasDerivAt_F1F2 (hR z hz)
+  have d2 := eqOn_deriv_of_eqOn isOpen_Ioo d1 fun z hz ↦ hasDerivAt_D1 (hR z hz)
+  exact ⟨d1, d2, eqOn_deriv_of_eqOn isOpen_Ioo d2 fun z hz ↦ hasDerivAt_D2 (hR z hz)⟩
+
+/-- $f_{\beta,0}''=$ `D2` is monotone on $[\frac18,\frac12]$ ($f_{\beta,0}'''\ge0$). -/
+theorem D2_monotoneOn {β : ℝ} (hβ : β = 2⁻¹ ∨ β = β₀) :
+    MonotoneOn (D2 β (β⁻¹ - 1)) (Icc 8⁻¹ 2⁻¹) := by
+  have hR := (Rp_signs hβ).1
+  have hd : ∀ z ∈ Icc (8⁻¹ : ℝ) 2⁻¹, HasDerivAt (D2 β (β⁻¹ - 1)) (D3 β (β⁻¹ - 1) z) z :=
+    fun z hz ↦ hasDerivAt_D2 (hR z ⟨by linarith [hz.1], by linarith [hz.2]⟩)
+  refine monotoneOn_of_deriv_nonneg (convex_Icc _ _)
+    (fun z hz ↦ (hd z hz).continuousAt.continuousWithinAt)
+    (fun z hz ↦ (hd z (interior_subset hz)).differentiableAt.differentiableWithinAt)
+    fun z hz ↦ ?_
+  rw [(hd z (interior_subset hz)).deriv]
+  exact (D3_nonneg hβ (interior_subset hz)).2.2.2.2.2
+
+/-- If $f_{\beta,0}''=$ `D2` $\ge0$ on $[a,\frac12]\subset[\frac18,\frac12]$, then
+$f_{\beta,0}'=$ `D1` is monotone there. -/
+theorem D1_monotoneOn {β a : ℝ} (hβ : β = 2⁻¹ ∨ β = β₀) (ha : 8⁻¹ ≤ a)
+    (h : ∀ z ∈ Icc a 2⁻¹, 0 ≤ D2 β (β⁻¹ - 1) z) : MonotoneOn (D1 β (β⁻¹ - 1)) (Icc a 2⁻¹) := by
+  have hR := (Rp_signs hβ).1
+  have hd : ∀ z ∈ Icc a 2⁻¹, HasDerivAt (D1 β (β⁻¹ - 1)) (D2 β (β⁻¹ - 1) z) z :=
+    fun z hz ↦ hasDerivAt_D1 (hR z ⟨by linarith [hz.1], by linarith [hz.2]⟩)
+  refine monotoneOn_of_deriv_nonneg (convex_Icc _ _)
+    (fun z hz ↦ (hd z hz).continuousAt.continuousWithinAt)
+    (fun z hz ↦ (hd z (interior_subset hz)).differentiableAt.differentiableWithinAt)
+    fun z hz ↦ ?_
+  rw [(hd z (interior_subset hz)).deriv]
+  exact h z (interior_subset hz)
+
+/-- $f_\beta(y)=1+R_\beta(y)^{1/\beta}-R_\beta(\frac y2)^{1/\beta}$ is differentiable on $(0,1)$. -/
+theorem differentiableAt_fQIII {β y : ℝ} (hβ : β = 2⁻¹ ∨ β = β₀) (hy : y ∈ Ioo (0 : ℝ) 1) :
+    DifferentiableAt ℝ
+      (fun z ↦ 1 + (z⁻¹ * Q β z) ^ β⁻¹ - ((z / 2)⁻¹ * Q β (z / 2)) ^ β⁻¹) y := by
+  have hR := (Rp_signs hβ).1
+  have h1 : 0 < y⁻¹ * Q β y := by rw [inv_mul_Q_eq hy.1.ne']; exact hR y hy
+  have h2 : 0 < (y / 2)⁻¹ * Q β (y / 2) := by
+    rw [inv_mul_Q_eq (by linarith [hy.1])]; exact hR _ ⟨by linarith [hy.1], by linarith [hy.2]⟩
+  have d1 := ((hasDerivAt_invQ (β := β) hy.1.ne').differentiableAt).rpow_const (p := β⁻¹)
+    (Or.inl h1.ne')
+  have d2 : DifferentiableAt ℝ (fun z ↦ ((z / 2)⁻¹ * Q β (z / 2)) ^ β⁻¹) y :=
+    (((hasDerivAt_invQ (β := β) (y := y / 2) (by linarith [hy.1])).comp y
+      ((hasDerivAt_id' y).div_const 2)).differentiableAt).rpow_const (p := β⁻¹)
+      (Or.inl (show ((fun z ↦ z⁻¹ * Q β z) ∘ fun x ↦ x / 2) y ≠ 0 from h2.ne'))
+  exact (d1.const_add 1).sub d2
+
 end Auto.DIR

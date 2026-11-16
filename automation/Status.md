@@ -254,20 +254,20 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 12:50:48 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_III_suffices_f_QIII_0`
 - complete — 2026-11-16 12:50:48 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `f_QIII_0_eq_mul`
 - complete — 2026-11-16 12:50:48 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `f_QIII_1_nonneg_f_QIII_2_nonpos`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `derivs_f_QIII_1`
+- complete — 2026-11-16 13:01:28 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `derivs_f_QIII_1`
 - complete — 2026-11-16 12:50:48 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `R_derivs_one_div_β`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `derivs_f_QIII_1_nonpos`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `derivs_f_QIII_2`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `derivs_f_QIII_2_nonpos`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `iteratedDeriv_three_f_QIII_0`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `iteratedDeriv_three_f_QIII_0_nonneg`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_9`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `deriv2_f_QIII_0_pos`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_10`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `deriv_f_QIII_0_neg`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `deriv_f_QIII_0_neg_Icc_eighth`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `deriv_f_QIII_nonpos`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `f_QIII_nonneg`
+- complete — 2026-11-16 13:01:28 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `derivs_f_QIII_1_nonpos`
+- complete — 2026-11-16 13:01:28 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `derivs_f_QIII_2`
+- complete — 2026-11-16 13:01:28 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `derivs_f_QIII_2_nonpos`
+- complete — 2026-11-16 13:01:28 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `iteratedDeriv_three_f_QIII_0`
+- complete — 2026-11-16 13:01:28 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `iteratedDeriv_three_f_QIII_0_nonneg`
+- complete — 2026-11-16 13:01:28 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_9`
+- complete — 2026-11-16 13:01:28 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `deriv2_f_QIII_0_pos`
+- complete — 2026-11-16 13:01:28 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_10`
+- complete — 2026-11-16 13:01:28 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `deriv_f_QIII_0_neg`
+- complete — 2026-11-16 13:01:28 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `deriv_f_QIII_0_neg_Icc_eighth`
+- complete — 2026-11-16 13:01:28 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `deriv_f_QIII_nonpos`
+- complete — 2026-11-16 13:01:28 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `f_QIII_nonneg`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `lemma_6_4_denom_pos`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `lemma_6_4_deriv`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_11`

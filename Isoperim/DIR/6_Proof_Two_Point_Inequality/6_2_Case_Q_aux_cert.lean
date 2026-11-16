@@ -238,4 +238,120 @@ theorem eqn_6_7_cert : ∀ h ∈ Icc (0 : ℝ) 4⁻¹, ∀ y ∈ Icc (4⁻¹ : �
     | exact gQ1_box_11
     | exact gQ1_box_12
 
+/-! ### Region III: single evaluations of $f_{\beta,0}'$ and $f_{\beta,0}''$ -/
+
+/-- $R_\beta=$ `Rp β` as an expression in $t=2^\beta$ (variable $0$):
+$\frac23(1-y)(4t-3+4(3-2t)y)$. -/
+def exRp (y : ℚ) : Ex :=
+  .mul (.const (2 / 3 * (1 - y)))
+    (.add (.sub (.mul (.const 4) (.var 0)) (.const 3)) (.mul (.const (4 * y)) exα₁))
+
+/-- $R_\beta'=$ `Rp1 β` as an expression in $t=2^\beta$. -/
+def exRp1 (y : ℚ) : Ex :=
+  .mul (.const (2 / 3)) (.sub (.sub (.mul (.const 4) exα₁) (.sub (.mul (.const 4) (.var 0))
+    (.const 3))) (.mul (.const (2 * y)) (.mul (.const 4) exα₁)))
+
+/-- $R_\beta''=$ `Rp2 β` as an expression in $t=2^\beta$. -/
+def exRp2 : Ex := .mul (.const (-4 / 3)) (.mul (.const 4) exα₁)
+
+theorem denote_exRp {ρ : ℕ → ℝ} {β : ℝ} (h0 : ρ 0 = 2 ^ β) (y : ℚ) :
+    denote ρ (exRp y) = Rp β y := by
+  simp only [exRp, denote, denote_exα₁ h0, h0]
+  rw [Rp, α₁, two_rpow_add_two, two_rpow_add_one', two_rpow_one_add]; push_cast; ring
+
+theorem denote_exRp1 {ρ : ℕ → ℝ} {β : ℝ} (h0 : ρ 0 = 2 ^ β) (y : ℚ) :
+    denote ρ (exRp1 y) = Rp1 β y := by
+  simp only [exRp1, denote, denote_exα₁ h0, h0]
+  rw [Rp1, α₁, two_rpow_one_add]; push_cast; ring
+
+theorem denote_exRp2 {ρ : ℕ → ℝ} {β : ℝ} (h0 : ρ 0 = 2 ^ β) : denote ρ exRp2 = Rp2 β := by
+  simp only [exRp2, denote, denote_exα₁ h0]
+  rw [Rp2, α₁, two_rpow_one_add]; ring
+
+/-- $f_{\beta,0}'=$ `D1 β c y` as an expression ($c=\frac1b-1$ for $\beta=b$ rational). -/
+def exD1 (b y : ℚ) : Ex :=
+  .add (.mul (.mul (.mul (.const (1 / b - 1)) (.rpow (exRp y) (1 / b - 2))) (exRp1 y))
+      (.mul (.const y) (exRp1 y)))
+    (.mul (.rpow (exRp y) (1 / b - 1)) (.add (exRp1 y) (.mul (.const y) exRp2)))
+
+/-- $f_{\beta,0}''=$ `D2 β c y` as an expression. -/
+def exD2 (b y : ℚ) : Ex :=
+  .add (.add
+    (.mul (.mul (.const (1 / b - 1)) (.add (.mul (.mul (.const (1 / b - 2))
+      (.rpow (exRp y) (1 / b - 3))) (.npow (exRp1 y) 2)) (.mul (.rpow (exRp y) (1 / b - 2)) exRp2)))
+      (.mul (.const y) (exRp1 y)))
+    (.mul (.mul (.const 2) (.mul (.mul (.const (1 / b - 1)) (.rpow (exRp y) (1 / b - 2)))
+      (exRp1 y))) (.add (exRp1 y) (.mul (.const y) exRp2))))
+    (.mul (.rpow (exRp y) (1 / b - 1)) (.mul (.const 2) exRp2))
+
+theorem denote_exD1 {ρ : ℕ → ℝ} {b : ℚ} {β : ℝ} (hb : ((b : ℚ) : ℝ) = β) (h0 : ρ 0 = 2 ^ β)
+    (y : ℚ) : denote ρ (exD1 b y) = D1 β (β⁻¹ - 1) y := by
+  simp only [exD1, denote, denote_exRp h0, denote_exRp1 h0, denote_exRp2 h0, D1, G1, F1, F2, F2d]
+  push_cast
+  rw [hb, show β⁻¹ - 1 - 1 = 1 / β - 2 by ring, one_div]
+
+theorem denote_exD2 {ρ : ℕ → ℝ} {b : ℚ} {β : ℝ} (hb : ((b : ℚ) : ℝ) = β) (h0 : ρ 0 = 2 ^ β)
+    (y : ℚ) : denote ρ (exD2 b y) = D2 β (β⁻¹ - 1) y := by
+  simp only [exD2, denote, denote_exRp h0, denote_exRp1 h0, denote_exRp2 h0, D2, G1, G2, F1, F2,
+    F2d]
+  push_cast
+  rw [hb, show β⁻¹ - 1 - 1 = 1 / β - 2 by ring, show β⁻¹ - 1 - 2 = 1 / β - 3 by ring,
+    show β⁻¹ - 1 = 1 / β - 1 by ring]
+
+/-- A lower bound for $f_{\beta,0}''(y)$ by one evaluation of the checker. -/
+theorem D2_gt {b y lo : ℚ} {β : ℝ} (hb : ((b : ℚ) : ℝ) = β) (cert : Cert)
+    (hv : cert.v = 2 ^ β) (h : check P11 (Cert.env [cert]) (exD2 b y) lo = true) :
+    (lo : ℝ) < D2 β (β⁻¹ - 1) y := by
+  have := check_sound P11 hw11 [cert] _ _ h
+  rwa [denote_exD2 hb hv] at this
+
+/-- An upper bound for $f_{\beta,0}'(y)$ by one evaluation of the checker. -/
+theorem D1_lt {b y up : ℚ} {β : ℝ} (hb : ((b : ℚ) : ℝ) = β) (cert : Cert)
+    (hv : cert.v = 2 ^ β) (h : checkUpper P11 (Cert.env [cert]) (exD1 b y) up = true) :
+    D1 β (β⁻¹ - 1) y < up := by
+  have := checkUpper_sound P11 hw11 [cert] _ _ h
+  rwa [denote_exD1 hb hv] at this
+
+/-- `cTwoPowβ₀` certifies $2^{\beta_0}$. -/
+theorem cTwoPowβ₀_v' : cTwoPowβ₀.v = (2 : ℝ) ^ β₀ := by rw [cTwoPowβ₀_v, β₀Q_cast]
+
+/-- `cTwoPowHalf` certifies $2^{1/2}$. -/
+theorem cTwoPowHalf_v' : cTwoPowHalf.v = (2 : ℝ) ^ (2⁻¹ : ℝ) := by rw [cTwoPowHalf_v]; norm_num
+
+/-- (6.9) for $\beta=\beta_0$: $f_{\beta_0,0}''(\frac14)>3.2$. -/
+theorem D2_quarter_b0 : (16 / 5 : ℝ) < D2 β₀ (β₀⁻¹ - 1) 4⁻¹ := by
+  have := D2_gt (b := β₀Q) (y := 1 / 4) (lo := 16 / 5) β₀Q_cast cTwoPowβ₀ cTwoPowβ₀_v'
+    (by decide +kernel)
+  norm_num at this ⊢; exact this
+
+/-- (6.9) for $\beta=\frac12$: $f_{\frac12,0}''(\frac14)>3.2$. -/
+theorem D2_quarter_h : (16 / 5 : ℝ) < D2 2⁻¹ ((2⁻¹ : ℝ)⁻¹ - 1) 4⁻¹ := by
+  have := D2_gt (b := 1 / 2) (y := 1 / 4) (lo := 16 / 5) (by norm_num) cTwoPowHalf cTwoPowHalf_v'
+    (by decide +kernel)
+  norm_num at this ⊢; exact this
+
+/-- $f_{\beta_0,0}''(\frac18)>0$. -/
+theorem D2_eighth_b0 : (0 : ℝ) < D2 β₀ (β₀⁻¹ - 1) 8⁻¹ := by
+  have := D2_gt (b := β₀Q) (y := 1 / 8) (lo := 0) β₀Q_cast cTwoPowβ₀ cTwoPowβ₀_v'
+    (by decide +kernel)
+  norm_num at this ⊢; exact this
+
+/-- $f_{\frac12,0}''(\frac18)>0$. -/
+theorem D2_eighth_h : (0 : ℝ) < D2 2⁻¹ ((2⁻¹ : ℝ)⁻¹ - 1) 8⁻¹ := by
+  have := D2_gt (b := 1 / 2) (y := 1 / 8) (lo := 0) (by norm_num) cTwoPowHalf cTwoPowHalf_v'
+    (by decide +kernel)
+  norm_num at this ⊢; exact this
+
+/-- (6.10) for $\beta=\beta_0$: $f_{\beta_0,0}'(\frac12)<-0.6$. -/
+theorem D1_half_b0 : D1 β₀ (β₀⁻¹ - 1) 2⁻¹ < (-3 / 5 : ℝ) := by
+  have := D1_lt (b := β₀Q) (y := 1 / 2) (up := -3 / 5) β₀Q_cast cTwoPowβ₀ cTwoPowβ₀_v'
+    (by decide +kernel)
+  norm_num at this ⊢; exact this
+
+/-- (6.10) for $\beta=\frac12$: $f_{\frac12,0}'(\frac12)<-0.6$. -/
+theorem D1_half_h : D1 2⁻¹ ((2⁻¹ : ℝ)⁻¹ - 1) 2⁻¹ < (-3 / 5 : ℝ) := by
+  have := D1_lt (b := 1 / 2) (y := 1 / 2) (up := -3 / 5) (by norm_num) cTwoPowHalf cTwoPowHalf_v'
+    (by decide +kernel)
+  norm_num at this ⊢; exact this
+
 end Auto.DIR
