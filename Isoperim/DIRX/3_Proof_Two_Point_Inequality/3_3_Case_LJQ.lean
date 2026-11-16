@@ -12,6 +12,7 @@ public import Isoperim.DIRX.«2_Preliminaries».«2_3_Properties_L_Q»
 public import Isoperim.DIRX.«2_Preliminaries».Definitions
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_2_Case_Q»
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_3_Case_LJQ_aux»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_3_Case_LJQ_aux_cert37»
 
 /-!
 # [DIRX] §3.3 Case LJQ
@@ -474,7 +475,8 @@ section Boundary_x_eq_1_16
 $$G_{LJQ}(\tfrac1{16},y)>10^{-4}$$ for all $y\in[\frac12,\frac34]$. -/
 theorem eqn_3_7 (y : ℝ) (hy : y ∈ Icc (2⁻¹ : ℝ) (3 / 4)) :
     G_LJQX 16⁻¹ y > (10 : ℝ) ^ (-4 : ℤ) := by
-  sorry
+  have h := eqn37_cert y hy
+  rw [G_LJQX]; norm_num at h ⊢; linarith
 
 end Boundary_x_eq_1_16
 
@@ -604,8 +606,9 @@ $y\ge\frac34$ holds, then $G_{LJQ}(x,y)\ge0$.
 
 **Discrepancy with the paper.** Lean: adds $x+y\le1$. -/
 theorem caseLJQ_II (x y : ℝ) (hx : x ∈ Icc (0 : ℝ) 4⁻¹) (hy : y ∈ Icc (2⁻¹ : ℝ) 1)
-    (hxy : x + y ≤ 1) (h : x ≤ 16⁻¹ ∨ y ≥ 3 / 4) : G_LJQX x y ≥ 0 := by
-  sorry
+    (hxy : x + y ≤ 1) (h : x ≤ 16⁻¹ ∨ y ≥ 3 / 4) : G_LJQX x y ≥ 0 :=
+  caseLJQ_II_of_boundary (fun y hy ↦ fX_nonneg y hy)
+    (fun y hy ↦ (eqn_3_7 y hy).le.trans' (by positivity)) G_LJQ_diag_nonneg x y hx hy hxy h
 
 end Case_II
 

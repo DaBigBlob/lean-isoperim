@@ -325,17 +325,17 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 13:59:13 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_deriv_zero`
 - complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_one_half`
 - complete — 2026-11-16 13:59:13 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `fX_nonneg`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `eqn_3_7`
+- complete — 2026-11-16 14:23:37 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `eqn_3_7`
 - complete — 2026-11-16 13:59:13 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_diag_deriv2`
 - complete — 2026-11-16 13:59:13 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_diag_concave`
 - complete — 2026-11-16 13:52:41 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_diag_eval`
 - complete — 2026-11-16 13:59:13 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `G_LJQ_diag_nonneg`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `caseLJQ_II`
+- complete — 2026-11-16 14:23:37 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `caseLJQ_II`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_3_Case_LJQ: `caseLJQ`
 - complete — 2026-11-16 14:06:28 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `G₂_BX_eq_h_LJ`
 - complete — 2026-11-16 14:06:28 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `h_LJ_deriv2`
 - complete — 2026-11-16 14:06:28 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `h_LJ_concave`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `eqn_3_8`
+- complete — 2026-11-16 14:23:37 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `eqn_3_8`
 - complete — 2026-11-16 14:06:28 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `h_LJ_eq_gX`
 - complete — 2026-11-16 14:06:28 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `gX_half`
 - complete — 2026-11-16 14:06:28 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `gX_deriv`
@@ -345,8 +345,8 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 14:06:28 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `gX_deriv_ge_3`
 - complete — 2026-11-16 14:06:28 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `gX_deriv_ge`
 - complete — 2026-11-16 14:06:28 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `gX_nonneg`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `h_LJ_nonneg`
-- not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `caseLJ`
+- complete — 2026-11-16 14:23:37 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `h_LJ_nonneg`
+- complete — 2026-11-16 14:23:37 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_4_Case_LJ: `caseLJ`
 - complete — 2026-11-16 14:11:17 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `caseQJQ_of_eqn_3_9`
 - complete — 2026-11-16 14:11:17 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `eqn_3_9_deriv`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 3_Proof_Two_Point_Inequality/3_5_Case_QJQ: `eqn_3_11`

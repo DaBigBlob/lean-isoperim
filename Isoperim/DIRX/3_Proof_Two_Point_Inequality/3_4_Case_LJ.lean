@@ -10,6 +10,7 @@ public import Isoperim.DIRX.«2_Preliminaries».«2_2_Properties_J»
 public import Isoperim.DIRX.«2_Preliminaries».«2_3_Properties_L_Q»
 public import Isoperim.DIRX.«2_Preliminaries».Definitions
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_4_Case_LJ_aux»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_4_Case_LJ_aux_cert38»
 
 /-!
 # [DIRX] §3.4 Case LJ
@@ -178,7 +179,8 @@ noncomputable def h_LJ₁ (c : ℝ) : ℝ := h_LJ (c - 4⁻¹) c
 /-- **(3.8)** ([DIRX], §3.4, Case I) (🚗). Dyadic partitioning yields
 $$h_{LJ,1}(c)>0.01\quad\text{for all } c\in[\tfrac12,\tfrac58].$$ -/
 theorem eqn_3_8 (c : ℝ) (hc : c ∈ Icc (2⁻¹ : ℝ) (5 / 8)) : h_LJ₁ c > 0.01 := by
-  sorry
+  have h := eqn38_cert c hc
+  rw [h_LJ₁, h_LJ]; norm_num at h ⊢; linarith
 
 end Case_I
 
@@ -381,7 +383,13 @@ end Case_II
 /-- [DIRX], §3.4: $h_{LJ}(u,c)\ge0$ for all $c\in[\frac12,\frac58]$ and $u\in[c-\frac14,1-c]$. -/
 theorem h_LJ_nonneg (u c : ℝ) (hc : c ∈ Icc (2⁻¹ : ℝ) (5 / 8))
     (hu : u ∈ Icc (c - 4⁻¹) (1 - c)) : h_LJ u c ≥ 0 := by
-  sorry
+  have hcc : c - 4⁻¹ ≤ 1 - c := by linarith [hc.2]
+  have h := (h_LJ_concave c hc).min_le_of_mem_Icc (left_mem_Icc.2 hcc) (right_mem_Icc.2 hcc) hu
+  have h1 := eqn_3_8 c hc
+  have h2 := gX_nonneg c hc
+  rw [h_LJ₁] at h1
+  rw [← h_LJ_eq_gX] at h2
+  exact le_trans (le_min (by norm_num at h1; linarith) h2) h
 
 /-! ### §3.4 Case LJ: $0\le x\le\frac14$, $\frac12\le y\le1$, $1\le x+y$ -/
 
@@ -389,6 +397,8 @@ theorem h_LJ_nonneg (u c : ℝ) (hc : c ∈ Icc (2⁻¹ : ℝ) (5 / 8))
 $1\le x+y$. -/
 theorem caseLJ (x y : ℝ) (hx : x ∈ Icc (0 : ℝ) 4⁻¹) (hy : y ∈ Icc (2⁻¹ : ℝ) 1)
     (hxy : 1 ≤ x + y) : G (BX w₁) x y ≥ 0 := by
-  sorry
+  rw [Auto.DIR.G, G₂_BX_eq_h_LJ x y hx hy hxy]
+  exact le_max_of_le_right (h_LJ_nonneg _ _ ⟨by linarith, by linarith [hx.2, hy.2]⟩
+    ⟨by linarith [hx.2], by linarith [hy.2]⟩)
 
 end Auto.DIRX
