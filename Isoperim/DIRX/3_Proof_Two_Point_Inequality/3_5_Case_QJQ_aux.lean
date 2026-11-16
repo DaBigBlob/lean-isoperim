@@ -195,4 +195,92 @@ theorem hQJQ1lo_le {xl xu yl yu x y : ℝ} (hxl : 4⁻¹ ≤ xl) (hxu : xu ≤ 2
   rw [hQJQ1lo]
   linarith
 
+
+/-! ### The corrected tight lower bound for (3.12) -/
+
+/-- Tangent bound of the cubic $Q=Q_{1/2}$: $Q(m)\le Q(a)+Q'(a)(m-a)$ if $m+2a\ge0$ (namely
+$Q(a)+Q'(a)(m-a)-Q(m)=\frac23(m-a)^2((12\sqrt2-15)+(12-8\sqrt2)(m+2a))$). -/
+theorem Q_half_tangent {a m : ℝ} (h : 0 ≤ m + 2 * a) :
+    Q 2⁻¹ m ≤ Q 2⁻¹ a + deriv (Q 2⁻¹) a * (m - a) := by
+  rw [deriv_Q_eq, Q1f_eq_affine, Q_eq_affine, Q_eq_affine, two_rpow_half]
+  have hs := sqrt_two_mem
+  have k : 0 ≤ (12 * √2 - 15) + (12 - 8 * √2) * (m + 2 * a) :=
+    add_nonneg (by linarith [hs.1]) (mul_nonneg (by linarith [hs.2]) h)
+  nlinarith [mul_nonneg (sq_nonneg (m - a)) k]
+
+/-- $Q$ is concave on $[0,\infty)$. -/
+theorem Q_half_concaveOn : ConcaveOn ℝ (Ici 0) (Q 2⁻¹) := by
+  have hd : deriv (Q 2⁻¹) = Q1f 2⁻¹ := deriv_Q_eq _
+  refine concaveOn_of_deriv2_nonpos' (convex_Ici 0)
+    (fun x _ ↦ (hasDerivAt_Q _ x).differentiableAt.differentiableWithinAt)
+    (fun x _ ↦ by rw [hd]; exact (hasDerivAt_Q1f _ x).differentiableAt.differentiableWithinAt)
+    fun x hx ↦ ?_
+  simp only [Function.iterate_succ, Function.iterate_zero, Function.comp_apply, Function.id_def,
+    hd, (hasDerivAt_Q1f _ x).deriv, Q2f_eq_affine, two_rpow_half]
+  have hs := sqrt_two_mem
+  have hx : (0 : ℝ) ≤ x := hx
+  nlinarith [hs.1, mul_nonneg hx (by linarith [hs.2] : (0 : ℝ) ≤ 48 - 32 * √2)]
+
+/-- Upper bound of $Q$ on $[m_l,m_u]$, $m_l\ge0$, from the tangents at $m_l$ and $m_u$. -/
+noncomputable def Qmx (ml mu : ℝ) : ℝ :=
+  min (Q 2⁻¹ ml + max (deriv (Q 2⁻¹) ml * (mu - ml)) 0)
+    (Q 2⁻¹ mu + max (deriv (Q 2⁻¹) mu * (ml - mu)) 0)
+
+/-- `Qmx` bounds $Q$ on $[m_l,m_u]$. -/
+theorem Q_le_Qmx {ml mu m : ℝ} (hml : 0 ≤ ml) (hm : m ∈ Icc ml mu) : Q 2⁻¹ m ≤ Qmx ml mu := by
+  have t1 := Q_half_tangent (a := ml) (m := m) (by linarith [hm.1])
+  have t2 := Q_half_tangent (a := mu) (m := m) (by linarith [hm.1, hm.2])
+  refine le_min (t1.trans (add_le_add le_rfl ?_)) (t2.trans (add_le_add le_rfl ?_))
+  · rcases le_total 0 (deriv (Q 2⁻¹) ml) with h | h
+    · exact le_max_of_le_left (mul_le_mul_of_nonneg_left (by linarith [hm.2]) h)
+    · exact le_max_of_le_right (mul_nonpos_of_nonpos_of_nonneg h (by linarith [hm.1]))
+  · rcases le_total 0 (deriv (Q 2⁻¹) mu) with h | h
+    · exact le_max_of_le_right (mul_nonpos_of_nonneg_of_nonpos h (by linarith [hm.2]))
+    · exact le_max_of_le_left (mul_le_mul_of_nonpos_left (by linarith [hm.1]) h)
+
+/-- The corrected tight lower bound $\underline{h_{QJQ,2}}$ of the left-hand side of (3.9) on
+$[\frac14,\frac12]\times[\frac{33}{64},\frac34]$: as in the paper, but with the upper bound
+`Qmx` of $Q$ on $[\frac{x_l+y_l}2,\frac{x_l+y_u}2]$ in place of $Q(\frac{x_l+y_u}2)$ ($Q$ is not
+monotone there). -/
+noncomputable def hQJQ2lo (xl xu yl yu : ℝ) : ℝ :=
+  (yl - xu) ^ 2 + min (J yl) (J yu) ^ 2 - (2 * Qmx ((xl + yl) / 2) ((xl + yu) / 2) - Q 2⁻¹ xl) ^ 2
+
+/-- Lower bound property of `hQJQ2lo`. -/
+theorem hQJQ2lo_le {xl xu yl yu x y : ℝ} (hxl : 4⁻¹ ≤ xl) (hxu : xu ≤ 2⁻¹) (hyl : 33 / 64 ≤ yl)
+    (hyu : yu ≤ 3 / 4) (hx : x ∈ Icc xl xu) (hy : y ∈ Icc yl yu) :
+    hQJQ2lo xl xu yl yu ≤ (y - x) ^ 2 + J y ^ 2 - (2 * Q 2⁻¹ ((x + y) / 2) - Q 2⁻¹ x) ^ 2 := by
+  obtain ⟨hx1, hx2⟩ := hx
+  obtain ⟨hy1, hy2⟩ := hy
+  have hs := sqrt_two_mem
+  -- $(y-x)^2\ge(y_l-x_u)^2$
+  have h1 : (yl - xu) ^ 2 ≤ (y - x) ^ 2 := pow_le_pow_left₀ (by linarith) (by linarith) 2
+  -- $\mathrm J(y)^2\ge\min(\mathrm J(y_l),\mathrm J(y_u))^2$
+  have hJ := JX_concave.1.min_le_of_mem_Icc (⟨by linarith, by linarith⟩ : yl ∈ Icc (2⁻¹ : ℝ) 1)
+    (⟨by linarith, by linarith⟩ : yu ∈ Icc (2⁻¹ : ℝ) 1) ⟨hy1, hy2⟩
+  have hJ0 : 0 ≤ min (J yl) (J yu) :=
+    le_min (JX_concave.2 _ ⟨by linarith, by linarith⟩) (JX_concave.2 _ ⟨by linarith, by linarith⟩)
+  have h2 : min (J yl) (J yu) ^ 2 ≤ J y ^ 2 := pow_le_pow_left₀ hJ0 hJ 2
+  -- $0\le A=2Q(\frac{x+y}2)-Q(x)\le2\,\mathrm{Qmx}-Q(x_l)$
+  have hA1 := two_Q_sub_Q_anti_x y ⟨by linarith, by linarith⟩ ⟨by linarith, by linarith⟩ hx1
+  beta_reduce at hA1
+  have hA2 := Q_le_Qmx (ml := (xl + yl) / 2) (mu := (xl + yu) / 2) (m := (xl + y) / 2)
+    (by linarith) ⟨by linarith, by linarith⟩
+  have hc := Q_half_concaveOn.min_le_of_mem_Icc (x := 4⁻¹) (y := 5 / 8) (z := (x + y) / 2)
+    (by norm_num) (by norm_num) ⟨by linarith, by linarith⟩
+  have hq1 : Q 2⁻¹ 4⁻¹ = √2 / 4 := Q_half_values.1
+  have hq2 : √2 / 4 ≤ Q 2⁻¹ (5 / 8) := by
+    rw [Q_eq_affine, two_rpow_half]; norm_num; linarith [hs.2]
+  have hq3 : Q 2⁻¹ x ≤ 2⁻¹ := by
+    have := Q_monotoneOn (mem_Ico_of_caseQ (Or.inl rfl)) (⟨by linarith, by linarith⟩ :
+      x ∈ Icc (0 : ℝ) 2⁻¹) ⟨by norm_num, le_rfl⟩ (by linarith)
+    rwa [Q_half_values.2.2] at this
+  have hA0 : 0 ≤ 2 * Q 2⁻¹ ((x + y) / 2) - Q 2⁻¹ x := by
+    have : √2 / 4 ≤ min (Q 2⁻¹ 4⁻¹) (Q 2⁻¹ (5 / 8)) := le_min hq1.ge hq2
+    linarith [hs.1]
+  have hAu : 2 * Q 2⁻¹ ((x + y) / 2) - Q 2⁻¹ x ≤
+      2 * Qmx ((xl + yl) / 2) ((xl + yu) / 2) - Q 2⁻¹ xl := by linarith
+  have h3 := pow_le_pow_left₀ hA0 hAu 2
+  rw [hQJQ2lo]
+  linarith
+
 end Auto.DIRX

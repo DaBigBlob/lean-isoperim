@@ -455,3 +455,14 @@ $w_0=0.895769$.
   $\underline{h_{QJQ,1}}$ are proved in `3_5_Case_QJQ_aux.lean` ($\mathrm J\mathrm J'$ antitone on
   $[\frac12,\frac34]$ as in the paper; $Q'$ antitone and $\ge0$ on $[0,\frac{65}{128}]$;
   $x\mapsto2Q(\frac{x+y}2)-Q(x)$ antitone).
+- [DIRX] (3.12): the paper's tight lower bound $\underline{h_{QJQ,2}}$ bounds $Q(\frac{x+y}2)$ by
+  $Q(\frac{\underline x+\overline y}2)$, i.e. uses that $Q$ is increasing, which fails for
+  $\frac{x+y}2>t_*\approx0.528$ (item 8 above). Resolved (user decision, 2026-11-16): corrected
+  bound `Auto.DIRX.hQJQ2lo` (`3_5_Case_QJQ_aux.lean`): the paper's valid monotonicity in $x$ is
+  kept, and $Q(\frac{\underline x+y}2)$, $y\in[\underline y,\overline y]$, is bounded by the
+  tangent bound `Auto.DIRX.Qmx` of the concave cubic $Q$ on
+  $[\frac{\underline x+\underline y}2,\frac{\underline x+\overline y}2]$ (equal to the paper's value
+  where $Q$ is monotone). The paper's partition `h_QJQ_2` (4498 rectangles) is refined dyadically
+  where this bound is $<1.5\cdot10^{-7}$ (42 more rectangles) and on two rectangles where the
+  interval evaluation is too coarse (6 more), 4546 rectangles in all
+  (`3_5_Case_QJQ_aux_cert312*.lean`); the statement is unchanged.

@@ -11,6 +11,7 @@ public import Isoperim.DIRX.«2_Preliminaries».«2_2_Properties_J»
 public import Isoperim.DIRX.«2_Preliminaries».Definitions
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux»
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux_cert311»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux_cert312»
 
 /-!
 # [DIRX] §3.5 Case QJQ
@@ -134,14 +135,19 @@ $[\frac14,\frac12]\times[\frac{33}{64},\frac34]$. -/
 theorem eqn_3_12 (x y : ℝ) (hx : x ∈ Icc (4⁻¹ : ℝ) 2⁻¹)
     (hy : y ∈ Icc (33 / 64 : ℝ) (3 / 4)) :
     (y - x) ^ 2 + J y ^ 2 - (2 * Q ((x + y) / 2) - Q x) ^ 2 > (10 : ℝ) ^ (-7 : ℤ) := by
-  sorry
+  have h := eqn312_cert x hx y hy
+  norm_num at h ⊢; linarith
 
 /-- **(3.9)** ([DIRX], §3.5). For all $(x,y)\in[\frac14,\frac12]\times[\frac12,\frac34]$,
 $$(y-x)^2+\mathrm{J}(y)^2-(2Q(\tfrac{x+y}2)-Q(x))^2\ge0.$$ -/
 theorem eqn_3_9 (x y : ℝ) (hx : x ∈ Icc (4⁻¹ : ℝ) 2⁻¹)
     (hy : y ∈ Icc (2⁻¹ : ℝ) (3 / 4)) :
     (y - x) ^ 2 + J y ^ 2 - (2 * Q ((x + y) / 2) - Q x) ^ 2 ≥ 0 := by
-  sorry
+  rcases le_total y (33 / 64) with h | h
+  · exact eqn_3_9_low x y hx ⟨hy.1, h⟩
+  · have := eqn_3_12 x y hx ⟨h, hy.2⟩
+    have : (0 : ℝ) < (10 : ℝ) ^ (-7 : ℤ) := by positivity
+    linarith
 
 /-! ### §3.5 Case QJQ: $\frac14\le x\le\frac12\le y$, $x+y\le1$ -/
 
@@ -149,6 +155,8 @@ theorem eqn_3_9 (x y : ℝ) (hx : x ∈ Icc (4⁻¹ : ℝ) 2⁻¹)
 $x+y\le1$. -/
 theorem caseQJQ (x y : ℝ) (hx : x ∈ Icc (4⁻¹ : ℝ) 2⁻¹) (hy : 2⁻¹ ≤ y)
     (hxy : x + y ≤ 1) : G (BX w₁) x y ≥ 0 := by
-  sorry
+  rw [Auto.DIR.G]
+  exact le_max_of_le_left (caseQJQ_of_eqn_3_9 x y hx hy hxy
+    (eqn_3_9 x y hx ⟨hy, by linarith [hx.1]⟩))
 
 end Auto.DIRX

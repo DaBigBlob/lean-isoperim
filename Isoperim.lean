@@ -57,6 +57,12 @@ public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_4_Case_LJ_aux_c
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_4_Case_LJ»
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux»
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux_cert311»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux_cert312a»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux_cert312b1»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux_cert312b2»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux_cert312b3»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux_cert312b4»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux_cert312»
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ»
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_6_Case_QJ»
 public import Isoperim.DIRX.«2_Preliminaries».«2_1_Reduction_Two_Point_Inequality»
