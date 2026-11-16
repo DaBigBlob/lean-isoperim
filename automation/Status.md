@@ -221,9 +221,9 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 11:59:06 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_2_quarter`
 - complete — 2026-11-16 11:59:06 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9_2_convex`
 - complete — 2026-11-16 11:59:06 ET — [DIR] 5_Auxiliary_Estimates/5_3_Properties_L_Q: `lemma_5_9`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 5_Auxiliary_Estimates/5_2_Two_Point_Inequalities: `lemma_5_2_chain`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 5_Auxiliary_Estimates/5_2_Two_Point_Inequalities: `lemma_5_2`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 5_Auxiliary_Estimates/5_2_Two_Point_Inequalities: `G₁_diag`
+- complete — 2026-11-16 12:02:09 ET — [DIR] 5_Auxiliary_Estimates/5_2_Two_Point_Inequalities: `lemma_5_2_chain`
+- complete — 2026-11-16 12:02:09 ET — [DIR] 5_Auxiliary_Estimates/5_2_Two_Point_Inequalities: `lemma_5_2`
+- complete — 2026-11-16 12:02:09 ET — [DIR] 5_Auxiliary_Estimates/5_2_Two_Point_Inequalities: `G₁_diag`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_G₁_L`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_I`
 - not started — 2026-11-12 15:19:51 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_reduction`
