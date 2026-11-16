@@ -281,7 +281,7 @@ its state changes; no free-text entries.
 - complete — 2026-11-16 13:21:41 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `caseQ_III_G_Q_quarter`
 - complete — 2026-11-16 13:21:41 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `eqn_6_6`
 - complete — 2026-11-16 13:21:41 ET — [DIR] 6_Proof_Two_Point_Inequality/6_2_Case_Q: `prop_6_2`
-- not started — 2026-11-12 15:19:51 ET — [DIR] 2_Envelope_Functions/2_2_Proofs_Theorems_1_1_1_5_1_7: `b_eq_Q_ge_L`
+- complete — 2026-11-16 13:22:30 ET — [DIR] 2_Envelope_Functions/2_2_Proofs_Theorems_1_1_1_5_1_7: `b_eq_Q_ge_L`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 2_Preliminaries/2_2_Properties_J: `JX_mul_deriv2`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 2_Preliminaries/2_2_Properties_J: `γX_mem`
 - not started — 2026-11-12 15:19:51 ET — [DIRX] 2_Preliminaries/2_2_Properties_J: `JX_concave`
