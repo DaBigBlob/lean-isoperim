@@ -27,6 +27,12 @@ proofs over 100 lines or needing extra lemmas; completion = no transitive `sorry
 starts only after all its dependencies, listed in `automation/proof_dependencies.txt`, are
 proved). The work split into Tasks 1–5 is in `automation/splitting.md`.
 
+**Consolidation of auxiliary files (user requirement, 2026-11-17, after Task 3):**
+"Please consolidate the extra lean files that were created as much as possible: all auxiliary
+code should go into one _aux.lean file, a new file should only be created once that file gets
+larger than 10k lines." Recorded as part of `AGENTS.md`, rule 1. Task 3's files are assembled by
+`automation/cert/task3/consolidate.py` (generators write to `automation/cert/task3/units/`).
+
 ## Changes of plan (user requirement, 2026-11-12T00:56+00:00, raw entry 4)
 
 - Scope of the formalization: only what is logically needed (by the papers' arguments) for the

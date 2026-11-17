@@ -8,7 +8,7 @@ module
 public import Isoperim.DIR.«3_Variants_Bobkov_Inequality».«3_0_Variants_Bobkov_Inequality»
 public import Isoperim.DIR.«5_Auxiliary_Estimates».«5_4_Lower_Bounds_Gaussian_Isoperimetric_Profile»
 public import Isoperim.DIRX.«2_Preliminaries».Definitions
-public import Isoperim.DIRX.«2_Preliminaries».«2_2_Properties_J_aux_gamma»
+public import Isoperim.DIRX.«2_Preliminaries».«2_2_Properties_J_aux»
 
 /-!
 # [DIRX] §2.2 Properties of the function J

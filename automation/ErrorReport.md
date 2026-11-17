@@ -503,32 +503,31 @@ successor); `Auto.DIR.g_QJQ_tightLowerBound` (no successor; still mentioned in a
   $f_{\beta,0}''(\frac18)>0$ of `Auto.DIR.deriv_f_QIII_0_neg_Icc_eighth` are single checker
   evaluations.
 - [DIRX] (3.7), (3.8): the paper's tight lower bounds and partitions (`h_LJQ_2`: 29 intervals,
-  `h_LJ_1`: 5 intervals) pass unchanged (`3_3_Case_LJQ_aux_cert37.lean`,
-  `3_4_Case_LJ_aux_cert38.lean`).
+  `h_LJ_1`: 5 intervals) pass unchanged (`3_3_Case_LJQ_aux.lean`,
+  `3_4_Case_LJ_aux.lean`).
 - [DIRX] (3.11): with the paper's tight lower bound $\underline{h_{QJQ,1}}$ and partition `h_QJQ_1`
   (451 rectangles) the claimed margin $10^{-5}$ is missed on one rectangle,
   $[\frac14,\frac{33}{128}]\times[\frac{259}{512},\frac{1037}{2048}]$, where
   $\underline{h_{QJQ,1}}\approx8.5\cdot10^{-6}$ (the claim itself holds there). Resolved (user
   decision, 2026-11-16): that rectangle is split into its four dyadic children (454 rectangles,
-  `3_5_Case_QJQ_aux_cert311.lean`); the statement is unchanged. The monotonicity facts used for
-  $\underline{h_{QJQ,1}}$ are proved in `3_5_Case_QJQ_aux.lean` ($\mathrm J\mathrm J'$ antitone on
+  `3_5_Case_QJQ_aux.lean`); the statement is unchanged. The monotonicity facts used for
+  $\underline{h_{QJQ,1}}$ are proved in `3_3_Case_LJQ_aux.lean` ($\mathrm J\mathrm J'$ antitone on
   $[\frac12,\frac34]$ as in the paper; $Q'$ antitone and $\ge0$ on $[0,\frac{65}{128}]$;
   $x\mapsto2Q(\frac{x+y}2)-Q(x)$ antitone).
 - [DIRX] (3.12): the paper's tight lower bound $\underline{h_{QJQ,2}}$ bounds $Q(\frac{x+y}2)$ by
   $Q(\frac{\underline x+\overline y}2)$, i.e. uses that $Q$ is increasing, which fails for
   $\frac{x+y}2>t_*\approx0.528$ (item 8 above). Resolved (user decision, 2026-11-16): corrected
-  bound `Auto.DIRX.hQJQ2lo` (`3_5_Case_QJQ_aux.lean`): the paper's valid monotonicity in $x$ is
+  bound `Auto.DIRX.hQJQ2lo` (`3_3_Case_LJQ_aux.lean`): the paper's valid monotonicity in $x$ is
   kept, and $Q(\frac{\underline x+y}2)$, $y\in[\underline y,\overline y]$, is bounded by the
   tangent bound `Auto.DIRX.Qmx` of the concave cubic $Q$ on
   $[\frac{\underline x+\underline y}2,\frac{\underline x+\overline y}2]$ (equal to the paper's value
   where $Q$ is monotone). The paper's partition `h_QJQ_2` (4498 rectangles) is refined dyadically
-  where this bound is $<1.5\cdot10^{-7}$ (4540 rectangles, `3_5_Case_QJQ_aux_cert312*.lean`); the
+  where this bound is $<1.5\cdot10^{-7}$ (4540 rectangles, `3_5_Case_QJQ_aux*.lean`); the
   statement is unchanged.
 - [DIRX] (3.13), (3.14): the paper's tight lower bounds and partitions (`h_QJ_1`: 1375,
-  `h_QJ_2`: 2959 rectangles) pass unchanged (`3_6_Case_QJ_aux_cert313*.lean`,
-  `..._cert314*.lean`), with the enclosures of $\mathrm J$, $|\mathrm J'|$ proved on
+  `h_QJ_2`: 2959 rectangles) pass unchanged (`3_6_Case_QJ_aux*.lean`), with the enclosures of $\mathrm J$, $|\mathrm J'|$ proved on
   $[\frac14,1]$ (`3_6_Case_QJ_aux.lean`, item 9 above). For (3.14) (margin $\approx10^{-7}$) the
   constant $J_{w_1}(\frac12)$ is certified to $2\cdot10^{-12}$ (`Auto.DIRX.cJhalf`).
 - [DIRX] (3.3): the paper's tight lower bound $\underline{h_{LJQ,1}}$ and partition `h_LJQ_1`
-  (5506 rectangles) pass unchanged (`3_3_Case_LJQ_aux_cert33*.lean`; bound property in
-  `3_3_Case_LJQ_aux_lo.lean`, square root removed via `Auto.DIRX.lt_max_sqrt_of`).
+  (5506 rectangles) pass unchanged (`3_3_Case_LJQ_aux*.lean`; bound property in
+  `3_3_Case_LJQ_aux.lean`, square root removed via `Auto.DIRX.lt_max_sqrt_of`).

@@ -9,9 +9,8 @@ public import Isoperim.DIR.«2_Envelope_Functions».Definitions
 public import Isoperim.DIR.«6_Proof_Two_Point_Inequality».«6_5_Case_QJQ»
 public import Isoperim.DIRX.«2_Preliminaries».«2_2_Properties_J»
 public import Isoperim.DIRX.«2_Preliminaries».Definitions
-public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux»
-public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux_cert311»
-public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux_cert312»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_3_Case_LJQ_aux»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux_3»
 
 /-!
 # [DIRX] §3.5 Case QJQ
@@ -90,7 +89,7 @@ $[\frac14,\frac12]\times[\frac12,\frac{33}{64}]$.
 $\underline{h_{QJQ,1}}$ and partition `h_QJQ_1` (451 rectangles) the margin $10^{-5}$ is missed on
 $[\frac14,\frac{33}{128}]\times[\frac{259}{512},\frac{1037}{2048}]$ (bound $\approx8.5\cdot10^{-6}$).
 Lean: that rectangle is split into its four dyadic children (454 rectangles,
-`3_5_Case_QJQ_aux_cert311.lean`). -/
+`3_5_Case_QJQ_aux.lean`). -/
 theorem eqn_3_11 (x y : ℝ) (hx : x ∈ Icc (4⁻¹ : ℝ) 2⁻¹)
     (hy : y ∈ Icc (2⁻¹ : ℝ) (33 / 64)) : h_QJQ₁ x y > (10 : ℝ) ^ (-5 : ℤ) := by
   have h := eqn311_cert x hx y hy
@@ -144,7 +143,7 @@ $\underline{h_{QJQ,2}}$ bounds $Q(\frac{x+y}2)$ by $Q(\frac{\underline x+\overli
 increasing; this fails where $\frac{x+y}2>t_*\approx0.528$ (161 of the 4498 rectangles of `h_QJQ_2`).
 Lean: corrected bound `Auto.DIRX.hQJQ2lo` (tangent bound `Auto.DIRX.Qmx` of the concave $Q$; equal to
 the paper's bound where its argument is valid) and the partition `h_QJQ_2` refined dyadically to
-4540 rectangles (`3_5_Case_QJQ_aux_cert312*.lean`). -/
+4540 rectangles (`3_5_Case_QJQ_aux*.lean`). -/
 theorem eqn_3_12 (x y : ℝ) (hx : x ∈ Icc (4⁻¹ : ℝ) 2⁻¹)
     (hy : y ∈ Icc (33 / 64 : ℝ) (3 / 4)) :
     (y - x) ^ 2 + J y ^ 2 - (2 * Q ((x + y) / 2) - Q x) ^ 2 > (10 : ℝ) ^ (-7 : ℤ) := by

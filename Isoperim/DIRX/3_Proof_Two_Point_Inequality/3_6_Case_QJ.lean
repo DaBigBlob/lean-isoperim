@@ -9,9 +9,8 @@ public import Isoperim.DIR.«2_Envelope_Functions».Definitions
 public import Isoperim.DIRX.«2_Preliminaries».«2_2_Properties_J»
 public import Isoperim.DIRX.«2_Preliminaries».Definitions
 public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_1_Case_J»
-public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_5_Case_QJQ_aux»
-public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_6_Case_QJ_aux_cert313»
-public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_6_Case_QJ_aux_cert314»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_3_Case_LJQ_aux»
+public import Isoperim.DIRX.«3_Proof_Two_Point_Inequality».«3_6_Case_QJ_aux_4»
 
 /-!
 # [DIRX] §3.6 Case QJ

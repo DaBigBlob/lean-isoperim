@@ -9,7 +9,7 @@ public import Isoperim.DIR.«1_Introduction».Definitions
 public import Isoperim.DIR.«2_Envelope_Functions».Definitions
 public import Isoperim.DIR.«5_Auxiliary_Estimates».«5_2_Two_Point_Inequalities»
 public import Isoperim.DIR.«5_Auxiliary_Estimates».«5_3_Properties_L_Q»
-public import Isoperim.DIR.«6_Proof_Two_Point_Inequality».«6_2_Case_Q_aux_cert»
+public import Isoperim.DIR.«6_Proof_Two_Point_Inequality».«6_2_Case_Q_aux»
 
 /-!
 # [DIR] §6.2 Case Q: $0\le x\le y\le\frac12$
