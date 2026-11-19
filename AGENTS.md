@@ -57,7 +57,7 @@
    `automation/cert/checker_witness.py`; worked example and timings: branch `cert-test`,
    `CertTest/gen/casej_prime.py`, `CertTest/CaseJDefs.lean`, `CertTest/ESTIMATES.md`); large
    claims are spread over the `_aux` continuation files of rule 1, not over separate files
-   (≈ 0.15 s per table entry, 0.05–1 s per box; Task 3: `automation/cert/task3/consolidate.py`).
+   (≈ 0.15 s per table entry, 0.05–1 s per box).
    LeanCert stays a dependency but is not used (it is not a Lean `module` package).
 
 This Lean library formalizes the papers [DIR] (arXiv:2407.12674) and [DIRX]
